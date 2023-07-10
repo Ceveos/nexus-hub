@@ -49,7 +49,7 @@ model Server {
 model Role {
     id          String           @id @default(cuid())
     name        String
-    permissions String[] // A list of permissions
+    permissions String[]
     membership  UserCommunityMap @relation(fields: [userId, communityId], references: [userId, communityId])
     userId      String
     communityId String
@@ -119,4 +119,25 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model WebsocketApps {
+    id                               String @id
+    key                              String
+    secret                           String
+    max_connections                  Int
+    enable_client_messages           Int    @map(name: "enable_client_messages") @db.SmallInt
+    enabled                          Int    @map(name: "enabled") @db.SmallInt
+    max_backend_events_per_sec       Int
+    max_client_events_per_sec        Int
+    max_read_req_per_sec             Int
+    max_presence_members_per_channel Int?
+    max_presence_member_size_in_kb   Int?
+    max_channel_name_length          Int?
+    max_event_channels_at_once       Int?
+    max_event_name_length            Int?
+    max_event_payload_in_kb          Int?
+    max_event_batch_size             Int?
+    webhooks                         Json?
+    enable_user_authentication       Int    @map(name: "enable_user_authentication") @db.SmallInt
 }
