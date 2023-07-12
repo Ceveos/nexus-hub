@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import {
   HomeIcon,
   UsersIcon,
@@ -30,7 +30,12 @@ const userNavigation: DropdownLink[] = [
   { name: "Sign out", href: "#" },
 ];
 
-export default function Dashboard({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: ReactNode;
+  navbarAvatar: ReactNode;
+};
+
+export default function Dashboard({ children, navbarAvatar }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -47,6 +52,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           <Navbar
             userNavigation={userNavigation}
             setSidebarOpen={setSidebarOpen}
+            navbarAvatar={navbarAvatar}
           />
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">{children}</div>

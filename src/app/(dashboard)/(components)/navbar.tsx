@@ -1,5 +1,10 @@
 "use client";
-import { type Dispatch, Fragment, type SetStateAction } from "react";
+import {
+  type Dispatch,
+  Fragment,
+  type SetStateAction,
+  type ReactNode,
+} from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/outline";
 import {
@@ -12,9 +17,14 @@ import { ClassNames } from "~/helpers";
 interface Props {
   userNavigation: DropdownLink[];
   setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+  navbarAvatar: ReactNode;
 }
 
-const Navbar: React.FC<Props> = ({ userNavigation, setSidebarOpen }) => {
+const Navbar: React.FC<Props> = ({
+  navbarAvatar,
+  userNavigation,
+  setSidebarOpen,
+}) => {
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
       <button
@@ -65,23 +75,11 @@ const Navbar: React.FC<Props> = ({ userNavigation, setSidebarOpen }) => {
           <Menu as="div" className="relative">
             <Menu.Button className="-m-1.5 flex items-center p-1.5">
               <span className="sr-only">Open user menu</span>
-              <img
-                className="h-8 w-8 rounded-full bg-gray-50"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt=""
+              {navbarAvatar}
+              <ChevronDownIcon
+                className="ml-2 h-5 w-5 text-gray-400"
+                aria-hidden="true"
               />
-              <span className="hidden lg:flex lg:items-center">
-                <span
-                  className="ml-4 text-sm font-semibold leading-6 text-gray-900"
-                  aria-hidden="true"
-                >
-                  Tom Cook
-                </span>
-                <ChevronDownIcon
-                  className="ml-2 h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </span>
             </Menu.Button>
             <Transition
               as={Fragment}

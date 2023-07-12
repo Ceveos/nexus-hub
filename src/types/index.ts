@@ -1,3 +1,3 @@
-export * from "./DropdownLink";
-export * from "./Navigation";
+export * from "./dropdownLink";
+export * from "./navigation";
 export * from "./NavigationSection";

@@ -1,4 +1,6 @@
 "use client";
+import LogoIcon from "~/components/svg/logo.svg";
+import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
 import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -88,10 +90,11 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
-                    <img
+                    <Image
+                      priority
+                      src={LogoIcon}
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
+                      alt="Helios Hub"
                     />
                   </div>
                   <nav className="flex flex-1 flex-col">
@@ -164,10 +167,11 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
-            <img
+            <Image
+              priority
+              src={LogoIcon}
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
+              alt="Helios Hub"
             />
           </div>
           <nav className="flex flex-1 flex-col">
