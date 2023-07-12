@@ -4,7 +4,9 @@ import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
+  type DefaultUser,
 } from "next-auth";
+import { type DefaultJWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
@@ -24,10 +26,18 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends DefaultUser {
+    // ...other properties
+    // role: UserRole;
+    emailVerified: boolean | Date | null;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT extends DefaultJWT {
+    id: string;
+    emailVerified: boolean | Date | null;
+  }
 }
 
 /**
@@ -36,12 +46,25 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: ({ session, user }) => ({
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      // if (profile) {
+      //   token.name = profile.name;
+      //   token.picture = profile.image;
+      // }
+      return token;
+    },
+    session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        id: token.id,
       },
     }),
   },

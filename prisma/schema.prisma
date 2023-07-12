@@ -2,23 +2,76 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+enum Game {
+    GARRYS_MOD
+    MINECRAFT
+    // Add other games as needed
+}
+
+model Community {
+    id            String             @id @default(cuid())
+    name          String
+    owner         User               @relation("CommunityToOwner", fields: [ownerId], references: [id])
+    ownerId       String // Foreign key
+    members       UserCommunityMap[] @relation("UserCommunityMapToCommunity")
+    servers       Server[]
+    communityData CommunityData[]
+}
+
+model UserCommunityMap {
+    community   Community @relation("UserCommunityMapToCommunity", fields: [communityId], references: [id])
+    communityId String
+    user        User      @relation("UserCommunityMapToUser", fields: [userId], references: [id])
+    userId      String
+    roles       Role[]
+
+    @@id([userId, communityId])
+}
+
+model Server {
+    id          String       @id @default(cuid())
+    name        String
+    game        Game
+    community   Community    @relation(fields: [communityId], references: [id])
+    communityId String
+    serverData  ServerData[]
+}
+
+model Role {
+    id          String           @id @default(cuid())
+    name        String
+    permissions String[]
+    membership  UserCommunityMap @relation(fields: [userId, communityId], references: [userId, communityId])
+    userId      String
+    communityId String
+    serverId    String? // Optional, if this role is server-specific
+}
+
+model ServerData {
+    server   Server @relation(fields: [serverId], references: [id])
+    serverId String
+    key      String
+    value    Json
+
+    @@id([serverId, key])
+}
+
+model CommunityData {
+    community   Community @relation(fields: [communityId], references: [id])
+    communityId String
+    key         String
+    value       Json
+
+    @@id([communityId, key])
 }
 
 // Necessary for Next auth
@@ -28,12 +81,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,13 +102,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id                String             @id @default(cuid())
+    name              String?
+    email             String?            @unique
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    sessions          Session[]
+    ownedCommunities  Community[]        @relation("CommunityToOwner")
+    memberCommunities UserCommunityMap[] @relation("UserCommunityMapToUser")
 }
 
 model VerificationToken {
@@ -64,4 +119,25 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model WebsocketApps {
+    id                               String @id
+    key                              String
+    secret                           String
+    max_connections                  Int
+    enable_client_messages           Int    @map(name: "enable_client_messages") @db.SmallInt
+    enabled                          Int    @map(name: "enabled") @db.SmallInt
+    max_backend_events_per_sec       Int
+    max_client_events_per_sec        Int
+    max_read_req_per_sec             Int
+    max_presence_members_per_channel Int?
+    max_presence_member_size_in_kb   Int?
+    max_channel_name_length          Int?
+    max_event_channels_at_once       Int?
+    max_event_name_length            Int?
+    max_event_payload_in_kb          Int?
+    max_event_batch_size             Int?
+    webhooks                         Json?
+    enable_user_authentication       Int    @map(name: "enable_user_authentication") @db.SmallInt
 }
