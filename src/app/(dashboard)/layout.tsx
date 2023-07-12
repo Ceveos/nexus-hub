@@ -1,14 +1,8 @@
 import { type ReactNode } from "react";
-import { type Session } from "next-auth";
 import Dashboard from "./(components)/dashboard";
 import NavbarAvatar from "./(components)/navbar.avatar.component";
 
-type Props = {
-  children: ReactNode;
-  session: Session | null;
-};
-
-const DashboardLayout = ({ children }: Props) => {
+const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="h-full bg-white">
       <title>Helios Hub - Dashboard</title>

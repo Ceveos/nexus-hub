@@ -76,10 +76,6 @@ const Navbar: React.FC<Props> = ({
             <Menu.Button className="-m-1.5 flex items-center p-1.5">
               <span className="sr-only">Open user menu</span>
               {navbarAvatar}
-              <ChevronDownIcon
-                className="ml-2 h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
             </Menu.Button>
             <Transition
               as={Fragment}
