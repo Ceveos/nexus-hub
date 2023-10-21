@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { authOptions } from "~/server/auth";
 

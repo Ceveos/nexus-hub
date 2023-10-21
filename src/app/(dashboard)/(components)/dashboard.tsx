@@ -5,8 +5,8 @@ import {
   UsersIcon,
   FolderIcon,
   CalendarIcon,
-  DocumentDuplicateIcon,
   ChartPieIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { type DropdownLink, type NavigationLink } from "~/types";
 import Sidebar from "./sidebar";
@@ -17,8 +17,8 @@ const navigation: NavigationLink[] = [
   { name: "Servers", href: "#", icon: UsersIcon },
   { name: "Staff", href: "#", icon: FolderIcon },
   { name: "Tickets", href: "#", icon: CalendarIcon },
-  { name: "Documents", href: "#", icon: DocumentDuplicateIcon },
   { name: "Reports", href: "#", icon: ChartPieIcon },
+  { name: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];
 const teams: NavigationLink[] = [
   { name: "Heroicons", href: "#", initial: "H" },
@@ -54,9 +54,7 @@ export default function Dashboard({ children, navbarAvatar }: Props) {
             setSidebarOpen={setSidebarOpen}
             navbarAvatar={navbarAvatar}
           />
-          <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
-          </main>
+          {children}
         </div>
       </div>
     </>

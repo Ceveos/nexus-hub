@@ -21,10 +21,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.12.2",
+    "zact": "^0.0.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/forms": "^0.5.4",
     "@types/eslint": "^8.37.0",
     "@types/node": "^18.16.0",
     "@types/prettier": "^2.7.2",

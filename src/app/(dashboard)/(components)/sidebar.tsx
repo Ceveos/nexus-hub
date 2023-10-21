@@ -3,7 +3,7 @@ import LogoIcon from "~/components/svg/logo.svg";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
-import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type NavigationLink } from "~/types";
 import { ClassNames } from "~/helpers";
 import { usePathname } from "next/navigation";
@@ -142,7 +142,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                           ))}
                         </ul>
                       </li>
-                      <li className="mt-auto">
+                      {/* <li className="mt-auto">
                         <a
                           href="#"
                           className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
@@ -153,7 +153,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                           />
                           Settings
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                   </nav>
                 </div>
@@ -221,7 +221,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                   ))}
                 </ul>
               </li>
-              <li className="mt-auto">
+              {/* <li className="mt-auto">
                 <a
                   href="#"
                   className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
@@ -232,7 +232,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                   />
                   Settings
                 </a>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>
