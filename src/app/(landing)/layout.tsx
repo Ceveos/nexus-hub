@@ -5,7 +5,7 @@ export default function LandingLayout({
 }) {
   return (
     <>
-      <title>Helios Hub</title>
+      <title>Nexus Hub</title>
       <meta name="description" content="Server administration tool" />
       <link rel="icon" href="/favicon.ico" />
       {children}

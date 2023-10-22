@@ -52,7 +52,7 @@ export default function Hero() {
               priority
               src={LogoIcon}
               className="h-14 w-14"
-              alt="Helios Hub"
+              alt="Nexus Hub"
             />
             {/* <div className="mt-24 sm:mt-32 lg:mt-16">
               <a href="#" className="inline-flex space-x-6">

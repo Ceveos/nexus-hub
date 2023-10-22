@@ -94,7 +94,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                       priority
                       src={LogoIcon}
                       className="h-8 w-auto"
-                      alt="Helios Hub"
+                      alt="Nexus Hub"
                     />
                   </div>
                   <nav className="flex flex-1 flex-col">
@@ -171,7 +171,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
               priority
               src={LogoIcon}
               className="h-8 w-auto"
-              alt="Helios Hub"
+              alt="Nexus Hub"
             />
           </div>
           <nav className="flex flex-1 flex-col">

@@ -6,7 +6,7 @@ import DashboardContent from "./(components)/dashboardContent";
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="h-full bg-white">
-      <title>Helios Hub - Dashboard</title>
+      <title>Nexus Hub - Dashboard</title>
       <Dashboard navbarAvatar={<NavbarAvatar />}>
         <DashboardContent>{children}</DashboardContent>
       </Dashboard>
