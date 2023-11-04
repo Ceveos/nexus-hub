@@ -7,6 +7,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type NavigationLink } from "~/types";
 import { ClassNames } from "~/helpers";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
   return (
@@ -103,7 +104,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                         <ul role="list" className="-mx-2 space-y-1">
                           {navigation.map((item) => (
                             <li key={item.name}>
-                              <a
+                              <Link
                                 href={item.href}
                                 className={ClassNames(
                                   isPathActive(item.href)
@@ -114,7 +115,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                               >
                                 <SidebarIcon item={item} />
                                 {item.name}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -126,18 +127,17 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                         <ul role="list" className="-mx-2 mt-2 space-y-1">
                           {teams.map((team) => (
                             <li key={team.name}>
-                              <a
-                                href={team.href}
-                                className={ClassNames(
-                                  isPathActive(team.href)
-                                    ? "bg-gray-800 text-white"
-                                    : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                                )}
-                              >
+                              <Link
+                              href={team.href}>
+                              className={ClassNames(
+                                isPathActive(team.href)
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                              )}
                                 <SidebarIcon item={team} />
                                 <span className="truncate">{team.name}</span>
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -180,7 +180,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                 <ul role="list" className="-mx-2 space-y-1">
                   {navigation.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
                         href={item.href}
                         className={ClassNames(
                           isPathActive(item.href)
@@ -191,7 +191,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                       >
                         <SidebarIcon item={item} />
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -203,7 +203,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
                   {teams.map((team) => (
                     <li key={team.name}>
-                      <a
+                      <Link
                         href={team.href}
                         className={ClassNames(
                           isPathActive(team.href)
@@ -216,7 +216,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                           {team.initial}
                         </span>
                         <span className="truncate">{team.name}</span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

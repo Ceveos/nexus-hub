@@ -8,3 +8,21 @@ services:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
+  soketi:
+    image: quay.io/soketi/soketi:latest-16-alpine
+    restart: always
+    ports:
+      - 6001:6001
+      - 9601:9601
+    environment:
+      SOKETI_DEBUG: 0
+      SOKETI_APP_MANAGER_DRIVER: postgres
+      SOKETI_APP_MANAGER_POSTGRES_TABLE: WebsocketApps
+      SOKETI_DB_POSTGRES_HOST: db
+      SOKETI_DB_POSTGRES_PORT: 5432
+      SOKETI_DB_POSTGRES_USERNAME: postgres
+      SOKETI_DB_POSTGRES_PASSWORD: password
+      SOKETI_DB_POSTGRES_DATABASE: postgres
+      SOKETI_DB_POSTGRES_TABLE: WebsocketApps
+    depends_on:
+      - db
