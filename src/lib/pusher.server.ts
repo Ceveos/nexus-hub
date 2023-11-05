@@ -14,6 +14,6 @@ export const getPusherInstance = (props: PusherProps): Pusher => {
     key: props.key,
     secret: props.secret,
     host: '127.0.0.1',
-  });;
+    useTLS: true
+  });
 };
-

@@ -1,13 +1,14 @@
-"use client"
-import { useEffect, type ReactNode } from "react";
+"use client";
+
+import { useEffect } from "react";
 import { useDispatch } from "~/store/hooks";
 import { decrementComponentListener, incrementComponentListener } from "~/store/slices/pusherSlice";
 
-const ServerLayout = ({ children }: { children: ReactNode }) => {
-    const dispatch = useDispatch();
 
+export default function WebsocketTest() {
+    const dispatch = useDispatch();
     useEffect(() => {
-        if (!dispatch) {return}
+        if (!dispatch) { return }
         dispatch(incrementComponentListener({
             appKey: 'app-key'
         }));
@@ -18,11 +19,7 @@ const ServerLayout = ({ children }: { children: ReactNode }) => {
             }));
         }
     }, [dispatch]);
-    return (
-        <>
-            {children}
-        </>
-    );
-};
 
-export default ServerLayout;
+
+    return <></>
+}
