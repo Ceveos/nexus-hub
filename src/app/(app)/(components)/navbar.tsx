@@ -8,11 +8,10 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon } from "@heroicons/react/24/outline";
 import {
-  ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { type DropdownLink } from "~/types";
-import { ClassNames } from "~/helpers";
+import clsx from "clsx";
 
 interface Props {
   userNavigation: DropdownLink[];
@@ -92,8 +91,8 @@ const Navbar: React.FC<Props> = ({
                     {({ active }) => (
                       <a
                         href={item.href}
-                        className={ClassNames(
-                          active ? "bg-gray-50" : "",
+                        className={clsx(
+                          active && "bg-gray-50",
                           "block px-3 py-1 text-sm leading-6 text-gray-900"
                         )}
                       >

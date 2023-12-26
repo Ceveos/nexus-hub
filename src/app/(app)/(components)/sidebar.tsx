@@ -5,9 +5,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type NavigationLink } from "~/types";
-import { ClassNames } from "~/helpers";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import clsx from "clsx";
 
 const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
   return (
@@ -106,7 +106,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                             <li key={item.name}>
                               <Link
                                 href={item.href}
-                                className={ClassNames(
+                                className={clsx(
                                   isPathActive(item.href)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
@@ -129,7 +129,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                             <li key={team.name}>
                               <Link
                               href={team.href}>
-                              className={ClassNames(
+                              className={clsx(
                                 isPathActive(team.href)
                                   ? "bg-gray-800 text-white"
                                   : "text-gray-400 hover:bg-gray-800 hover:text-white",
@@ -182,7 +182,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className={ClassNames(
+                        className={clsx(
                           isPathActive(item.href)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
@@ -205,7 +205,7 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                     <li key={team.name}>
                       <Link
                         href={team.href}
-                        className={ClassNames(
+                        className={clsx(
                           isPathActive(team.href)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",

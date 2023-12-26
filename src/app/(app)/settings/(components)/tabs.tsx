@@ -1,4 +1,4 @@
-import { ClassNames } from "~/helpers";
+import clsx from "clsx";
 
 const tabs = [
   { name: "My Account", href: "/settings/account", current: false },
@@ -19,7 +19,7 @@ const SettingsTabs: React.FC = () => {
           id="tabs"
           name="tabs"
           className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-          defaultValue={tabs.find((tab) => tab.current).name}
+          defaultValue={tabs.find((tab) => tab.current)!.name}
         >
           {tabs.map((tab) => (
             <option key={tab.name}>{tab.name}</option>
@@ -33,7 +33,7 @@ const SettingsTabs: React.FC = () => {
               <a
                 key={tab.name}
                 href={tab.href}
-                className={ClassNames(
+                className={clsx(
                   tab.current
                     ? "border-indigo-500 text-indigo-600"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
