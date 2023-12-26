@@ -2,10 +2,6 @@
 import { type ReactNode, useState } from "react";
 import {
   HomeIcon,
-  UsersIcon,
-  FolderIcon,
-  CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { type DropdownLink, type NavigationLink } from "~/types";
@@ -13,11 +9,7 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
 const navigation: NavigationLink[] = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-  { name: "Servers", href: "#", icon: UsersIcon },
-  { name: "Staff", href: "#", icon: FolderIcon },
-  { name: "Tickets", href: "#", icon: CalendarIcon },
-  { name: "Reports", href: "#", icon: ChartPieIcon },
+  { name: "Home", href: "/dashboard", icon: HomeIcon },
   { name: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];
 const teams: NavigationLink[] = [
