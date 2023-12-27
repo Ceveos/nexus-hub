@@ -20,7 +20,7 @@ export default async function Page() {
 
   return <>
     <CardContainer>
-      {communities.map(community => (
+      {communities.map(community  => (
         <CommunityCard key={community.id} community={community} />
       ))}
       <CreateCommunityCard />

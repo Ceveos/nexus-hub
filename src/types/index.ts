@@ -1,2 +1,2 @@
-export * from "./dropdownLink";
-export * from "./navigation";
+export * from "./DropdownLink";
+export * from "./Navigation";

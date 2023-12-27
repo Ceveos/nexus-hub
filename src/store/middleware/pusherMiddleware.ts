@@ -1,15 +1,16 @@
-import { Middleware } from 'redux';
-import { RootState } from '../store'; // Import the type of your root state
-import { initializeServer, incrementComponentListener, decrementComponentListener, PusherConnectionState, connect, disconnect } from '../slices/pusherSlice';
+import { type Middleware } from 'redux';
+import { type RootState } from '../store'; // Import the type of your root state
+import { initializeServer, incrementComponentListener, decrementComponentListener, connect, disconnect } from '../slices/pusherSlice';
 import PusherManager from '~/lib/pusherManager';
 
-const pusherMiddleware: Middleware<{}, RootState> = store => next => action => {
-    let server = store.getState().pusher.servers[action.payload.appKey];
+const pusherMiddleware: Middleware<object, RootState> = store => next => action => {
+    let server;
     if (initializeServer.match(action)) {
+        server = store.getState().pusher.servers[action.payload.appKey];
         if (server && PusherManager.exists(action.payload.appKey)) {
             return next(action);
         }
-        let pusher = PusherManager.getInstance(action.payload.appKey);
+        // let pusher = PusherManager.getInstance(action.payload.appKey);
 
         // Listen for any connection state change
         // pusher.connection.bind('state_change', (states: PusherConnectionStateChangeCB) => {

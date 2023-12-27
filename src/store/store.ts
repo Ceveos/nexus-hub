@@ -1,7 +1,6 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { Tuple, combineReducers, configureStore } from "@reduxjs/toolkit";
 import pusherReducer from "./slices/pusherSlice";
 import pusherMiddleware from "./middleware/pusherMiddleware";
-import logger from 'redux-logger'
 
 const rootReducer = combineReducers({
   pusher: pusherReducer,
@@ -9,7 +8,7 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(pusherMiddleware, logger)
+  middleware: () => new Tuple(pusherMiddleware)
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
