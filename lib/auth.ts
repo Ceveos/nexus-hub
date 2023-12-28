@@ -54,7 +54,10 @@ export const authOptions: NextAuthOptions = {
   debug: false,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  secret: env.NEXTAUTH_SECRET,
+  adapter: PrismaAdapter(prisma),
   callbacks: {
     jwt({ token, user }) {
       if (user) {
@@ -71,7 +74,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
@@ -153,7 +155,7 @@ export function withSiteAuth(action: WithSiteAuthProps) {
     siteId: string,
     key: string | null,
   ) => {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return {
         error: "Not authenticated",
@@ -164,6 +166,7 @@ export function withSiteAuth(action: WithSiteAuthProps) {
         id: siteId,
       },
     });
+    
     if (!site || site.userId !== session.user.id) {
       return {
         error: "Not authorized",
