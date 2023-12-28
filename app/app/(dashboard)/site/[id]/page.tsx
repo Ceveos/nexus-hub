@@ -1,8 +1,6 @@
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import Posts from "@/components/posts";
-import CreatePostButton from "@/components/create-post-button";
 
 export default async function SitePosts({
   params,
@@ -45,9 +43,7 @@ export default async function SitePosts({
             {url} ↗
           </a>
         </div>
-        <CreatePostButton />
       </div>
-      <Posts siteId={decodeURIComponent(params.id)} />
     </>
   );
 }

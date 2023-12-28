@@ -11,7 +11,7 @@ import {
   type LegendProps as HeadlessLegendProps,
 } from '@headlessui/react'
 import clsx from 'clsx'
-import type React from 'react'
+import React from 'react'
 
 export function Fieldset({ className, ...props }: { disabled?: boolean } & HeadlessFieldsetProps) {
   return (
@@ -28,6 +28,7 @@ export function Legend({ ...props }: HeadlessLegendProps) {
       {...props}
       data-slot="legend"
       className={clsx(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         props.className,
         'text-base/6 font-semibold text-zinc-950 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-white'
       )}
@@ -71,7 +72,7 @@ export function Label({ className, ...props }: { className?: string } & Headless
 
 export function Description({
   className,
-  disabled,
+  disabled: _disabled,
   ...props
 }: { className?: string; disabled?: boolean } & HeadlessDescriptionProps) {
   return (
@@ -88,7 +89,7 @@ export function Description({
 
 export function ErrorMessage({
   className,
-  disabled,
+  disabled: _disabled,
   ...props
 }: { className?: string; disabled?: boolean } & HeadlessDescriptionProps) {
   return (

@@ -1,9 +1,7 @@
-import { ComputerDesktopIcon } from "@heroicons/react/20/solid";
+// eslint-disable-next-line @typescript-eslint/ban-types
+type Props = {};
 
-type Props = {
-};
-
-export default function CreateCommunityCard(props: Props) {
+export default function CreateCommunityCard(_props: Props) {
 
   return (
     <button

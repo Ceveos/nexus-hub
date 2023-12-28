@@ -1,4 +1,4 @@
-import LogoIcon from "@components/svg/logo.svg";
+import LogoIcon from "@/public/logo.svg";
 import Image from "next/image";
 
 export default function Hero() {

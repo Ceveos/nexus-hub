@@ -8,6 +8,7 @@ export function Input({
   className,
   ...props
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   type?: 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | DateType
 } & HeadlessInputProps) {
   return (
