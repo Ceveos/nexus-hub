@@ -2,17 +2,17 @@ import { type ReactNode } from "react";
 import Dashboard from "./(components)/dashboard";
 import NavbarAvatar from "./(components)/navbar.avatar.component";
 import DashboardContent from "./(components)/dashboardContent";
-import { ReduxProvider } from "@/app/(providers)/reduxProvider";
+import { Providers } from "../(providers)/providers";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="h-full bg-white">
       <title>Nexus Hub - Dashboard</title>
-      <ReduxProvider>
+      <Providers>
         <Dashboard navbarAvatar={<NavbarAvatar />}>
           <DashboardContent>{children}</DashboardContent>
         </Dashboard>
-      </ReduxProvider>
+      </Providers>
     </div>
   );
 };
