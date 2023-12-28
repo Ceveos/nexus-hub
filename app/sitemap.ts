@@ -6,8 +6,7 @@ export default function Sitemap() {
   const domain =
     headersList
       .get("host")
-      ?.replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) ??
-    "vercel.pub";
+      ?.replace(/localhost:\d+/g, process.env.NEXT_PUBLIC_ROOT_DOMAIN!);
 
   // const posts = await getPostsForSite(domain);
 

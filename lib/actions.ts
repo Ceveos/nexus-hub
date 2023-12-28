@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
 import { withSiteAuth } from "./auth";
-import { getSession } from "@/lib/auth";
+import { getServerAuthSession } from "@/lib/auth";
 import {
   addDomainToVercel,
   // getApexDomain,
@@ -14,7 +14,7 @@ import {
 import { type Site } from "@prisma/client";
 
 export const createSite = async (formData: FormData) => {
-  const session = await getSession();
+  const session = await getServerAuthSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
@@ -221,7 +221,7 @@ export const editUser = async (
   _id: unknown,
   key: string,
 ) => {
-  const session = await getSession();
+  const session = await getServerAuthSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",

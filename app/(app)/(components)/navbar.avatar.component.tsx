@@ -1,9 +1,8 @@
-import { getServerSession } from "next-auth";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { authOptions } from "@/lib/auth";
+import { getServerAuthSession } from "@/lib/auth";
 
 const NavbarAvatar: React.FC = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
   return (
     <>
       <img

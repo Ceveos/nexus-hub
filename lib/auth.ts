@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type GetServerSidePropsContext } from "next";
+import { type NextApiRequest, type GetServerSidePropsContext, type NextApiResponse } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
@@ -9,6 +9,7 @@ import {
 } from "next-auth";
 import { type DefaultJWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
+import GithubProvider from "next-auth/providers/github";
 import { env } from "@/env.mjs";
 import prisma from "@/lib/prisma";
 import { type Site } from "@prisma/client";
@@ -50,6 +51,7 @@ declare module "next-auth/jwt" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  debug: false,
   session: {
     strategy: "jwt",
   },
@@ -65,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: {
         ...session.user,
-        id: token.id,
+        id: token.sub,
       },
     }),
   },
@@ -75,25 +77,44 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
-
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
+    GithubProvider({
+      clientId: process.env.GITHUB_AUTH_ID as string,
+      clientSecret: process.env.GITHUB_AUTH_SECRET as string,
+      profile(profile) {
+        return {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          id: profile.id as string,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          name: profile.name as string || profile.login as string,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          email: profile.email as string,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          image: profile.avatar_url as string,
+        };
+      }
+    }),
   ],
-  pages: {
-    signIn: `/login`,
-    verifyRequest: `/login`,
-    error: "/login", // Error code passed in query string as ?error=
-  },
+  // pages: {
+  //   signIn: `/login`,
+  //   verifyRequest: `/login`,
+  //   error: "/login", // Error code passed in query string as ?error=
+  // },
   cookies: {
     sessionToken: {
       name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        // When working on localhost, the cookie domain must be omitted entirely (https://stackoverflow.com/a/1188145)
+        domain: VERCEL_DEPLOYMENT
+          ? `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+          : undefined,
+        secure: VERCEL_DEPLOYMENT,
+      },
+    },
+    state: {
+      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.state`,
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -113,15 +134,9 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
-
-export function getSession() {
-  return getServerSession(authOptions);
+// Use it in server contexts
+export function getServerAuthSession(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
+  return getServerSession(...args, authOptions)
 }
 
 export type WithSiteAuthProps = (
@@ -138,7 +153,7 @@ export function withSiteAuth(action: WithSiteAuthProps) {
     siteId: string,
     key: string | null,
   ) => {
-    const session = await getSession();
+    const session = await getServerSession();
     if (!session) {
       return {
         error: "Not authenticated",

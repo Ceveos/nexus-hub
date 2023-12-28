@@ -1,14 +1,13 @@
 import { type ReactNode } from "react";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
+import { getServerAuthSession } from "@/lib/auth";
 
 type Props = {
   children: ReactNode;
 };
 
 const ServerAuthGuard = async ({ children }: Props) => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
 
   if (!session) {
     redirect("/api/auth/signin");

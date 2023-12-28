@@ -1,11 +1,11 @@
-import { getSession } from "@/lib/auth";
+import { getServerAuthSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import SiteCard from "./site-card";
 import Image from "next/image";
 
 export default async function Sites({ limit }: { limit?: number }) {
-  const session = await getSession();
+  const session = await getServerAuthSession();
   if (!session) {
     redirect("/login");
   }

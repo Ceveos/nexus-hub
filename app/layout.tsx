@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { cal, inter } from "@/styles/fonts";
 import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./providers";
+import { Providers } from "./(providers)/providers";
 import { type Metadata } from "next";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     images: [image],
     creator: "@vercel",
   },
-  metadataBase: new URL("https://vercel.pub"),
+  metadataBase: new URL("https://nexushub.app"),
 };
 
 export default function RootLayout({
