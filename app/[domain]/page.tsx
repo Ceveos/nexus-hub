@@ -2,16 +2,13 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { getSiteData } from "@/lib/fetchers";
 import Image from "next/image";
+import { getServerAuthSession } from "@/lib/auth";
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({
     select: {
       subdomain: true,
       customDomain: true,
-    },
-    // feel free to remove this filter if you want to generate paths for all sites
-    where: {
-      subdomain: "demo",
     },
   });
 
@@ -36,6 +33,13 @@ export default async function SiteHomePage({
 }) {
   const domain = decodeURIComponent(params.domain);
   const data = await getSiteData(domain);
+  const session = await getServerAuthSession();
+
+  return (<>
+    <p className="text-white">
+      {JSON.stringify(session)}
+    </p>
+  </>)
 
   if (!data) {
     notFound();

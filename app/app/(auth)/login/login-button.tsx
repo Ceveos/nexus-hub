@@ -17,12 +17,14 @@ type Props = {
 };
 
 export default function LoginButton({icon, providerId, providerName, disabled, setDisabled}: Props) {
-
+  
   const [loading, setLoading] = useState(false);
 
   // Get error message added by next/auth in URL.
   const searchParams = useSearchParams();
   const error = searchParams?.get("error");
+  const callbackUrl = searchParams?.get("from") || undefined;
+
 
   useEffect(() => {
     const errorMessage = Array.isArray(error) ? error.pop() : error;
@@ -35,7 +37,7 @@ export default function LoginButton({icon, providerId, providerName, disabled, s
       onClick={() => {
         setDisabled(true);
         setLoading(true);
-        void signIn(providerId);
+        void signIn(providerId, { callbackUrl });
       }}
       className={`${
         loading

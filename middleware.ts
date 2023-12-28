@@ -20,8 +20,7 @@ export default async function middleware(req: NextRequest) {
 
   // Get hostname of request (e.g. demo.nexushub.app, demo.localhost:3000)
   let hostname = req.headers
-    .get("host")!
-    .replace(/localhost:\d+/g, process.env.NEXT_PUBLIC_ROOT_DOMAIN!);
+    .get("host")!;
 
   // special case for Vercel preview deployment URLs
   if (
@@ -39,13 +38,11 @@ export default async function middleware(req: NextRequest) {
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
 
-  console.log(hostname, path);
-
   // rewrites for app pages
   if (hostname == process.env.NEXT_PUBLIC_ROOT_DOMAIN && path !== "/") {
     const session = await getToken({ req });
-    if (!session && path !== "/login") {
-      return NextResponse.redirect(new URL("/login", req.url));
+    if (!session && url.pathname !== "/login") {
+      return NextResponse.redirect(new URL(`/login?from=${encodeURIComponent(path)}`, req.url));
     } else if (session && path.startsWith("/login")) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
