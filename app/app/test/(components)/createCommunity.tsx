@@ -40,7 +40,7 @@ export default function CreateCommunityModal() {
             va.track("Created Community");
             const { id } = res;
             router.refresh();
-            router.push(`/community/${id}`);
+            router.push(`community/${id}`);
             modal?.hide();
             toast.success(`Successfully created community!`);
           }

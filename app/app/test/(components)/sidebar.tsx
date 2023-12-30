@@ -25,13 +25,13 @@ const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
 };
 
 interface Props {
-  navigation: NavigationLink[];
+  navigationLinks: NavigationLink[];
   externalLinks: NavigationLink[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) => {
+const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpen }) => {
   const segment = useSelectedLayoutSegment();
   const segments = useSelectedLayoutSegments();
   const path = usePathname();
@@ -101,12 +101,12 @@ const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) 
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          {navigation.map((item) => (
+                          {navigationLinks.map((item) => (
                             <li key={item.name}>
                               <Link
                                 href={item.relative ? `${relativePath}${item.href}` : item.href}
                                 className={clsx(
-                                  item.segment && item.segment === segment
+                                  (item.isActive && item.isActive(segments)) || segments.some((segment) => segment === item.segment)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -129,7 +129,7 @@ const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) 
                               <a
                                 href={link.relative ? `${relativePath}${link.href}` : link.href}
                                 className={clsx(
-                                  link.segment && link.segment === segment
+                                  (link.isActive && link.isActive(segments)) || segments.some((segment) => segment === link.segment)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -177,12 +177,12 @@ const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) 
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => (
+                  {navigationLinks.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.relative ? `${relativePath}${item.href}` : item.href}
                         className={clsx(
-                          item.segment && item.segment === segment
+                          (item.isActive && item.isActive(segments)) || segments.some((segment) => segment === item.segment)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -205,7 +205,7 @@ const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) 
                       <a
                         href={link.relative ? `${relativePath}${link.href}` : link.href}
                         className={clsx(
-                          link.segment && link.segment === segment
+                          (link.isActive && link.isActive(segments)) || segments.some((segment) => segment === link.segment)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"

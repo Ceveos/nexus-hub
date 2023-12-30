@@ -16,7 +16,8 @@ export type NavigationLink =
       name: string;
       href: string;
       relative?: boolean;
-      segment?: string | null;
+      isActive?: (segments: string[]) => boolean;
+      segment?: string;
       icon: SVGIcon;
       initial?: never;
       badge?: number | string;
@@ -25,7 +26,8 @@ export type NavigationLink =
       name: string;
       href: string;
       relative?: boolean;
-      segment?: string | null;
+      isActive?: (segments: string[]) => boolean;
+      segment?: string;
       initial: string;
       icon?: never;
       badge?: number | string;

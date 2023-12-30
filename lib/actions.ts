@@ -74,15 +74,25 @@ export const createCommunity = async (formData: FormData) => {
   }
 
   try {
-    const response = await prisma.site.create({
+    const response = await prisma.community.create({
       data: {
         name,
         subdomain,
-        user: {
+        owner: {
           connect: {
             id: session.user.id,
           },
         },
+        members: {
+          create: {
+            user: {
+              connect: {
+                id: session.user.id,
+              }
+            },
+            role:"ADMIN"
+          }
+        }
       },
     });
     revalidateTag(

@@ -41,7 +41,7 @@ export default function CommunityCard({ community }: Props) {
           </div> */}
           <div className="-ml-px flex w-0 flex-1">
             <Link
-              href={`/community/${community.id}`}
+              href={`community/${community.id}`}
               className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
             >
               <ComputerDesktopIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

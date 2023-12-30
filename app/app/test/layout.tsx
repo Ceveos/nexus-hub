@@ -9,7 +9,10 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     <div className="h-full bg-white">
       <title>Nexus Hub - Dashboard</title>
       <Providers>
-        <Dashboard navbarAvatar={<NavbarAvatar />}>
+
+        <Dashboard
+          navbarAvatar={<NavbarAvatar />}
+        >
           <DashboardContent>{children}</DashboardContent>
         </Dashboard>
       </Providers>

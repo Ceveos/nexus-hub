@@ -2,8 +2,8 @@ import prisma from "@/lib/prisma";
 import CommunityCard from "../(components)/communityCard";
 import CardContainer from "../(components)/cardContainer";
 import CreateCommunityCard from "../(components)/createCommunityCard";
-import { getServerAuthSession } from "@/lib/auth";
 import CreateCommunityModal from "../(components)/createCommunity";
+import { getServerAuthSession } from "@/lib/auth";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {
