@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type NavigationLink } from "@/types";
-import { useSelectedLayoutSegment, useSelectedLayoutSegments, usePathname } from "next/navigation";
+import { useSelectedLayoutSegments, usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -32,7 +32,6 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpen }) => {
-  const segment = useSelectedLayoutSegment();
   const segments = useSelectedLayoutSegments();
   const path = usePathname();
   const relativePath = path.replace(segments.join("/"), "");
@@ -106,7 +105,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                               <Link
                                 href={item.relative ? `${relativePath}${item.href}` : item.href}
                                 className={clsx(
-                                  (item.isActive && item.isActive(segments)) || segments.some((segment) => segment === item.segment)
+                                  (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -129,7 +128,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                               <a
                                 href={link.relative ? `${relativePath}${link.href}` : link.href}
                                 className={clsx(
-                                  (link.isActive && link.isActive(segments)) || segments.some((segment) => segment === link.segment)
+                                  (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -182,7 +181,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                       <Link
                         href={item.relative ? `${relativePath}${item.href}` : item.href}
                         className={clsx(
-                          (item.isActive && item.isActive(segments)) || segments.some((segment) => segment === item.segment)
+                          (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -205,7 +204,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                       <a
                         href={link.relative ? `${relativePath}${link.href}` : link.href}
                         className={clsx(
-                          (link.isActive && link.isActive(segments)) || segments.some((segment) => segment === link.segment)
+                          (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
