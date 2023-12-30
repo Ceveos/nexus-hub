@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type NavigationLink } from "@/types";
-import { usePathname } from "next/navigation";
+import { useSelectedLayoutSegment, useSelectedLayoutSegments, usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -26,17 +26,16 @@ const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
 
 interface Props {
   navigation: NavigationLink[];
-  teams: NavigationLink[];
+  externalLinks: NavigationLink[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
-  const pathName = usePathname();
-
-  const isPathActive = (path: string) => {
-    return pathName?.includes(path);
-  };
+const Sidebar: React.FC<Props> = ({ navigation, externalLinks, open, setOpen }) => {
+  const segment = useSelectedLayoutSegment();
+  const segments = useSelectedLayoutSegments();
+  const path = usePathname();
+  const relativePath = path.replace(segments.join("/"), "");
 
   return (
     <>
@@ -105,9 +104,9 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                           {navigation.map((item) => (
                             <li key={item.name}>
                               <Link
-                                href={item.href}
+                                href={item.relative ? `${relativePath}${item.href}` : item.href}
                                 className={clsx(
-                                  isPathActive(item.href)
+                                  item.segment && item.segment === segment
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -120,24 +119,24 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                           ))}
                         </ul>
                       </li>
-                      <li>
+                      <li className="mt-auto">
                         <div className="text-xs font-semibold leading-6 text-gray-400">
-                          Your teams
+                          Links
                         </div>
                         <ul role="list" className="-mx-2 mt-2 space-y-1">
-                          {teams.map((team) => (
-                            <li key={team.name}>
-                              <Link
-                              href={team.href}>
-                              className={clsx(
-                                isPathActive(team.href)
-                                  ? "bg-gray-800 text-white"
-                                  : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
-                              )}
-                                <SidebarIcon item={team} />
-                                <span className="truncate">{team.name}</span>
-                              </Link>
+                          {externalLinks.map((link) => (
+                            <li key={link.name}>
+                              <a
+                                href={link.relative ? `${relativePath}${link.href}` : link.href}
+                                className={clsx(
+                                  link.segment && link.segment === segment
+                                    ? "bg-gray-800 text-white"
+                                    : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                                  "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                                )}>
+                                <SidebarIcon item={link} />
+                                <span className="truncate">{link.name}</span>
+                              </a>
                             </li>
                           ))}
                         </ul>
@@ -181,9 +180,9 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                   {navigation.map((item) => (
                     <li key={item.name}>
                       <Link
-                        href={item.href}
+                        href={item.relative ? `${relativePath}${item.href}` : item.href}
                         className={clsx(
-                          isPathActive(item.href)
+                          item.segment && item.segment === segment
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -196,27 +195,27 @@ const Sidebar: React.FC<Props> = ({ navigation, teams, open, setOpen }) => {
                   ))}
                 </ul>
               </li>
-              <li>
+              <li className="mt-auto">
                 <div className="text-xs font-semibold leading-6 text-gray-400">
-                  Your teams
+                  Links
                 </div>
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {teams.map((team) => (
-                    <li key={team.name}>
-                      <Link
-                        href={team.href}
+                  {externalLinks.map((link) => (
+                    <li key={link.name}>
+                      <a
+                        href={link.relative ? `${relativePath}${link.href}` : link.href}
                         className={clsx(
-                          isPathActive(team.href)
+                          link.segment && link.segment === segment
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
                         )}
                       >
                         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                          {team.initial}
+                          {link.initial}
                         </span>
-                        <span className="truncate">{team.name}</span>
-                      </Link>
+                        <span className="truncate">{link.name}</span>
+                      </a>
                     </li>
                   ))}
                 </ul>

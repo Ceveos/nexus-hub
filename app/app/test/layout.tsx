@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import Dashboard from "./(components)/dashboard";
 import NavbarAvatar from "./(components)/navbar.avatar.component";
 import DashboardContent from "./(components)/dashboardContent";
-import { Providers } from "../(providers)/providers";
+import { Providers } from "@/app/(providers)/providers";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (

@@ -1,16 +1,19 @@
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { getServerAuthSession } from "@/lib/auth";
+import Image from "next/image";
 
 const NavbarAvatar: React.FC = async () => {
   const session = await getServerAuthSession();
   return (
     <>
-      <img
+      <Image
         className="h-8 w-8 rounded-full bg-gray-50"
         src={session?.user.image ?? ""}
-        alt=""
+        width={32}
+        height={32}
+        alt="Avatar"
       />
-      <span className="hidden lg:flex lg:items-center">
+      <span className="flex items-center">
         <span
           className="ml-4 text-sm font-semibold leading-6 text-gray-900"
           aria-hidden="true"

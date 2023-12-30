@@ -24,6 +24,7 @@ const config = {
       { hostname: "pbs.twimg.com" },
       { hostname: "avatar.vercel.sh" },
       { hostname: "avatars.githubusercontent.com" },
+      { hostname: "cdn.discordapp.com"},
       { hostname: "www.google.com" },
       { hostname: "flag.vercel.app" },
       { hostname: "illustrations.popsy.co" },

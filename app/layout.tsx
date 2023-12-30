@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={cn(cal.variable, inter.variable)}>
+    <html lang="en" className="h-full">
+      <body className={cn(cal.variable, inter.variable, "h-full")}>
         <Providers>
           {children}
           <Analytics />

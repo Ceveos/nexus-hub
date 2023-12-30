@@ -1,26 +1,11 @@
 "use client";
 import { type ReactNode, useState } from "react";
-import {
-  HomeIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
-import { type DropdownLink, type NavigationLink } from "@/types";
+
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
+import { dashboardLinks, externalLinks } from "../(data)/navLinks";
+import { userNavigation } from "../(data)/navLinks.client";
 
-const navigation: NavigationLink[] = [
-  { name: "Home", href: "/dashboard", icon: HomeIcon },
-  { name: "Settings", href: "/settings", icon: Cog6ToothIcon },
-];
-const teams: NavigationLink[] = [
-  { name: "Heroicons", href: "#", initial: "H" },
-  { name: "Tailwind Labs", href: "#", initial: "T" },
-  { name: "Workcation", href: "#", initial: "W" },
-];
-const userNavigation: DropdownLink[] = [
-  { name: "Your profile", href: "#" },
-  { name: "Sign out", href: "#" },
-];
 
 type Props = {
   children: ReactNode;
@@ -34,8 +19,8 @@ export default function Dashboard({ children, navbarAvatar }: Props) {
     <>
       <div>
         <Sidebar
-          navigation={navigation}
-          teams={teams}
+          navigation={dashboardLinks}
+          externalLinks={externalLinks}
           open={sidebarOpen}
           setOpen={setSidebarOpen}
         />

@@ -45,10 +45,10 @@ export async function generateMetadata({
     // Optional: Set canonical URL to custom domain if it exists
     ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
       data.customDomain && {
-        alternates: {
-          canonical: `https://${data.customDomain}`,
-        },
-      }),
+      alternates: {
+        canonical: `https://${data.customDomain}`,
+      },
+    }),
   };
 }
 
@@ -75,5 +75,9 @@ export default async function SiteLayout({
     return redirect(`https://${data.customDomain}`);
   }
 
-  return <>{children}</>;
+  return <>
+    <div className="h-full">
+      {children}
+    </div>
+  </>;
 }

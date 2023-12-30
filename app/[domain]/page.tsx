@@ -35,7 +35,7 @@ export default function Page() {
         <body class="h-full">
         ```
       */}
-      <div className="min-h-full">
+      <div className="min-h-full bg-gray-100">
         <div className="bg-gray-800 pb-32">
           <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (

@@ -1,11 +1,13 @@
+import Link from "next/link";
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
 
 export default function CreateCommunityCard(_props: Props) {
 
   return (
-    <button
-      type="button"
+    <Link
+      href="communities/new"
       className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
     >
       {/* <ComputerDesktopIcon
@@ -26,6 +28,6 @@ export default function CreateCommunityCard(_props: Props) {
         />
       </svg>
       <span className="mt-2 block text-sm font-semibold text-gray-900">Create a new community</span>
-    </button>
+    </Link>
   );
 }
