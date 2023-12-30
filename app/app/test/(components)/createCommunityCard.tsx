@@ -1,13 +1,18 @@
-import Link from "next/link";
+"use client"
+
+import { useModal } from "@/components/modal/provider";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
+type Props = {
+  children: React.ReactNode;
+};
 
-export default function CreateCommunityCard(_props: Props) {
+export default function CreateCommunityCard({children}: Props) {
+  const modal = useModal();
 
   return (
-    <Link
-      href="communities/new"
+    <button
+      onClick={() => modal?.show(children)}
       className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
     >
       {/* <ComputerDesktopIcon
@@ -28,6 +33,6 @@ export default function CreateCommunityCard(_props: Props) {
         />
       </svg>
       <span className="mt-2 block text-sm font-semibold text-gray-900">Create a new community</span>
-    </Link>
+    </button>
   );
 }

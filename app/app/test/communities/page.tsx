@@ -3,6 +3,7 @@ import CommunityCard from "../(components)/communityCard";
 import CardContainer from "../(components)/cardContainer";
 import CreateCommunityCard from "../(components)/createCommunityCard";
 import { getServerAuthSession } from "@/lib/auth";
+import CreateCommunityModal from "../(components)/createCommunity";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {
@@ -22,7 +23,9 @@ export default async function Page() {
       {communities.map(community  => (
         <CommunityCard key={community.id} community={community} />
       ))}
-      <CreateCommunityCard />
+      <CreateCommunityCard>
+        <CreateCommunityModal/>
+      </CreateCommunityCard>
     </CardContainer>
     {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
     {/* <WebsocketTest /> */}

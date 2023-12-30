@@ -57,6 +57,54 @@ export const createSite = async (formData: FormData) => {
   }
 };
 
+export const createCommunity = async (formData: FormData) => {
+  const session = await getServerAuthSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+  const name = formData.get("name") as string;
+  const subdomain = formData.get("subdomain") as string;
+
+  if (subdomain.length < 4) {
+    return {
+      error: "Subdomain must be at least 4 characters",
+    };
+  }
+
+  try {
+    const response = await prisma.site.create({
+      data: {
+        name,
+        subdomain,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+    revalidateTag(
+      `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`
+    );
+    return response;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (error.code === "P2002") {
+      return {
+        error: `This subdomain is already taken`,
+      };
+    } else {
+      return {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        error: error.message,
+      };
+    }
+  }
+};
+
 export const updateSite = withSiteAuth(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async (formData: FormData | null, site: Site, key: string | null): Promise<any> => {
