@@ -1,6 +1,6 @@
 import { type Config } from "tailwindcss";
-import { fontFamily} from "tailwindcss/defaultTheme";
-
+import { fontFamily } from "tailwindcss/defaultTheme";
+import * as colors from "tailwindcss/colors";
 
 export default {
   content: [
@@ -71,6 +71,31 @@ export default {
             emphasis: "#e5e7eb", // gray-200
             strong: "#f9fafb", // gray-50
             inverted: "#000000", // black
+          },
+        },
+        primary: {
+          ...colors.slate,
+          dark: {
+            ...colors.neutral,
+          },
+        },
+        accent: {
+          ...colors.blue,
+          dark: {
+            ...colors.blue,
+          },
+        },
+
+        /* Theme colors */
+        th: {
+          background: {
+            DEFAULT: colors.gray[100],
+            dark: colors.neutral[900],
+          },
+
+          foreground: {
+            DEFAULT: colors.white,
+            dark: colors.neutral[800],
           },
         },
       },
