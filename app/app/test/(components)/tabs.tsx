@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname, useRouter, useSelectedLayoutSegment } from "next/navigation";
 
 export interface Tab {
@@ -41,7 +42,7 @@ const SettingsTabs: React.FC<Props> = ({tabs}) => {
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8 " aria-label="Tabs">
             {tabs.map((tab) => (
-              <a
+              <Link
                 key={tab.name}
                 href={[relativePath, tab.segment].filter(Boolean).join("/")}
                 className={clsx(
@@ -53,7 +54,7 @@ const SettingsTabs: React.FC<Props> = ({tabs}) => {
                 aria-current={tab.segment === segment ? "page" : undefined}
               >
                 {tab.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
