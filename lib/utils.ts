@@ -60,3 +60,41 @@ export const toDateString = (date: Date) => {
 export const random = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+export const generateInitials = (
+  communityName: string,
+  max?: number,
+): string => {
+  // Handle camel case by inserting a space before each capital letter (except the first)
+  const spacedName = communityName.replace(/([A-Z])/g, " $1").trim();
+
+  // Split the name into words considering both spaces and hyphens
+  const words = spacedName.split(/[\s-]+/);
+
+  // Take the first character of each word
+  const initials = words
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase();
+
+  return max ? initials.slice(0, max) : initials;
+};
+
+function hashString(str: string): number {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+  }
+  return Math.abs(hash);
+}
+
+export const getColorForName = (name: string): string => {
+  const colors = [
+    'bg-red-100 text-red-900', 'bg-green-100 text-green-900', 'bg-blue-100 text-blue-900', 
+    'bg-yellow-100 text-yellow-900', 'bg-purple-100 text-purple-900', 'bg-pink-100 text-pink-900', 
+    'bg-indigo-100 text-indigo-900', 'bg-orange-100 text-orange-900', 'bg-teal-100 text-teal-900'
+];
+
+const index = hashString(name) % colors.length;
+return colors[index]!;
+};
