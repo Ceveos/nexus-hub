@@ -34,7 +34,7 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpen }) => {
   const segments = useSelectedLayoutSegments();
   const path = usePathname();
-  const relativePath = path.replace(segments.join("/"), "");
+  const relativePath = path.replace(segments.length > 0 ? `/${segments.join("/")}` : "", "");
 
   return (
     <>
@@ -103,7 +103,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                           {navigationLinks.map((item) => (
                             <li key={item.name}>
                               <Link
-                                href={item.relative ? `${relativePath}${item.href}` : item.href}
+                                href={item.relative ? [relativePath, item.href].filter(Boolean).join("/") : item.href}
                                 className={clsx(
                                   (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
                                     ? "bg-gray-800 text-white"
@@ -126,7 +126,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                           {externalLinks.map((link) => (
                             <li key={link.name}>
                               <a
-                                href={link.relative ? `${relativePath}${link.href}` : link.href}
+                                href={link.relative ? [relativePath, link.href].filter(Boolean).join("/") : link.href}
                                 className={clsx(
                                   (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
                                     ? "bg-gray-800 text-white"
@@ -179,7 +179,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                   {navigationLinks.map((item) => (
                     <li key={item.name}>
                       <Link
-                        href={item.relative ? `${relativePath}${item.href}` : item.href}
+                        href={item.relative ? [relativePath, item.href].filter(Boolean).join("/") : item.href}
                         className={clsx(
                           (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
                             ? "bg-gray-800 text-white"
@@ -202,7 +202,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                   {externalLinks.map((link) => (
                     <li key={link.name}>
                       <a
-                        href={link.relative ? `${relativePath}${link.href}` : link.href}
+                        href={link.relative ? [relativePath, link.href].filter(Boolean).join("/") : link.href}
                         className={clsx(
                           (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
                             ? "bg-gray-800 text-white"

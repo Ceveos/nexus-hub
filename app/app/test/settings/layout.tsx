@@ -1,10 +1,16 @@
 import { type ReactNode } from "react";
-import SettingsTabs from "./(components)/tabs";
+import SettingsTabs, { type Tab } from "../(components)/tabs";
+
+const tabs: Tab[] = [
+  { name: "General" },
+  { name: "Profile", segment: "profile" },
+  { name: "Account", segment: "account" },
+];
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <SettingsTabs />
+      <SettingsTabs tabs={tabs} />
       {children}
     </>
   );

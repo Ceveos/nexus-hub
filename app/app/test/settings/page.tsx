@@ -1,5 +1,8 @@
-import { redirect } from "next/navigation";
 
 export default function Page() {
-  redirect("/test/settings/account");
+  return (
+    <>
+      <pre>General page</pre>
+    </>
+  );
 }
