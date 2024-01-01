@@ -23,6 +23,21 @@ export async function getSiteData(domain: string) {
   )();
 }
 
+export async function getCommunityDataById(communityId: string) {
+  return await unstable_cache(
+    async () => {
+      return prisma.community.findUnique({
+        where: { id: communityId },
+      });
+    },
+    [`${communityId}-metadata`],
+    {
+      revalidate: 900,
+      tags: [`${communityId}-metadata`],
+    },
+  )();
+}
+
 // export async function getPostsForSite(domain: string) {
 //   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
 //     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
