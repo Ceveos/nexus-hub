@@ -4,6 +4,8 @@ import CardContainer from "../(components)/cardContainer";
 import CreateCommunityCard from "../(components)/createCommunityCard";
 import CreateCommunityModal from "../(components)/createCommunity";
 import { getServerAuthSession } from "@/lib/auth";
+import SectionHeading from "../(components)/SectionHeading";
+import CreateCommunityButton from "../(components)/createCommunityButton";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {
@@ -19,6 +21,7 @@ export default async function Page() {
   });
 
   return <>
+    <SectionHeading className="mb-6" action={createButton} >Communities</SectionHeading>
     <CardContainer>
       {communities.map(community  => (
         <CommunityCard key={community.id} community={community} />
@@ -31,3 +34,9 @@ export default async function Page() {
     {/* <WebsocketTest /> */}
   </>;
 }
+
+const createButton = (
+  <CreateCommunityButton>
+    <CreateCommunityModal/>
+  </CreateCommunityButton>
+);

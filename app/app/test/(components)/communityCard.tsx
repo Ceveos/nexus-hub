@@ -18,8 +18,12 @@ export default function CommunityCard({ community }: Props) {
   const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
-    <li key={community.id} className="overflow-hidden rounded-xl border border-gray-200 hover:border-gray-400">
-      <Link href={`community/${community.id}`}>
+    <li key={community.id} className="overflow-hidden rounded-xl border border-gray-200 hover:border-gray-400" tabIndex={0}>
+      <Link
+        className="absolute inset-0 z-10"
+        href={`community/${community.id}`}
+      />
+      <div className="relative">
         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-3">
           <Avatar
             initials={generateInitials(community.name, 3)}
@@ -60,7 +64,7 @@ export default function CommunityCard({ community }: Props) {
                 href={communityLink}
                 target="_blank"
                 rel="noreferrer"
-                className="flex flex-shrink-1 truncate rounded-md bg-stone-100 px-2 py-1 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-200">
+                className="z-20 flex flex-shrink-1 truncate rounded-md bg-stone-100 px-2 py-1 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-200">
                 <span
                   className="flex-shrink-1 truncate break-all"
                 >
@@ -70,9 +74,8 @@ export default function CommunityCard({ community }: Props) {
               </a>
             </dd>
           </div>
-
         </dl>
-      </Link>
+      </div>
     </li>
   );
 }
