@@ -82,11 +82,6 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_AUTH_ID as string,
       clientSecret: process.env.GITHUB_AUTH_SECRET as string,
-      authorization: {
-        params: {
-          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/github`,
-        }
-      },
       profile(profile) {
         return {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -101,11 +96,11 @@ export const authOptions: NextAuthOptions = {
       }
     }),
   ],
-  // pages: {
-  //   signIn: `/login`,
-  //   verifyRequest: `/login`,
-  //   error: "/login", // Error code passed in query string as ?error=
-  // },
+  pages: {
+    signIn: `/login`,
+    verifyRequest: `/login`,
+    error: "/login", // Error code passed in query string as ?error=
+  },
   cookies: {
     sessionToken: {
       name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,

@@ -5,7 +5,7 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import GithubLoginButton from "./github-login-button";
+// import GithubLoginButton from "./github-login-button";
 import DiscordLoginButton from "./discord-login-button";
 
 export default function LoginButtons() {
@@ -17,12 +17,24 @@ export default function LoginButtons() {
 
   useEffect(() => {
     const errorMessage = Array.isArray(error) ? error.pop() : error;
+    
+    switch(errorMessage) {
+      case "OAuthAccountNotLinked":
+        toast.error("This account is already linked to another user.");
+        break;
+      case "OAuthCallbackError":
+        toast.error("An error occurred while logging in.");
+        break;
+      case "OAuthCreateAccountError":
+        toast.error("An error occurred while creating your account.");
+        break;
+    }
     errorMessage && toast.error(errorMessage);
   }, [error]);
 
   return (
     <>
-      <GithubLoginButton disabled={disabled} setDisabled={setDisabled} />
+      {/* <GithubLoginButton disabled={disabled} setDisabled={setDisabled} /> */}
       <DiscordLoginButton disabled={disabled} setDisabled={setDisabled} />
     </>
   );
