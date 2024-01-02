@@ -12,9 +12,11 @@ import clsx from "clsx";
 const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
   return (
     <>
-      <div className="h-6 w-6 shrink-0" aria-hidden={true}>
-        {item.icon}
-      </div>
+      {item.icon && (
+        <div className="h-6 w-6 shrink-0" aria-hidden={true}>
+          {item.icon}
+        </div>
+      )}
       {item.initial && (
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
           {item.initial}
@@ -111,16 +113,17 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
-                  <div className="flex h-16 shrink-0 items-center">
-                    <Image
-                      priority
-                      src={LogoIcon}
-                      className="h-8 w-auto"
-                      alt="Nexus Hub"
-                    />
-                  </div>
+                  {header || (
+                    <div className="flex h-16 shrink-0 items-center">
+                      <Image
+                        priority
+                        src={LogoIcon}
+                        className="h-10 w-auto"
+                        alt="Nexus Hub"
+                      />
+                    </div>
+                  )}
                   <nav className="flex flex-1 flex-col">
-                    {header}
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
@@ -188,16 +191,18 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
-            <Image
-              priority
-              src={LogoIcon}
-              className="h-8 w-auto"
-              alt="Nexus Hub"
-            />
-          </div>
+          {header || (
+            <div className="flex h-16 shrink-0 items-center">
+              <Image
+                priority
+                src={LogoIcon}
+                className="h-10 w-auto"
+                alt="Nexus Hub"
+              />
+            </div>
+          )}
           <nav className="flex flex-1 flex-col">
-            {header}
+
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">

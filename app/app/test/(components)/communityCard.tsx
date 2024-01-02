@@ -18,7 +18,7 @@ export default function CommunityCard({ community }: Props) {
   const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
-    <li key={community.id} className="overflow-hidden rounded-xl border border-gray-200 hover:border-gray-400" tabIndex={0}>
+    <li key={community.id} className="overflow-hidden relative rounded-xl border border-gray-200 hover:border-gray-400" tabIndex={0}>
       <Link
         className="absolute inset-0 z-10"
         href={`community/${community.id}`}
@@ -26,7 +26,7 @@ export default function CommunityCard({ community }: Props) {
       <div className="relative">
         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-3">
           <Avatar
-            initials={generateInitials(community.name, 3)}
+            initials={generateInitials(community.name, 2)}
             className={cn(community.avatarClass ?? getColorForName(community.name), "h-8 w-8 flex-none rounded-lg object-cover ring-1 ring-gray-900/10")}
           />
           <div className="text-sm font-medium leading-6 text-gray-900">{community.name}</div>

@@ -1,15 +1,22 @@
+import { Avatar } from "@/components/catalyst/avatar";
+import { cn, generateInitials } from "@/lib/utils";
+
 interface Props {
   id: string;
   name: string;
+  avatarClass?: string;
 };
 
-const communitySidebarHeader = ({ id, name }: Props) => {
+const communitySidebarHeader = ({ name, avatarClass }: Props) => {
 
   return (
-    <>
-      {id}
-      {name}
-    </>
+    <div className="flex h-16 shrink-0 items-center w-full">
+      <Avatar
+        initials={generateInitials(name, 2)}
+        className={cn("h-10 w-10 shrink-0", avatarClass)}
+      />
+      <span className="text-xl shrink font-semibold ml-4 text-gray-100 line-clamp-1">{name}</span>
+    </div>
   )
 };
 
