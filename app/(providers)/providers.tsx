@@ -7,7 +7,7 @@ import { ReduxProvider } from "./reduxProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
+    <SessionProvider baseUrl={process.env.NEXTAUTH_URL}>
       <ReduxProvider>
         <Toaster className="dark:hidden" />
         <Toaster theme="dark" className="hidden dark:block" />
