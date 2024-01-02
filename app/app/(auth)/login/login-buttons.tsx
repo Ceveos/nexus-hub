@@ -2,35 +2,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 // import GithubLoginButton from "./github-login-button";
 import DiscordLoginButton from "./discord-login-button";
 
 export default function LoginButtons() {
   const [disabled, setDisabled] = useState(false);
-
-  // Get error message added by next/auth in URL.
-  const searchParams = useSearchParams();
-  const error = searchParams?.get("error");
-
-  useEffect(() => {
-    const errorMessage = Array.isArray(error) ? error.pop() : error;
-    
-    switch(errorMessage) {
-      case "OAuthAccountNotLinked":
-        toast.error("This account is already linked to another user.");
-        break;
-      case "OAuthCallbackError":
-        toast.error("An error occurred while logging in.");
-        break;
-      case "OAuthCreateAccountError":
-        toast.error("An error occurred while creating your account.");
-        break;
-    }
-    errorMessage && toast.error(errorMessage);
-  }, [error]);
 
   return (
     <>

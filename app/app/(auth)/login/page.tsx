@@ -1,12 +1,45 @@
+"use client";
+
 import Image from "next/image";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import LoginButtons from "./login-buttons";
 import LogoIcon from "@/public/logo.svg";
-
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { XCircleIcon } from "@heroicons/react/20/solid";
 
 export default function LoginPage() {
+  // Get error message added by next/auth in URL.
+  const searchParams = useSearchParams();
+  const error = searchParams?.get("error");
+  const [errorMessage, setErrorMessage] = useState<string>();
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const errorMessage = Array.isArray(error) ? error.pop() : error;
+
+    switch (errorMessage) {
+      case "OAuthAccountNotLinked":
+        setErrorMessage("Another account already exists with this email. Please use the original login method for that account.");
+        break;
+      case "OAuthCallbackError":
+        setErrorMessage("An error occurred while logging in.");
+        break;
+      case "OAuthCreateAccountError":
+        setErrorMessage("An error occurred while creating your account.");
+        break;
+    }
+
+    typeof errorMessage === 'string' && toast.error(errorMessage);
+  }, [error]);
+
   return (
-    <div className="mx-5 border border-stone-200 py-10 dark:border-stone-700 sm:mx-auto sm:w-full sm:max-w-md sm:rounded-lg sm:shadow-md">
+    <>
+    <div className={
+      cn(error ? "border border-red-500 dark:border-red-700" : "border-stone-200 dark:border-stone-700",
+        "mx-5 border py-10  sm:mx-auto sm:w-full sm:max-w-md sm:rounded-lg sm:shadow-md"
+      )}>
       <Image
         alt="Nexus Hub"
         width={100}
@@ -31,5 +64,21 @@ export default function LoginPage() {
         </Suspense>
       </div>
     </div>
+    
+    {errorMessage && (
+        <div className="mx-5 border sm:mx-auto sm:w-full sm:max-w-md sm:rounded-lg sm:shadow-md mt-4 border-red-400 dark:border-red-700 bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">
+                {errorMessage}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

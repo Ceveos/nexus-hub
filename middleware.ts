@@ -39,7 +39,8 @@ export default async function middleware(req: NextRequest) {
   if (hostname == process.env.NEXT_PUBLIC_ROOT_DOMAIN && path !== "/") {
     const session = await getToken({ req });
     if (!session && url.pathname !== "/login") {
-      return NextResponse.redirect(new URL(`/login?from=${encodeURIComponent(path)}`, req.url));
+      console.log("URL Path name: ", url.pathname);
+      return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(path)}`, req.url));
     } else if (session && path.startsWith("/login")) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }

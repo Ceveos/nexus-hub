@@ -5,8 +5,7 @@
 import LoadingDots from "@/components/icons/loading-dots";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
-import { toast } from "sonner";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 type Props = {
   icon: JSX.Element;
@@ -22,14 +21,7 @@ export default function LoginButton({icon, providerId, providerName, disabled, s
 
   // Get error message added by next/auth in URL.
   const searchParams = useSearchParams();
-  const error = searchParams?.get("error");
-  const callbackUrl = searchParams?.get("from") || undefined;
-
-
-  useEffect(() => {
-    const errorMessage = Array.isArray(error) ? error.pop() : error;
-    errorMessage && toast.error(errorMessage);
-  }, [error]);
+  const callbackUrl = searchParams?.get("callbackUrl") || undefined;
 
   return (
     <button

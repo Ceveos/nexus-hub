@@ -15,7 +15,8 @@ type Props = {
 };
 
 export default function CommunityCard({ community }: Props) {
-  const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+  const https = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;;
 
   return (
     <li key={community.id} className="overflow-hidden relative rounded-xl border border-gray-200 hover:border-gray-400" tabIndex={0}>
@@ -61,7 +62,7 @@ export default function CommunityCard({ community }: Props) {
             <dt className="text-gray-500">URL</dt>
             <dd className="flex flex-shrink-1 truncate items-start gap-x-2">
               <a
-                href={communityLink}
+                href={`${https}://${communityLink}`}
                 target="_blank"
                 rel="noreferrer"
                 className="z-20 flex flex-shrink-1 truncate rounded-md bg-stone-100 px-2 py-1 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-200">
