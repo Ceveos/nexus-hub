@@ -1,7 +1,4 @@
 import { type ReactNode } from "react";
-import Dashboard from "./(components)/dashboard";
-import NavbarAvatar from "./(components)/navbar.avatar.component";
-import DashboardContent from "./(components)/dashboardContent";
 import { Providers } from "@/app/(providers)/providers";
 import { type Metadata } from "next";
 
@@ -22,18 +19,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://nexushub.app/")
 };
 
-const DashboardLayout = ({ children }: { children: ReactNode }) => {
+const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="h-full bg-white">
       <Providers>
-        <Dashboard
-          navbarAvatar={<NavbarAvatar />}
-        >
-          <DashboardContent>{children}</DashboardContent>
-        </Dashboard>
+        {children}
       </Providers>
     </div>
   );
 };
 
-export default DashboardLayout;
+export default AppLayout;

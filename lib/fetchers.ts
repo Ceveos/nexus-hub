@@ -26,6 +26,7 @@ export async function getSiteData(domain: string) {
 export async function getCommunityDataById(communityId: string) {
   return await unstable_cache(
     async () => {
+      console.log("getCommunityDataById");
       return prisma.community.findUnique({
         where: { id: communityId },
       });

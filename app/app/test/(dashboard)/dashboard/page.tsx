@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
-import CommunityCard from "../(components)/communityCard";
-import CardContainer from "../(components)/cardContainer";
+import CommunityCard from "../../(components)/communityCard";
+import CardContainer from "../../(components)/cardContainer";
 import { getServerAuthSession } from "@/lib/auth";
-import SectionHeading from "../(components)/sectionHeading";
+import SectionHeading from "../../(components)/sectionHeading";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {

@@ -1,11 +1,11 @@
 import prisma from "@/lib/prisma";
-import CommunityCard from "../(components)/communityCard";
-import CardContainer from "../(components)/cardContainer";
-import CreateCommunityCard from "../(components)/createCommunityCard";
-import CreateCommunityModal from "../(components)/createCommunity";
+import CommunityCard from "../../(components)/communityCard";
+import CardContainer from "../../(components)/cardContainer";
+import CreateCommunityCard from "../../(components)/createCommunityCard";
+import CreateCommunityModal from "../../(components)/createCommunity";
 import { getServerAuthSession } from "@/lib/auth";
-import CreateCommunityButton from "../(components)/createCommunityButton";
-import SectionHeading from "../(components)/sectionHeading";
+import CreateCommunityButton from "../../(components)/createCommunityButton";
+import SectionHeading from "../../(components)/sectionHeading";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {

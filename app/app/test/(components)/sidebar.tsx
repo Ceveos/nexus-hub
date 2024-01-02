@@ -12,9 +12,9 @@ import clsx from "clsx";
 const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
   return (
     <>
-      {item.icon && (
-        <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
-      )}
+      <div className="h-6 w-6 shrink-0" aria-hidden={true}>
+        {item.icon}
+      </div>
       {item.initial && (
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
           {item.initial}
@@ -25,16 +25,39 @@ const SidebarIcon: React.FC<{ item: NavigationLink }> = ({ item }) => {
 };
 
 interface Props {
+  header?: React.ReactNode;
   navigationLinks: NavigationLink[];
   externalLinks: NavigationLink[];
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpen }) => {
+const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open, setOpen }) => {
   const segments = useSelectedLayoutSegments();
   const path = usePathname();
   const relativePath = path.replace(segments.length > 0 ? `/${segments.join("/")}` : "", "");
+
+  const isActive = (item: NavigationLink) => {
+
+    // Undefined segments cannot be marked active.
+    if (item.segment === undefined) {
+      return false;
+    }
+
+    // Null segments are active only when we're in the root page of the layout.
+    if (item.segment === null) {
+      return segments.length === 0;
+    }
+
+    const segmentIndex = item.segmentIndex ?? 0;
+
+    // If the segment index is out of bounds, the link is not active.
+    if (segments.length <= segmentIndex) {
+      return false;
+    }
+
+    return segments[segmentIndex] === item.segment;
+  }
 
   return (
     <>
@@ -97,6 +120,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                     />
                   </div>
                   <nav className="flex flex-1 flex-col">
+                    {header}
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
@@ -105,7 +129,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                               <Link
                                 href={item.relative ? [relativePath, item.href].filter(Boolean).join("/") : item.href}
                                 className={clsx(
-                                  (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
+                                  isActive(item)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -128,7 +152,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                               <a
                                 href={link.relative ? [relativePath, link.href].filter(Boolean).join("/") : link.href}
                                 className={clsx(
-                                  (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
+                                  isActive(link)
                                     ? "bg-gray-800 text-white"
                                     : "text-gray-400 hover:bg-gray-800 hover:text-white",
                                   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -173,6 +197,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
             />
           </div>
           <nav className="flex flex-1 flex-col">
+            {header}
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
@@ -181,7 +206,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                       <Link
                         href={item.relative ? [relativePath, item.href].filter(Boolean).join("/") : item.href}
                         className={clsx(
-                          (item.isActive && item.isActive(segments)) || (item.segment && segments[item.segmentIndex ?? 0] === item.segment)
+                          isActive(item)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
@@ -204,7 +229,7 @@ const Sidebar: React.FC<Props> = ({ navigationLinks, externalLinks, open, setOpe
                       <a
                         href={link.relative ? [relativePath, link.href].filter(Boolean).join("/") : link.href}
                         className={clsx(
-                          (link.isActive && link.isActive(segments)) || (link.segment && segments[link.segmentIndex ?? 0] === link.segment)
+                          isActive(link)
                             ? "bg-gray-800 text-white"
                             : "text-gray-400 hover:bg-gray-800 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"

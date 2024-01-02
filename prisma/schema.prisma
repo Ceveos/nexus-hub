@@ -26,9 +26,11 @@ enum Role {
 model Community {
   id            String             @id @default(cuid())
   name          String
+  description   String?            @default("Powered by Nexus Hub") @db.Text
   logo          String?            @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text
   subdomain     String?            @unique
   customDomain  String?            @unique
+  avatarClass   String?            @default("bg-blue-100 text-blue-900")
   owner         User               @relation("CommunityToOwner", fields: [ownerId], references: [id])
   ownerId       String // Foreign key
   members       UserCommunityMap[] @relation("UserCommunityMapToCommunity")

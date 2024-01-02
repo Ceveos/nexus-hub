@@ -27,7 +27,7 @@ export default function CommunityCard({ community }: Props) {
         <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-3">
           <Avatar
             initials={generateInitials(community.name, 3)}
-            className={cn(getColorForName(community.name), "h-8 w-8 flex-none rounded-lg object-cover ring-1 ring-gray-900/10")}
+            className={cn(community.avatarClass ?? getColorForName(community.name), "h-8 w-8 flex-none rounded-lg object-cover ring-1 ring-gray-900/10")}
           />
           <div className="text-sm font-medium leading-6 text-gray-900">{community.name}</div>
         </div>

@@ -16,6 +16,7 @@ export default function CreateCommunityModal() {
 
   const [data, setData] = useState({
     name: "",
+    description: "",
     subdomain: "",
   });
 
@@ -33,7 +34,7 @@ export default function CreateCommunityModal() {
     <form
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       action={(data: FormData) =>
-        createCommunity(data).then((res: {id?: string, error?: string}) => {
+        createCommunity(data).then((res: { id?: string, error?: string }) => {
           if (res.error) {
             toast.error(res.error);
           } else {
@@ -97,7 +98,25 @@ export default function CreateCommunityModal() {
             </div>
           </div>
         </div>
+      <div className="flex flex-col space-y-2">
+        <label
+          htmlFor="description"
+          className="text-sm font-medium text-stone-500"
+        >
+          Description
+        </label>
+        <textarea
+          name="description"
+          placeholder="My awesome community powered by Nexus Hub"
+          value={data.description}
+          onChange={(e) => setData({ ...data, description: e.target.value })}
+          maxLength={140}
+          rows={3}
+          className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+        />
       </div>
+      </div>
+
       <div className="flex items-center justify-end rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 md:px-10">
         <CreateCommunityFormButton />
       </div>

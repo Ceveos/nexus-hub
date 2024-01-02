@@ -4,43 +4,38 @@ import { type ReactNode, useState } from "react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
-import { dashboardLinks, externalLinks } from "../(data)/navLinks";
-import { communityLinks, userNavigationLinks } from "../(data)/navLinks.client";
-import { useParams, useSelectedLayoutSegment } from "next/navigation";
+import { type DropdownItem, type NavigationLink } from "@/types";
 
+export interface SidebarProps {
+  header?: React.ReactNode;
+  userNavigationLinks: DropdownItem[];
+  navigationLinks: NavigationLink[];
+  externalLinks: NavigationLink[];
+}
 
 type Props = {
   children: ReactNode;
+  sidebarProps: SidebarProps;
   navbarAvatar: ReactNode;
 };
 
-export default function Dashboard({ children, navbarAvatar, }: Props) {
+export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const segment = useSelectedLayoutSegment();
-  const { id } = useParams() as { id: string };
 
   return (
     <>
       <div>
-        {segment === "community" && id ? (
-          <Sidebar
-            navigationLinks={communityLinks(id)}
-            externalLinks={externalLinks}
-            open={sidebarOpen}
-            setOpen={setSidebarOpen}
-          />
-        ) : (
-          <Sidebar
-            navigationLinks={dashboardLinks}
-            externalLinks={externalLinks}
-            open={sidebarOpen}
-            setOpen={setSidebarOpen}
-          />
-        )}
+        <Sidebar
+          header={sidebarProps.header}
+          navigationLinks={sidebarProps.navigationLinks}
+          externalLinks={sidebarProps.externalLinks}
+          open={sidebarOpen}
+          setOpen={setSidebarOpen}
+        />
 
         <div className="lg:pl-72">
           <Navbar
-            userNavigation={userNavigationLinks}
+            userNavigation={sidebarProps.userNavigationLinks}
             setSidebarOpen={setSidebarOpen}
             navbarAvatar={navbarAvatar}
           />

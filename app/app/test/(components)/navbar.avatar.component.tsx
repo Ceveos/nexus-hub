@@ -4,6 +4,7 @@ import Image from "next/image";
 
 const NavbarAvatar: React.FC = async () => {
   const session = await getServerAuthSession();
+
   return (
     <>
       <Image

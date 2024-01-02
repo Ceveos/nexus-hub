@@ -12,6 +12,7 @@ import {
   validDomainRegex,
 } from "@/lib/domains";
 import { type Site } from "@prisma/client";
+import { getColorForName } from "./utils";
 
 export const createSite = async (formData: FormData) => {
   const session = await getServerAuthSession();
@@ -66,6 +67,8 @@ export const createCommunity = async (formData: FormData) => {
   }
   const name = formData.get("name") as string;
   const subdomain = formData.get("subdomain") as string;
+  const description = formData.get("description") as string;
+  const avatarClass = getColorForName(name);
 
   if (subdomain.length < 4) {
     return {
@@ -78,6 +81,8 @@ export const createCommunity = async (formData: FormData) => {
       data: {
         name,
         subdomain,
+        description,
+        avatarClass,
         owner: {
           connect: {
             id: session.user.id,
