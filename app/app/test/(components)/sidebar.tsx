@@ -131,6 +131,7 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
                             <li key={item.name}>
                               <Link
                                 href={item.relative ? [relativePath, item.href].filter(Boolean).join("/") : item.href}
+                                onClick={() => setOpen(false)}
                                 className={clsx(
                                   isActive(item)
                                     ? "bg-gray-800 text-white"
@@ -154,6 +155,7 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
                             <li key={link.name}>
                               <a
                                 href={link.relative ? [relativePath, link.href].filter(Boolean).join("/") : link.href}
+                                onClick={() => setOpen(false)}
                                 className={clsx(
                                   isActive(link)
                                     ? "bg-gray-800 text-white"
