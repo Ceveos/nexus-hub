@@ -13,7 +13,7 @@ interface Props {
 const Breadcrumb: React.FC<Props> = ({ pages }) => {
   return (
     <nav className="flex pb-6" aria-label="Breadcrumb">
-      <ol role="list" className="flex items-center space-x-4">
+      <ol role="list" className="flex items-center space-x-1 md:space-x-2">
         <li>
           <div>
             <Link href="/" className="text-gray-400 hover:text-gray-500">
@@ -35,7 +35,7 @@ const Breadcrumb: React.FC<Props> = ({ pages }) => {
               </svg>
               <Link
                 href={page.href}
-                className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700 capitalize"
+                className="ml-1 md:ml-2 text-xs md:text-sm font-medium text-gray-500 hover:text-gray-700 capitalize"
                 aria-current={pages.length === i + 1 ? 'page' : undefined}
               >
                 {page.name}
