@@ -36,7 +36,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    icons: ["https://www.nexushub.app/favicon.ico"],
+    icons: ["https://nexushub.app/favicon.ico"],
     openGraph: {
       title,
       description,

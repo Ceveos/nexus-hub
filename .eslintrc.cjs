@@ -13,7 +13,8 @@ const config = {
         project: path.join(__dirname, "tsconfig.json"),
       },
       rules: {
-        "@typescript-eslint/no-unnecessary-type-assertion": "off"
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/no-misused-promises": "off",
       }
     },
   ],

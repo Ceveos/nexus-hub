@@ -1,8 +1,10 @@
+import Form from "../../(components)/form/form";
+import ProfileSection from "./(components)/profile/ProfileSection";
 
 export default function Page() {
   return (
-    <>
-      <pre>General page</pre>
-    </>
+    <Form>
+      <ProfileSection />
+    </Form>
   );
 }

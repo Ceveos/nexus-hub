@@ -1,11 +1,14 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type NextApiRequest, type GetServerSidePropsContext, type NextApiResponse } from "next";
+import {
+  type NextApiRequest,
+  type GetServerSidePropsContext,
+  type NextApiResponse,
+} from "next";
 import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
   type DefaultUser,
-  type User,
 } from "next-auth";
 import { type DefaultJWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
@@ -39,9 +42,8 @@ declare module "next-auth" {
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
+  interface JWT extends Omit<DefaultJWT, "picture"> {
     id: string;
-    user: User;
   }
 }
 
@@ -59,10 +61,25 @@ export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
-        token.user = user;
+        token.email = user.email;
+        token.picture = user.image;
+      }
+      if (trigger === "update") {
+        console.log("Updating!");
+        const latestUser = await prisma.user.findUnique({
+          where: {
+            id: token.id,
+          },
+        });
+        if (latestUser) { 
+          console.log("latest user update!", latestUser);
+          token.name = latestUser.name;
+          token.email = latestUser.email;
+          token.picture = latestUser.image;
+        }
       }
       return token;
     },
@@ -70,7 +87,10 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: {
         ...session.user,
-        id: token.sub,
+        id: token.id,
+        email: token.email,
+        image: token.picture,
+        name: token.name,
       },
     }),
   },
@@ -87,13 +107,13 @@ export const authOptions: NextAuthOptions = {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           id: profile.id as string,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          name: profile.name as string || profile.login as string,
+          name: (profile.name as string) || (profile.login as string),
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           email: profile.email as string,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           image: profile.avatar_url as string,
         };
-      }
+      },
     }),
   ],
   pages: {
@@ -124,8 +144,13 @@ export const authOptions: NextAuthOptions = {
  * @see https://next-auth.js.org/configuration/nextjs
  */
 // Use it in server contexts
-export function getServerAuthSession(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
-  return getServerSession(...args, authOptions)
+export function getServerAuthSession(
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authOptions);
 }
 
 export type WithSiteAuthProps = (
@@ -153,7 +178,7 @@ export function withSiteAuth(action: WithSiteAuthProps) {
         id: siteId,
       },
     });
-    
+
     if (!site || site.userId !== session.user.id) {
       return {
         error: "Not authorized",

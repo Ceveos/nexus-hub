@@ -7,7 +7,7 @@ const title =
   
 export const metadata: Metadata = {
   title,
-  icons: ["https://www.nexushub.app/favicon.ico"],
+  icons: ["https://nexushub.app/favicon.ico"],
   openGraph: {
     title,
   },

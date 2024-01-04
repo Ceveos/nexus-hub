@@ -13,6 +13,7 @@ import {
 } from "@/lib/domains";
 import { type Site } from "@prisma/client";
 import { getColorForName } from "./utils";
+import { type UserFormData } from "./schemas/userSchema";
 
 export const createSite = async (formData: FormData) => {
   const session = await getServerAuthSession();
@@ -316,4 +317,20 @@ export const editUser = async (
       };
     }
   }
+};
+
+export const updateUser = async (
+  formData: UserFormData
+) => {
+  const session = await getServerAuthSession();
+  if (!session?.user.id) {
+    throw new Error("Not authenticated");
+  }
+
+  await prisma.user.update({
+    where: {
+      id: session.user.id,
+    },
+    data: formData,
+  });
 };
