@@ -8,7 +8,9 @@ export const env = createEnv({
    */
   server: {
     POSTGRES_PRISMA_URL: z.string().url(),
+    POSTGRES_URL_NON_POOLING: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    SUPABASE_JWT_SECRET: z.string().min(1),
     NEXTAUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string().min(1)
@@ -21,8 +23,13 @@ export const env = createEnv({
       process.env.VERCEL ? z.string().min(1) : z.string().url(),
     ),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_CLIENT_ID: z.string().min(1),
+    DISCORD_CLIENT_SECRET: z.string().min(1),
+    GITHUB_AUTH_ID: z.string().min(1),
+    GITHUB_AUTH_SECRET: z.string().min(1),
+    AUTH_BEARER_TOKEN: z.string().min(1),
+    PROJECT_ID_VERCEL: z.string().min(1),
+    TEAM_ID_VERCEL: z.string().optional()
   },
 
   /**
@@ -32,6 +39,10 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SUPABASE_KEY: z.string().min(1),
+    NEXT_PUBLIC_ROOT_DOMAIN: z.string().min(1),
+    NEXT_PUBLIC_WEBSOCKET_URL: z.string().min(1),
   },
 
   /**
@@ -41,10 +52,21 @@ export const env = createEnv({
   runtimeEnv: {
     POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
     NODE_ENV: process.env.NODE_ENV,
+    SUPABASE_JWT_SECRET: process.env.SUPABASE_JWT_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+    NEXT_PUBLIC_ROOT_DOMAIN: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+    PROJECT_ID_VERCEL: process.env.PROJECT_ID_VERCEL,
+    TEAM_ID_VERCEL: process.env.TEAM_ID_VERCEL,
+    AUTH_BEARER_TOKEN: process.env.AUTH_BEARER_TOKEN,
+    POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
+    GITHUB_AUTH_ID: process.env.GITHUB_AUTH_ID,
+    GITHUB_AUTH_SECRET: process.env.GITHUB_AUTH_SECRET,
+    NEXT_PUBLIC_WEBSOCKET_URL: process.env.NEXT_PUBLIC_WEBSOCKET_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

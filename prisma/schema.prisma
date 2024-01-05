@@ -24,7 +24,7 @@ enum Role {
 }
 
 model Community {
-  id            String             @id @default(cuid())
+  id            String             @id @default(uuid())
   name          String
   description   String?            @default("Powered by Nexus Hub") @db.Text
   logo          String?            @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text
@@ -51,7 +51,7 @@ model UserCommunityMap {
 }
 
 model Server {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String
   game        Game
   community   Community    @relation(fields: [communityId], references: [id])
@@ -85,7 +85,7 @@ model CommunityData {
 
 // Necessary for Next auth
 model Account {
-  id                       String  @id @default(cuid())
+  id                       String  @id @default(uuid())
   userId                   String
   type                     String
   provider                 String
@@ -105,7 +105,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(uuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -115,7 +115,7 @@ model Session {
 }
 
 model User {
-  id                String             @id @default(cuid())
+  id                String             @id @default(uuid())
   name              String?
   email             String?            @unique
   emailVerified     DateTime?
@@ -157,7 +157,7 @@ model WebsocketApps {
 }
 
 model Site {
-  id            String   @id @default(cuid())
+  id            String   @id @default(uuid())
   name          String?
   description   String?  @db.Text
   logo          String?  @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text

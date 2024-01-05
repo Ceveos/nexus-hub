@@ -3,8 +3,8 @@ import SettingsTabs, { type Tab } from "../../(components)/tabs";
 
 const tabs: Tab[] = [
   { name: "General" },
-  { name: "Profile", segment: "profile" },
-  { name: "Account", segment: "account" },
+  // { name: "Profile", segment: "profile" },
+  // { name: "Account", segment: "account" },
 ];
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {

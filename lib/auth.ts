@@ -16,6 +16,7 @@ import GithubProvider from "next-auth/providers/github";
 import { env } from "@/env.mjs";
 import prisma from "@/lib/prisma";
 import { type Site } from "@prisma/client";
+import jwt from "jsonwebtoken"
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -32,6 +33,7 @@ declare module "next-auth" {
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
+    supabaseAccessToken: string;
   }
 
   interface User extends DefaultUser {
@@ -63,6 +65,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger }) {
       if (user) {
+        console.log("Signing in!");
         token.id = user.id;
         token.email = user.email;
         token.picture = user.image;
@@ -74,7 +77,7 @@ export const authOptions: NextAuthOptions = {
             id: token.id,
           },
         });
-        if (latestUser) { 
+        if (latestUser) {
           console.log("latest user update!", latestUser);
           token.name = latestUser.name;
           token.email = latestUser.email;
@@ -83,16 +86,31 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.id,
+    session: ({ session, token }) => {
+      const signingSecret = env.SUPABASE_JWT_SECRET;
+      if (!signingSecret) {
+        throw new Error("No signing secret");
+      }
+      const payload = {
+        aud: "authenticated",
+        exp: Math.floor(new Date(session.expires).getTime() / 1000),
+        sub: token.id,
         email: token.email,
-        image: token.picture,
-        name: token.name,
-      },
-    }),
+        role: "authenticated",
+      };
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          email: token.email,
+          image: token.picture,
+          name: token.name,
+        },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        supabaseAccessToken: jwt.sign(payload, signingSecret)
+      };
+    },
   },
   providers: [
     DiscordProvider({

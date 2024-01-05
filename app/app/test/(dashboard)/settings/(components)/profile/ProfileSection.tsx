@@ -13,6 +13,7 @@ export default async function ProfileSection() {
       defaultValues={{
         name: session.user.name ?? ""
       }}
+      avatar={session.user.image ?? ""}
     />
   );
 }

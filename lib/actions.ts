@@ -11,9 +11,8 @@ import {
   // removeDomainFromVercelTeam,
   validDomainRegex,
 } from "@/lib/domains";
-import { type Site } from "@prisma/client";
+import { type User, type Site } from "@prisma/client";
 import { getColorForName } from "./utils";
-import { type UserFormData } from "./schemas/userSchema";
 
 export const createSite = async (formData: FormData) => {
   const session = await getServerAuthSession();
@@ -320,7 +319,7 @@ export const editUser = async (
 };
 
 export const updateUser = async (
-  formData: UserFormData
+  data: Partial<User>
 ) => {
   const session = await getServerAuthSession();
   if (!session?.user.id) {
@@ -331,6 +330,6 @@ export const updateUser = async (
     where: {
       id: session.user.id,
     },
-    data: formData,
+    data,
   });
 };

@@ -1,10 +1,10 @@
 import { type ReactNode } from "react";
 import Dashboard, { type SidebarProps } from "../(components)/dashboard";
 import NavbarAvatar from "../(components)/navbar.avatar.component";
-import DashboardContent from "../(components)/dashboardContent";
 import { type Metadata } from "next";
 import { dashboardLinks, externalLinks } from "../(data)/navLinks";
 import { userNavigationLinks } from "../(data)/navLinks.client";
+import DashboardContent from "../(components)/dashboardContent";
 
 const title =
   "Nexus Hub - Dashboard";
@@ -36,7 +36,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         navbarAvatar={<NavbarAvatar />}
         sidebarProps={sidebarProps}
       >
-        <DashboardContent>{children}</DashboardContent>
+        <DashboardContent>
+          {children}
+        </DashboardContent>
       </Dashboard>
     </div>
   );

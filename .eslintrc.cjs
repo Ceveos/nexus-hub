@@ -15,6 +15,7 @@ const config = {
       rules: {
         "@typescript-eslint/no-unnecessary-type-assertion": "off",
         "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-explicit-any": "off",
       }
     },
   ],

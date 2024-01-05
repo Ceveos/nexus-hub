@@ -13,15 +13,15 @@ interface Props {
   tabs: Tab[]
 }
 
-const SettingsTabs: React.FC<Props> = ({tabs}) => {
+const SettingsTabs: React.FC<Props> = ({ tabs }) => {
   const segment = useSelectedLayoutSegment();
   const path = usePathname();
   const relativePath = path.replace(segment ? `/${segment}` : "", "");
   const router = useRouter();
 
   return (
-    <div className="pb-5">
-      <div className="sm:hidden">
+    <div>
+      <div className="sm:hidden pt-2 px-2">
         <label htmlFor="tabs" className="sr-only">
           Select a tab
         </label>
@@ -39,6 +39,26 @@ const SettingsTabs: React.FC<Props> = ({tabs}) => {
         </select>
       </div>
       <div className="hidden sm:block">
+
+        {/* <header className="border-b border-gray-200">
+          <nav className="flex overflow-x-auto py-4">
+            <ul
+              role="list"
+              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-500 sm:px-6 lg:px-8"
+            >
+              {tabs.map((tab) => (
+                <li key={tab.name}>
+                  <Link href={[relativePath, tab.segment].filter(Boolean).join("/")} className={(tab.segment ?? null) === segment ? 'text-indigo-600' : ''}>
+                    {tab.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header> */}
+
+
+
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8 " aria-label="Tabs">
             {tabs.map((tab) => (
