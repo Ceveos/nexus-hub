@@ -1,55 +1,32 @@
-import { Suspense } from "react";
-import Sites from "@/components/sites";
-import PlaceholderCard from "@/components/placeholder-card";
-import OverviewSitesCTA from "@/components/overview-sites-cta";
+import prisma from "@/lib/prisma";
+import CommunityCard from "../../(components)/communityCard";
+import CardContainer from "../../(components)/cardContainer";
+import { getServerAuthSession } from "@/lib/auth";
+import SectionHeading from "../../(components)/sectionHeading";
+// import WebsocketTest from "../(components)/websocketTest";
 
-export default function Overview() {
-  return (
-    <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
-      <div className="flex flex-col space-y-6">
-        <h1 className="font-cal text-3xl font-bold dark:text-white">
-          Overview
-        </h1>
-        {/* <OverviewStats /> */}
-      </div>
+export default async function Page() {
+  const session = await getServerAuthSession();
+  const communities = await prisma.community.findMany({
+    where: {
+      members: {
+        some: {
+          userId: session?.user.id
+        }
+      }
+    }
+  });
 
-      <div className="flex flex-col space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="font-cal text-3xl font-bold dark:text-white">
-            Top Sites
-          </h1>
-          <Suspense fallback={null}>
-            <OverviewSitesCTA />
-          </Suspense>
-        </div>
-        <Suspense
-          fallback={
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <PlaceholderCard key={i} />
-              ))}
-            </div>
-          }
-        >
-          <Sites limit={4} />
-        </Suspense>
-      </div>
-
-      <div className="flex flex-col space-y-6">
-        <h1 className="font-cal text-3xl font-bold dark:text-white">
-          Recent Posts
-        </h1>
-        <Suspense
-          fallback={
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <PlaceholderCard key={i} />
-              ))}
-            </div>
-          }
-        >
-        </Suspense>
-      </div>
-    </div>
-  );
+  return <>
+    <SectionHeading>Overview</SectionHeading>
+    <CardContainer>
+      {communities.map(community  => (
+        <CommunityCard key={community.id} community={community} />
+      ))}
+    </CardContainer>
+    {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
+    {/* <WebsocketTest /> */}
+  </>;
 }
+
+
