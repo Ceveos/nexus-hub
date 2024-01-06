@@ -1,5 +1,5 @@
+import { getCommunityDataByDomain } from "@/lib/fetchers";
 import { notFound } from "next/navigation";
-import { getSiteData } from "@/lib/fetchers";
 
 export async function generateMetadata({
   params,
@@ -8,7 +8,7 @@ export async function generateMetadata({
 }) {
   const domain = decodeURIComponent(params.domain);
 
-  const data = await getSiteData(domain);
+  const data = await getCommunityDataByDomain(domain);
 
   if (!data) {
     return null;

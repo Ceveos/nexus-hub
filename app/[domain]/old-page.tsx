@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { getSiteData } from "@/lib/fetchers";
 import Image from "next/image";
 import { getServerAuthSession } from "@/lib/auth";
+import { getCommunityDataByDomain } from "@/lib/fetchers";
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({
@@ -32,7 +32,7 @@ export default async function SiteHomePage({
   params: { domain: string };
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getCommunityDataByDomain(domain);
   const session = await getServerAuthSession();
 
   return (<>

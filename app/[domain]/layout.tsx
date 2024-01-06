@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
-import { getCommunityDataByDomain, getSiteData } from "@/lib/fetchers";
+import { getCommunityDataByDomain } from "@/lib/fetchers";
 import { type Metadata } from "next";
 
 export async function generateMetadata({
@@ -9,20 +9,16 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata | null> {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getCommunityDataByDomain(domain);
   if (!data) {
     return null;
   }
   const {
     name: title,
     description,
-    image,
-    logo,
   } = data as {
     name: string;
     description: string;
-    image: string;
-    logo: string;
   };
 
   return {
@@ -31,16 +27,16 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      images: [image],
+      // images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [image],
+      // images: [image],
       creator: "@vercel",
     },
-    icons: [logo],
+    // icons: [logo],
     metadataBase: new URL(`https://${domain}`),
     // Optional: Set canonical URL to custom domain if it exists
     ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
