@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
-import { getSiteData } from "@/lib/fetchers";
+import { getCommunityDataByDomain, getSiteData } from "@/lib/fetchers";
 import { type Metadata } from "next";
 
 export async function generateMetadata({
@@ -60,7 +60,7 @@ export default async function SiteLayout({
   children: ReactNode;
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getCommunityDataByDomain(domain);
 
   if (!data) {
     notFound();
