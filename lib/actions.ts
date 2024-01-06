@@ -401,6 +401,13 @@ export const updateCommunity = async (
         message: "Community ID is required",
       };
     }
+    
+    if (data.customDomain && !validDomainRegex.test(data.customDomain)) {
+      return {
+        success: false,
+        message: "Custom domain is invalid",
+      };
+    }
 
     const communityData = await prisma.community.findUnique({
       where: {

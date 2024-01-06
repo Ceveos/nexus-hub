@@ -34,7 +34,7 @@ const DomainForm: React.FC<Props> = ({ customDomain, defaultValues }) => {
   const onSubmit = async (data: DomainFormData): Promise<void> => {
     const communityFields: Partial<Community> = {
       id: data.id,
-      customDomain: data.domain
+      customDomain: data.domain === "" ? null : data.domain,
     }
     try {
       const result = await updateCommunity(communityFields);
