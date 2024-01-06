@@ -425,6 +425,8 @@ export const updateCommunity = async (
     });
 
     revalidateTag(`${data.id}-metadata`);
+    data.customDomain && revalidateTag(`${data.customDomain}-metadata`);
+    data.subdomain && revalidateTag(`${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`);
 
     if (updatedCommunityData.customDomain !== communityData.customDomain) {
       if (updatedCommunityData.customDomain && validDomainRegex.test(updatedCommunityData.customDomain)) {
