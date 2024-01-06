@@ -432,8 +432,14 @@ export const updateCommunity = async (
     });
 
     revalidateTag(`${data.id}-metadata`);
-    data.customDomain && revalidateTag(`${data.customDomain}-metadata`);
-    data.subdomain && revalidateTag(`${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`);
+    if (communityData.customDomain !== updatedCommunityData.customDomain) {
+      revalidateTag(`${communityData.customDomain}-metadata`);
+      revalidateTag(`${updatedCommunityData.customDomain}-metadata`);
+    }
+    if (communityData.subdomain !== updatedCommunityData.subdomain) {
+      revalidateTag(`${communityData.subdomain}-metadata`);
+      revalidateTag(`${updatedCommunityData.subdomain}-metadata`);
+    }
 
     if (updatedCommunityData.customDomain !== communityData.customDomain) {
       if (updatedCommunityData.customDomain && validDomainRegex.test(updatedCommunityData.customDomain)) {
