@@ -46,7 +46,7 @@ const FormInputAvatar: React.FC<Props> = ({ image, error, register, setValue }) 
             id={register.name}
             type="file"
             className="hidden"
-            accept="image/png, image/jpeg, image/gif image/webp"
+            accept="image/png, image/jpeg, image/gif, image/webp"
             {...register}
             onChange={handleFileChange}
           >

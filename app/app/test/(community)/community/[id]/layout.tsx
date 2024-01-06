@@ -8,7 +8,7 @@ import { getCommunityDataById } from "@/lib/fetchers";
 import { notFound } from "next/navigation";
 import communitySidebarHeader from "../../../(components)/communitySidebarHeader";
 import { userNavigationLinks } from "../../../(data)/navLinks.client";
-import CommunityBreadcrumbs from "./communityBreadcrumbs";
+// import CommunityBreadcrumbs from "./communityBreadcrumbs";
   
 export async function generateMetadata({
   params,
@@ -79,7 +79,7 @@ export default async function CommunityLayout({
       sidebarProps={sidebarProps}
     >
       <DashboardContent>
-        <CommunityBreadcrumbs communityName={data.name} />
+        {/* <CommunityBreadcrumbs communityName={data.name} /> */}
         {children}
       </DashboardContent>
     </Dashboard>

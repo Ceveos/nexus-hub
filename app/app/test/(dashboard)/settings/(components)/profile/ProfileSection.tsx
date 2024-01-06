@@ -11,7 +11,8 @@ export default async function ProfileSection() {
   return (
     <ProfileForm
       defaultValues={{
-        name: session.user.name ?? ""
+        name: session.user.name ?? "",
+        email: session.user.email ?? ""
       }}
       avatar={session.user.image ?? ""}
     />

@@ -13,19 +13,19 @@ export default function DomainStatus({ domain }: { domain: string }) {
     <CheckCircle2
       fill="#2563EB"
       stroke="currentColor"
-      className="text-white dark:text-black"
+      className="text-white "
     />
   ) : status === "Pending Verification" ? (
     <AlertCircle
       fill="#FBBF24"
       stroke="currentColor"
-      className="text-white dark:text-black"
+      className="text-white "
     />
   ) : (
     <XCircle
       fill="#DC2626"
       stroke="currentColor"
-      className="text-white dark:text-black"
+      className="text-white "
     />
   );
 }

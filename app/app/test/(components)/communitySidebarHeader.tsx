@@ -10,7 +10,7 @@ interface Props {
 const communitySidebarHeader = ({ name, avatarClass }: Props) => {
 
   return (
-    <div className="flex h-16 shrink-0 items-center w-full">
+    <div className="mt-2 flex h-16 shrink-0 items-center w-full">
       <Avatar
         initials={generateInitials(name, 2)}
         className={cn("h-10 w-10 shrink-0", avatarClass)}

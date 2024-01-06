@@ -67,10 +67,17 @@ const ProfileForm: React.FC<Props> = ({ avatar, defaultValues }) => {
 
       // Avatar is a blob file; remove it if it exists.
       delete data.avatar;
-      await updateUser(userFields);
-      await update();
-      router.refresh();
-      toast.success("Your profile has been updated.");
+      const result = await updateUser(userFields);
+
+      if (result.success) {
+        await update();
+        router.refresh();
+        toast.success("Your profile has been updated.");
+      } else {
+        setError("root", {
+          message: result.message
+        });
+      }
     } catch (error) {
       console.log(error);
       setError("root", {
@@ -97,6 +104,11 @@ const ProfileForm: React.FC<Props> = ({ avatar, defaultValues }) => {
         label="Name"
         errors={errors}
         register={register("name")}
+      />
+      <FormInputText
+        label="Email"
+        errors={errors}
+        register={register("email")}
       />
     </FormSection>
   );

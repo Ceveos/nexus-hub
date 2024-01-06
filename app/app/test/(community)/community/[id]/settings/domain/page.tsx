@@ -1,7 +1,7 @@
 import Form from "@/app/app/test/(components)/form/form";
 import { getCommunityDataById } from "@/lib/fetchers";
 import { notFound } from "next/navigation";
-import GeneralSection from "./(components)/general/GeneralSection";
+import DomainSection from "../(components)/domain/DomainSection";
 
 interface Props {
   params: { id: string };
@@ -19,7 +19,7 @@ const Page: React.FC<Props> = async ({
 
   return (
     <Form>
-      <GeneralSection communityId={communityId} />
+      <DomainSection communityId={communityId} />
     </Form>
   );
 }
