@@ -13,7 +13,7 @@ export default function CreateCommunityCard({children}: Props) {
   return (
     <button
       onClick={() => modal?.show(children)}
-      className="text-primary-400 hover:text-primary-500 dark:text-primary-dark-400 dark:hover:text-primary-dark-300 relative block w-full rounded-lg border-2 border-dashed border-primary-300 dark:border-primary-dark-600 p-12 text-center hover:border-primary-400 dark:hover:border-primary-dark-500 focus:outline-none dark:focus:border-primary-dark-500 focus:ring-0"
+      className="text-primary-400 hover:text-primary-500 focus:text-primary-500 dark:text-primary-dark-400 dark:hover:text-primary-dark-300 dark:focus:text-primary-dark-300 relative block w-full rounded-lg border-2 border-dashed border-primary-300 dark:border-primary-dark-600 p-12 text-center hover:border-primary-400 dark:hover:border-primary-dark-500 focus:outline-none focus:border-primary-400 dark:focus:border-primary-dark-500 focus:ring-0"
     >
       <svg
         className="mx-auto h-12 w-12 "

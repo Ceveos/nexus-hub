@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 
 export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(function Select(
   { className, multiple, ...props },
-  ref
+  // ref
 ) {
   return (
     <span
@@ -29,7 +29,7 @@ export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(functio
       ])}
     >
       <HeadlessSelect
-        ref={ref}
+        // ref={ref}
         multiple={multiple}
         {...props}
         className={clsx([

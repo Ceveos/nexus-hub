@@ -26,7 +26,7 @@ export default function CommunityCard({ community }: Props) {
         href={`community/${community.id}`}
       />
       <div className="relative">
-        <div className="flex items-center gap-x-4 border-b border-primary-900/5 bg-primary-50 dark:bg-primary-dark-800 p-3">
+        <div className="rounded-t-xl flex items-center gap-x-4 border-b border-primary-900/5 bg-primary-50 dark:bg-primary-dark-800 p-3">
           <Avatar
             initials={generateInitials(community.name, 2)}
             className={cn(community.avatarClass ?? getColorForName(community.name), "h-8 w-8 flex-none rounded-lg object-cover ring-1 ring-gray-900/10")}
