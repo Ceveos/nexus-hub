@@ -1,15 +1,15 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import FormSection from "../../../../(components)/form/formSection";
+import FormSection from "@/components/form/formSection";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUser } from "@/lib/actions";
 import { type UserFormData, UserSchema } from "@/lib/schemas/userSchema";
 import { toast } from "sonner";
-import FormInputText from "@/app/app/(components)/form/formInput.Text";
+import FormInputText from "@/components/form/formInput.Text";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import FormInputAvatar from "@/app/app/(components)/form/formInputAvatar";
+import FormInputAvatar from "@/components/form/formInputAvatar";
 import { supabaseInstance } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { type User } from "@prisma/client";

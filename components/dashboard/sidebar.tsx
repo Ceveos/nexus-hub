@@ -114,11 +114,11 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                   {header || (
-                    <div className="flex h-16 shrink-0 items-center">
+                    <div className="mt-2 flex h-16 shrink-0 items-center w-full">
                       <Image
                         priority
                         src={LogoIcon}
-                        className="h-10 w-auto"
+                        className="mt-2 h-10 w-auto"
                         alt="Nexus Hub"
                       />
                     </div>
@@ -194,7 +194,7 @@ const Sidebar: React.FC<Props> = ({ header, navigationLinks, externalLinks, open
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
           {header || (
-            <div className="flex h-16 shrink-0 items-center">
+            <div className="mt-2 flex h-16 shrink-0 items-center w-full">
               <Image
                 priority
                 src={LogoIcon}

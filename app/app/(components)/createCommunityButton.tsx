@@ -1,7 +1,7 @@
 "use client"
 
 import { useModal } from "@/components/modal/provider";
-import SectionHeadingButton from "./sectionHeadingButton";
+import SectionHeadingButton from "@/components/dashboard/sectionHeadingButton";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {

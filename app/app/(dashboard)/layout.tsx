@@ -1,10 +1,10 @@
 import { type ReactNode } from "react";
-import Dashboard, { type SidebarProps } from "../(components)/dashboard";
-import NavbarAvatar from "../(components)/navbar.avatar.component";
+import Dashboard, { type SidebarProps } from "@/components/dashboard/dashboard";
+import NavbarAvatar from "@/components/dashboard/navbar.avatar.component";
 import { type Metadata } from "next";
 import { dashboardLinks, externalLinks } from "../(data)/navLinks";
 import { userNavigationLinks } from "../(data)/navLinks.client";
-import DashboardContent from "../(components)/dashboardContent";
+import DashboardContent from "@/components/dashboard/dashboardContent";
 
 const title =
   "Nexus Hub - Dashboard";

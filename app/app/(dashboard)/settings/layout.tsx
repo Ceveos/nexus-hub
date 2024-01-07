@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import SettingsTabs, { type Tab } from "../../(components)/tabs";
+import SettingsTabs, { type Tab } from "@/components/dashboard/tabs";
 
 const tabs: Tab[] = [
   { name: "General" },

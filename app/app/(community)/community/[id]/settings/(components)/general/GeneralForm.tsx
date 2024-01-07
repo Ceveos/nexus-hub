@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCommunity } from "@/lib/actions";
 import { toast } from "sonner";
-import FormInputText from "@/app/app/(components)/form/formInput.Text";
+import FormInputText from "@/components/form/formInput.Text";
 import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
-import FormSection from "@/app/app/(components)/form/formSection";
+import FormSection from "@/components/form/formSection";
 import { type GeneralFormData, GeneralSchema } from "@/lib/schemas/community/generalSchema";
-import FormInputTextArea from "@/app/app/(components)/form/formInput.TextArea";
+import FormInputTextArea from "@/components/form/formInput.TextArea";
 import { env } from "@/env.mjs";
 import { useEffect } from "react";
 

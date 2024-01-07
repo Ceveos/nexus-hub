@@ -1,4 +1,4 @@
-import Form from "@/app/app/(components)/form/form";
+import Form from "@/components/form/form";
 import { getCommunityDataById } from "@/lib/fetchers";
 import { notFound } from "next/navigation";
 import GeneralSection from "./(components)/general/GeneralSection";

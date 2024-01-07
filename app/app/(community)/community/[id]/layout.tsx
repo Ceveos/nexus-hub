@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
-import Dashboard, { type SidebarProps } from "../../../(components)/dashboard";
-import NavbarAvatar from "../../../(components)/navbar.avatar.component";
-import DashboardContent from "../../../(components)/dashboardContent";
+import Dashboard, { type SidebarProps } from "@/components/dashboard/dashboard";
+import NavbarAvatar from "@/components/dashboard/navbar.avatar.component";
+import DashboardContent from "@/components/dashboard/dashboardContent";
 import { type Metadata } from "next";
 import { communityLinks, externalLinks } from "../../../(data)/navLinks";
 import { getCommunityDataById } from "@/lib/fetchers";

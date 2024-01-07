@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
-import Breadcrumb, { type Page } from "../../../(components)/breadcrumb";
+import Breadcrumb, { type Page } from "@/components/dashboard/breadcrumb";
 
 
 interface Props {
