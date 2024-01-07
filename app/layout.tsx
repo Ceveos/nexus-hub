@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn(cal.variable, inter.variable, "h-full bg-th-background dark:bg-th-background-dark")}>
+      <body className={cn(cal.variable, inter.variable, "h-full flex flex-col bg-th-background dark:bg-th-background-dark")}>
         <Providers>
           {children}
           <Analytics />
