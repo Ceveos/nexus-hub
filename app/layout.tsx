@@ -29,12 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={cn(cal.variable, inter.variable, "h-full")}>
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className={cn(cal.variable, inter.variable, "h-full bg-th-background dark:bg-th-background-dark")}>
+        <div className="h-full">
         <Providers>
           {children}
           <Analytics />
         </Providers>
+        </div>
       </body>
     </html>
   );

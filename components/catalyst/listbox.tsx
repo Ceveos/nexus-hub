@@ -104,6 +104,7 @@ export function Listbox<T>({
         leaveTo="opacity-0"
       >
         <HeadlessListboxOptions
+          as="div"
           anchor={{
             to: 'selection start',
             offset: 'var(--anchor-offset)',
@@ -140,7 +141,7 @@ export function ListboxOption<T>({
   children,
   className,
   ...props
-}: { children?: React.ReactNode } & HeadlessListboxOptionProps<'li', T>) {
+}: { children?: React.ReactNode } & HeadlessListboxOptionProps<'div', T>) {
   const sharedClasses = clsx(
     // Base
     'flex min-w-0 items-center',

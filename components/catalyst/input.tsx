@@ -1,16 +1,15 @@
 import { Input as HeadlessInput, type InputProps as HeadlessInputProps } from '@headlessui/react'
 import { clsx } from 'clsx'
+import { forwardRef } from 'react'
 
 const dateTypes = ['date', 'datetime-local', 'month', 'time', 'week']
 type DateType = (typeof dateTypes)[number]
 
-export function Input({
-  className,
-  ...props
-}: {
+export const Input = forwardRef<
+  HTMLInputElement,
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  type?: 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | DateType
-} & HeadlessInputProps) {
+  { type?: 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | DateType } & HeadlessInputProps
+>(function Input({ className, ...props }) {
   return (
     <span
       data-slot="control"
@@ -80,4 +79,4 @@ export function Input({
       />
     </span>
   )
-}
+})

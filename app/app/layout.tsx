@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import { Providers } from "@/app/(providers)/providers";
 import { type Metadata } from "next";
 
 const title =
@@ -20,13 +19,7 @@ export const metadata: Metadata = {
 };
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="h-full bg-white">
-      <Providers>
-        {children}
-      </Providers>
-    </div>
-  );
+  return children;
 };
 
 export default AppLayout;

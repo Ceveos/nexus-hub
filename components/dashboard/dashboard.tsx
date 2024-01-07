@@ -1,14 +1,13 @@
 "use client";
 import { type ReactNode, useState } from "react";
-
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
-import { type DropdownItem, type NavigationLink } from "@/types";
+import { type NavigationLink } from "@/types";
 
 export interface SidebarProps {
   header?: React.ReactNode;
-  userNavigationLinks: DropdownItem[];
+  userNavigationLinks: JSX.Element;
   navigationLinks: NavigationLink[];
   externalLinks: NavigationLink[];
 }
@@ -24,7 +23,6 @@ export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Pro
 
   return (
     <>
-      <div>
         <Sidebar
           header={sidebarProps.header}
           navigationLinks={sidebarProps.navigationLinks}
@@ -33,7 +31,7 @@ export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Pro
           setOpen={setSidebarOpen}
         />
 
-        <div className="lg:pl-72">
+        <div className="lg:pl-72 flex flex-col h-screen">
           <Navbar
             userNavigation={sidebarProps.userNavigationLinks}
             setSidebarOpen={setSidebarOpen}
@@ -41,7 +39,6 @@ export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Pro
           />
           {children}
         </div>
-      </div>
     </>
   );
 }

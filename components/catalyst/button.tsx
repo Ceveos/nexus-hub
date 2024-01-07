@@ -66,13 +66,13 @@ const styles = {
   ],
   plain: [
     // Base
-    'border-transparent text-zinc-950 data-[active]:bg-zinc-950/5 data-[active]:bg-zinc-950/5',
+    'border-transparent text-zinc-950 data-[active]:bg-zinc-950/5 data-[hover]:bg-zinc-950/5',
 
     // Dark mode
-    'data-[hover]:bg-zinc-950/5 dark:text-white dark:data-[active]:bg-white/10 dark:data-[active]:bg-white/10 dark:data-[hover]:bg-white/10',
+    'dark:text-white dark:data-[active]:bg-white/10 dark:data-[hover]:bg-white/10',
 
     // Icon
-    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:[--btn-icon:theme(colors.zinc.500)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
+    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:[--btn-icon:theme(colors.zinc.500)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
   ],
   colors: {
     'dark/zinc': [
@@ -87,7 +87,7 @@ const styles = {
     ],
     'dark/white': [
       'text-white [--btn-bg:theme(colors.zinc.900)] [--btn-border:theme(colors.zinc.950/90%)] [--btn-hover-overlay:theme(colors.white/10%)]',
-      'dark:text-zinc-950 dark:[--btn-bg:white] dark:[--btn-hover-overlay:theme(colors.zinc.950/2.5%)] dark:[--btn-hover-overlay:theme(colors.zinc.950/5%)]',
+      'dark:text-zinc-950 dark:[--btn-bg:white] dark:[--btn-hover-overlay:theme(colors.zinc.950/5%)]',
       '[--btn-icon:theme(colors.zinc.400)] data-[active]:[--btn-icon:theme(colors.zinc.300)] data-[hover]:[--btn-icon:theme(colors.zinc.300)] dark:[--btn-icon:theme(colors.zinc.500)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
     ],
     dark: [
@@ -173,6 +173,11 @@ const styles = {
       'text-white [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.rose.500)] [--btn-border:theme(colors.rose.600/90%)]',
       '[--btn-icon:theme(colors.rose.300)] data-[active]:[--btn-icon:theme(colors.rose.200)] data-[hover]:[--btn-icon:theme(colors.rose.200)]',
     ],
+    accent: [
+      'text-white [--btn-bg:theme(colors.accent.500)] [--btn-border:theme(colors.accent.600/90%)] [--btn-hover-overlay:theme(colors.white/10%)]',
+      'dark:[--btn-hover-overlay:theme(colors.white/5%)] dark:[--btn-bg:theme(colors.accent.700)]',
+      '[--btn-icon:theme(colors.accent.400)] data-[active]:[--btn-icon:theme(colors.accent.300)] data-[hover]:[--btn-icon:theme(colors.accent.300)]',
+    ],
   },
 }
 
@@ -197,7 +202,7 @@ export const Button = React.forwardRef(function Button(
       <TouchTarget>{children}</TouchTarget>
     </Link>
   ) : (
-    <HeadlessButton {...props} className={clsx(classes, 'cursor-default')} ref={ref}>
+    <HeadlessButton {...props} className={classes} ref={ref}>
       <TouchTarget>{children}</TouchTarget>
     </HeadlessButton>
   )

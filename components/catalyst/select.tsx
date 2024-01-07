@@ -1,7 +1,11 @@
 import { Select as HeadlessSelect, type SelectProps as HeadlessSelectProps } from '@headlessui/react'
 import { clsx } from 'clsx'
+import { forwardRef } from 'react'
 
-export function Select({ className, multiple, ...props }: HeadlessSelectProps) {
+export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(function Select(
+  { className, multiple, ...props },
+  ref
+) {
   return (
     <span
       data-slot="control"
@@ -25,6 +29,7 @@ export function Select({ className, multiple, ...props }: HeadlessSelectProps) {
       ])}
     >
       <HeadlessSelect
+        ref={ref}
         multiple={multiple}
         {...props}
         className={clsx([
@@ -73,4 +78,4 @@ export function Select({ className, multiple, ...props }: HeadlessSelectProps) {
       )}
     </span>
   )
-}
+})

@@ -23,11 +23,11 @@ export default async function Page() {
   return <>
     <SectionHeading action={createButton} >Communities</SectionHeading>
     <CardContainer>
-      {communities.map(community  => (
+      {communities.map(community => (
         <CommunityCard key={community.id} community={community} />
       ))}
       <CreateCommunityCard>
-        <CreateCommunityModal/>
+        <CreateCommunityModal />
       </CreateCommunityCard>
     </CardContainer>
     {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
@@ -37,6 +37,6 @@ export default async function Page() {
 
 const createButton = (
   <CreateCommunityButton>
-    <CreateCommunityModal/>
+    <CreateCommunityModal />
   </CreateCommunityButton>
 );

@@ -72,7 +72,6 @@ export function Label({ className, ...props }: { className?: string } & Headless
 
 export function Description({
   className,
-  disabled: _disabled,
   ...props
 }: { className?: string; disabled?: boolean } & HeadlessDescriptionProps) {
   return (
@@ -89,7 +88,6 @@ export function Description({
 
 export function ErrorMessage({
   className,
-  disabled: _disabled,
   ...props
 }: { className?: string; disabled?: boolean } & HeadlessDescriptionProps) {
   return (

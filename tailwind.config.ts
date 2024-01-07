@@ -1,8 +1,8 @@
 import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 import * as colors from "tailwindcss/colors";
 
 export default {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -29,7 +29,7 @@ export default {
         /* Theme colors */
         th: {
           background: {
-            DEFAULT: colors.gray[100],
+            DEFAULT: colors.white,
             dark: colors.neutral[900],
           },
 

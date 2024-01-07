@@ -7,3 +7,17 @@
     -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 }
+
+@supports (scrollbar-gutter: stable) {
+  html,
+  body {
+    scrollbar-gutter: stable;
+  }
+}
+/* For safari, which does support "@supports" */
+@supports not (scrollbar-gutter: stable) {
+  html,
+  body {
+    overflow-y: scroll;
+  }
+}

@@ -1,9 +1,12 @@
 "use client";
 
-import { type DropdownItem } from "@/types";
+import { DropdownItem, DropdownSeparator } from "@/components/catalyst/dropdown";
 import { signOut } from "next-auth/react";
 
-export const userNavigationLinks: DropdownItem[] = [
-  { name: "Settings", href: "/test/settings" },
-  { name: "Sign out", action: () => { void signOut({ callbackUrl: '/', redirect: true }) } },
-]
+export const userNavigationLinks: JSX.Element = (
+  <>
+    <DropdownItem href="/settings">Settings</DropdownItem>
+    <DropdownSeparator />
+    <DropdownItem onClick={() => signOut({ callbackUrl: '/', redirect: true })}>Sign out</DropdownItem>
+  </>
+)

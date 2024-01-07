@@ -31,7 +31,7 @@ const sidebarProps: SidebarProps = {
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="h-full bg-white">
+    <div className="h-full">
       <Dashboard
         navbarAvatar={<NavbarAvatar />}
         sidebarProps={sidebarProps}
