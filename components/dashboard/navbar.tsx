@@ -25,7 +25,7 @@ const Navbar: React.FC<Props> = ({
   setSidebarOpen,
 }) => {
   const [mounted, setMounted] = React.useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
@@ -59,10 +59,10 @@ const Navbar: React.FC<Props> = ({
               disabled={!mounted}
               plain
               className="h-10 w-10 transition-all"
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
             >
-              {mounted && theme === "light" && <SunIcon />}
-              {mounted && theme === "dark" && <MoonIcon />}
+              {mounted && resolvedTheme === "light" && <SunIcon />}
+              {mounted && resolvedTheme === "dark" && <MoonIcon />}
             </Button>
 
             {/* Separator */}

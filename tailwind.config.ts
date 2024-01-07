@@ -3,6 +3,9 @@ import * as colors from "tailwindcss/colors";
 
 export default {
   darkMode: "class",
+  future: {
+    hoverOnlyWhenSupported: true
+  },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
