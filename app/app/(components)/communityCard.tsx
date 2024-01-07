@@ -20,9 +20,9 @@ export default function CommunityCard({ community }: Props) {
   const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;;
 
   return (
-    <li key={community.id} className="overflow-hidden relative rounded-xl border border-primary-200 hover:border-primary-400 dark:border-primary-dark-700 dark:hover:border-primary-dark-500" tabIndex={0}>
+    <li key={community.id} className=" relative rounded-xl border border-primary-200 hover:border-primary-400 dark:border-primary-dark-700 dark:hover:border-primary-dark-500" >
       <Link
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-10 focus:ring-primary-400 dark:focus:ring-primary-dark-600 focus:ring-2 focus:outline-none rounded-xl"
         href={`community/${community.id}`}
       />
       <div className="relative">
@@ -60,7 +60,7 @@ export default function CommunityCard({ community }: Props) {
                 href={`${https}://${communityLink}`}
                 target="_blank"
                 rel="noreferrer"
-                className="z-20 flex flex-shrink-1 truncate rounded-md bg-stone-200 dark:bg-stone-600 dark:text-stone-100 px-2 py-1 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-300 hover:dark:bg-stone-500">
+                className="z-20 flex flex-shrink-1 truncate rounded-md bg-stone-200 dark:bg-stone-600 dark:text-stone-100 px-2 py-1 text-sm font-medium text-stone-600 hover:bg-stone-300 hover:dark:bg-stone-500 focus:bg-stone-300 focus:hover:dark:bg-stone-500 focus:ring-0 focus:outline-none">
                 <span
                   className="flex-shrink-1 truncate break-all"
                 >

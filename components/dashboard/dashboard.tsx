@@ -31,7 +31,7 @@ export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Pro
           setOpen={setSidebarOpen}
         />
 
-        <div className="lg:pl-72 flex flex-col h-screen">
+        <div className="lg:pl-72">
           <Navbar
             userNavigation={sidebarProps.userNavigationLinks}
             setSidebarOpen={setSidebarOpen}
