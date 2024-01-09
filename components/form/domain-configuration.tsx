@@ -16,7 +16,7 @@ export const InlineSnippet = ({
   return (
     <span
       className={cn(
-        "inline-block rounded-md bg-blue-100 px-1 py-0.5 font-mono text-blue-900",
+        "inline-block rounded-md bg-accent-100 px-1 py-0.5 font-mono text-accent-900 dark:text-accent-dark-100 dark:bg-accent-dark-900",
         className,
       )}
     >
@@ -39,7 +39,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
     null;
 
   return (
-    <div className="border-t border-gray-200 px-10 pb-5 pt-7">
+    <div className="border-t text-zinc-950 dark:text-white border-primary-300 dark:border-primary-dark-700 px-10 pb-5 pt-7">
       <div className="mb-4 flex items-center space-x-2">
         {status === "Pending Verification" ? (
           <AlertCircle
@@ -104,8 +104,8 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
               onClick={() => setRecordType("A")}
               className={`${
                 recordType == "A"
-                  ? "border-black text-black"
-                  : "border-white text-stone-400"
+                ? "border-black text-black dark:border-primary-dark-300 dark:text-white"
+                : "border-white text-stone-400 dark:border-primary-dark-600 dark:text-primary-dark-400"
               } ease border-b-2 pb-1 text-sm transition-all duration-150`}
             >
               A Record{!subdomain && " (recommended)"}
@@ -115,8 +115,8 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
               onClick={() => setRecordType("CNAME")}
               className={`${
                 recordType == "CNAME"
-                  ? "border-black text-black "
-                  : "border-white text-stone-400"
+                ? "border-black text-black dark:border-primary-dark-300 dark:text-white"
+                : "border-white text-stone-400 dark:border-primary-dark-600 dark:text-primary-dark-400"
               } ease border-b-2 pb-1 text-sm transition-all duration-150`}
             >
               CNAME Record{subdomain && " (recommended)"}
@@ -132,7 +132,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
               ), set the following {recordType} record on your DNS provider to
               continue:
             </p>
-            <div className="flex items-center justify-start space-x-10 rounded-md bg-stone-50 p-2">
+            <div className="flex items-center justify-start space-x-10 rounded-md bg-stone-100 dark:bg-primary-dark-800 p-2">
               <div>
                 <p className="text-sm font-bold">Type</p>
                 <p className="mt-2 font-mono text-sm">{recordType}</p>

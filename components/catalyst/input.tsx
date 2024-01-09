@@ -43,13 +43,13 @@ export const Input = forwardRef<
     >
       {prefix && (<span className={clsx(
         // Basic layout
-        'pl-2 pr-2 rounded-l-lg flex select-none items-center sm:text-sm',
+        'pl-2 rounded-l-lg flex select-none items-center sm:text-sm',
 
         // Background colors
-        'bg-gray-200 dark:bg-primary-dark-700',
+        'bg-white dark:dark:bg-white/5',
 
         // Foreground colors
-        'text-gray-600 dark:text-primary-dark-300',
+        'text-gray-400 dark:text-primary-dark-400',
       )
       }>
         {prefix}
@@ -75,7 +75,13 @@ export const Input = forwardRef<
           ],
 
           // Basic layout
-          'break-all text-ellipsis relative block w-full appearance-none rounded-lg pl-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing[3])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
+          'break-all text-ellipsis relative block w-full appearance-none rounded-lg py-[calc(theme(spacing[2.5])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
+
+          // Basic layout when not using prefix
+          !prefix && 'pl-[calc(theme(spacing[3.5])-1px)] sm:px-[calc(theme(spacing[3])-1px)]',
+
+          prefix && 'pl-1 ',
+
 
           // Typography
           'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
@@ -94,8 +100,8 @@ export const Input = forwardRef<
 
           // // Postfix present
           (prefix && postfix) && 'rounded-none',
-          (prefix && !postfix) && 'rounded-none rounded-r-lg',
-          (!prefix && postfix) && 'rounded-none rounded-l-lg',
+          (prefix && !postfix) && 'rounded-none rounded-r-lg sm:pr-[calc(theme(spacing[3])-1px)]',
+          (!prefix && postfix) && 'rounded-none rounded-l-lg sm:pl-[calc(theme(spacing[3])-1px)]',
         ])}
         prefix={prefix}
         {...props}
@@ -105,10 +111,10 @@ export const Input = forwardRef<
         'pl-2 pr-2 rounded-r-lg flex select-none items-center sm:text-sm',
 
         // Background colors
-        'bg-gray-200 dark:bg-primary-dark-700',
+        'bg-white dark:bg-white/5',
 
         // Foreground colors
-        'text-gray-600 dark:text-primary-dark-300',
+        'text-gray-400 dark:text-primary-dark-400',
       )
       }>
         {postfix}

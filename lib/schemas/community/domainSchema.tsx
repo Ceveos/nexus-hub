@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const DomainSchema = z.object({
   id: z.string().uuid(),
-  domain: z.string().optional(),
+  customDomain: z.string().optional(),
   domainVerified: z.boolean().optional()
 });
 

@@ -70,8 +70,9 @@ export const updateUser = async (
   }
 };
 
-
-export const createCommunity = async (data: Pick<Community, "name" |  "subdomain" |"description">): Promise<ActionResult<Community>> => {
+export const createCommunity = async (
+  data: Pick<Community, "name" | "subdomain" | "description">,
+): Promise<ActionResult<Community>> => {
   const session = await getServerAuthSession();
   if (!session?.user.id) {
     return {
@@ -116,12 +117,12 @@ export const createCommunity = async (data: Pick<Community, "name" |  "subdomain
     revalidateTag(
       `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
-    
+
     return {
       success: true,
       message: "Community created successfully",
       data: response,
-    }
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -133,7 +134,7 @@ export const createCommunity = async (data: Pick<Community, "name" |  "subdomain
       };
     } else {
       return {
-        success: false,        
+        success: false,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         message: error.message ?? error,
       };
@@ -159,7 +160,7 @@ export const updateCommunity = async (
         message: "Community ID is required",
       };
     }
-    
+
     if (data.customDomain && !validDomainRegex.test(data.customDomain)) {
       return {
         success: false,
@@ -170,7 +171,7 @@ export const updateCommunity = async (
     const communityData = await prisma.community.findUnique({
       where: {
         id: data.id,
-      }
+      },
     });
 
     if (!communityData || communityData.ownerId !== session.user.id) {
@@ -200,12 +201,18 @@ export const updateCommunity = async (
     }
 
     if (updatedCommunityData.customDomain !== communityData.customDomain) {
-      if (updatedCommunityData.customDomain && validDomainRegex.test(updatedCommunityData.customDomain)) {
+      if (
+        updatedCommunityData.customDomain &&
+        validDomainRegex.test(updatedCommunityData.customDomain)
+      ) {
         await Promise.all([
           addDomainToVercel(updatedCommunityData.customDomain),
         ]);
       }
-      if (communityData.customDomain && validDomainRegex.test(communityData.customDomain)) {
+      if (
+        communityData.customDomain &&
+        validDomainRegex.test(communityData.customDomain)
+      ) {
         await Promise.all([
           removeDomainFromVercelProject(communityData.customDomain),
         ]);
@@ -218,19 +225,12 @@ export const updateCommunity = async (
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        return {
-          success: false,
-          message: `This subdomain is already taken`,
-          errorField: "subdomain",
-        };
-      } else {
-        return {
-          success: false,        
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-          message: error.message ?? error,
-        };
-      }
+      return {
+        success: false,
+        message: prettifyError(error),
+        errorCode: error.code,
+        errorField: (error.meta?.target as string)[0],
+      };
     }
     return {
       success: false,
@@ -238,3 +238,17 @@ export const updateCommunity = async (
     };
   }
 };
+
+const prettifyError = (error: PrismaClientKnownRequestError): string => {
+  if (error.code === "P2002") {
+    switch ((error.meta?.target as string)[0]) {
+      case "subdomain":
+        return "This subdomain is already taken";
+      case "customDomain":
+        return "This domain is already taken";
+      default:
+        return error.message;
+    }
+  }
+  return error.message;
+}

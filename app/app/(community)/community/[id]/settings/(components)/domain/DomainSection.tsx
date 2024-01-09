@@ -21,7 +21,7 @@ const DomainSection: React.FC<Props> = async ({
     <DomainForm
       defaultValues={{
         id: communityId,
-        domain: data.customDomain ?? undefined,
+        customDomain: data.customDomain ?? undefined,
       }}
       customDomain={data.customDomain ?? undefined}
     />

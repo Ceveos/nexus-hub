@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCommunity } from "@/lib/actions";
 import { toast } from "sonner";
-import FormInputText from "@/components/form/formInput.Text";
 import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
 import FormSection from "@/components/form/formSection";
 import { type DomainFormData, DomainSchema } from "@/lib/schemas/community/domainSchema";
 import DomainConfiguration from "@/components/form/domain-configuration";
 import DomainStatus from "@/components/form/domain-status";
+import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
+import { Input } from "@/components/catalyst/input";
 
 interface Props {
   defaultValues: DomainFormData;
@@ -29,12 +30,12 @@ const DomainForm: React.FC<Props> = ({ customDomain, defaultValues }) => {
     resolver: zodResolver(DomainSchema),
     defaultValues
   });
-  const currentDomain = watch("domain");
+  const currentDomain = watch("customDomain");
 
   const onSubmit = async (data: DomainFormData): Promise<void> => {
     const communityFields: Partial<Community> = {
       id: data.id,
-      customDomain: data.domain === "" ? null : data.domain,
+      customDomain: data.customDomain === "" ? null : data.customDomain,
     }
     try {
       const result = await updateCommunity(communityFields);
@@ -43,9 +44,9 @@ const DomainForm: React.FC<Props> = ({ customDomain, defaultValues }) => {
         router.refresh();
         toast.success(`Domain has been updated.`);
       } else {
-        if (result.errorCode === "P2002") {
-          setError("domain", {
-            message: "This domain is already in use.",
+        if (result.errorField as keyof typeof errors) {
+          setError(result.errorField as "customDomain", {
+            message: result.message,
           });
         } else {
           setError("root", {
@@ -69,14 +70,19 @@ const DomainForm: React.FC<Props> = ({ customDomain, defaultValues }) => {
         onSubmit={handleSubmit(onSubmit)}
         errors={errors}
       >
-        <FormInputText
-          label="Domain"
-          errors={errors}
-          prefix="https://"
-          placeholder="example.com"
-          register={register("domain")}
-          postfix={(customDomain && customDomain === currentDomain) ? <div className="z-10 flex h-2 items-center"><DomainStatus domain={customDomain} /></div> : undefined}
-        />
+  <Fieldset className={"col-span-full sm:max-w-md"}>
+        <Field>
+          <Label htmlFor="customDomain">Domain</Label>
+          <Input
+            id="customDomain"
+            data-invalid={errors["customDomain"]}
+            autoComplete="off"
+            prefix="https://"
+            postfix={(customDomain && customDomain === currentDomain) ? <div className="z-10 flex h-2 items-center"><DomainStatus domain={customDomain} /></div> : undefined}
+            {...register("customDomain")} />
+          {errors.customDomain && <ErrorMessage>{errors.customDomain.message}</ErrorMessage>}
+        </Field>
+        </Fieldset>
       </FormSection>
       {customDomain && customDomain === currentDomain && <DomainConfiguration domain={customDomain} />}
     </>
