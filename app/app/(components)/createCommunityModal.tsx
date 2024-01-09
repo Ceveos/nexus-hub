@@ -99,18 +99,18 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
           <DialogBody>
             <Field>
               <Label htmlFor="name">Name</Label>
-              <Input id="name" autoFocus data-invalid={errors["name"]} {...register("name")} />
+              <Input id="name" autoFocus placeholder="My awesome community" data-invalid={errors["name"]} {...register("name")} />
             </Field>
             {errors.name && <p className="mt-2 text-red-600">{errors.name.message}</p>}
             <Field className={"mt-6"}>
               <Label htmlFor="subdomain">Subdomain</Label>
-              <Input data-invalid={errors["subdomain"]} id="subdomain" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
+              <Input data-invalid={errors["subdomain"]} id="subdomain" placeholder="my-awesome-community" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
             </Field>
             {errors.subdomain && <p className="mt-2 text-red-600">{errors.subdomain.message}</p>}
 
             <Field className={"mt-6"}>
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" placeholder="My wonderful community" data-invalid={errors["description"]} {...register("description")} />
+              <Textarea id="description" placeholder="Where wonderful things happen" data-invalid={errors["description"]} {...register("description")} />
             </Field>
             {errors.description && <p className="mt-2 text-red-600">{errors.description.message}</p>}
             {errors.root && <p className="mt-2 text-red-600">{errors.root.message}</p>}
