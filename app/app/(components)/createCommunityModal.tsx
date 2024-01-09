@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/catalyst/textarea";
+import { env } from "@/env.mjs";
 
 type Props = {
   isOpen: boolean;
@@ -48,9 +49,10 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
       const result = await createCommunity(communityFields);
 
       if (result.success) {
+        toast.success(`Successfully created community!`);
+        setIsOpen(false);
         router.refresh();
         router.push(`community/${result.data?.id}`);
-        toast.success(`Successfully created community!`);
       } else {
         if (result.errorField as keyof typeof errors) {
           setError(result.errorField as "name" | "subdomain" | "description", {
@@ -102,7 +104,7 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
             {errors.name && <p className="mt-2 text-red-600">{errors.name.message}</p>}
             <Field className={"mt-6"}>
               <Label htmlFor="subdomain">Subdomain</Label>
-              <Input data-invalid={errors["subdomain"]} id="subdomain" postfix={".nexushub.app"} {...register("subdomain")} />
+              <Input data-invalid={errors["subdomain"]} id="subdomain" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
             </Field>
             {errors.subdomain && <p className="mt-2 text-red-600">{errors.subdomain.message}</p>}
 

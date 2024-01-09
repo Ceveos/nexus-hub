@@ -29,14 +29,14 @@ export const Input = forwardRef<
         'after:pointer-events-none after:absolute after:rounded-lg after:inset-0 after:ring-transparent after:focus-within:ring-2 after:focus-within:ring-blue-500 ',
 
         // Border
-        'border rounded-lg border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20',
+        'border rounded-lg border-zinc-950/10 has-[[data-hover]]:border-zinc-950/20 dark:border-white/10 dark:has-[[data-hover]]:border-white/20',
 
         // Disabled state
         'has-[[data-disabled]]:opacity-50 before:has-[[data-disabled]]:bg-zinc-950/5 before:has-[[data-disabled]]:shadow-none',
 
         // Invalid state
-        'before:has-[[data-invalid]]:shadow-red-500/10 has-[[data-invalid]]:border-red-500 has-[[data-invalid]]:focus-within:ring-1 has-[[data-invalid]]:after:focus-within:ring-red-500 has-[[data-invalid]]:data-[hover]:border-red-500 has-[[data-invalid]]:dark:border-red-500 has-[[data-invalid]]:data-[hover]:dark:border-red-500',
-
+        'before:has-[[data-invalid]]:shadow-red-500/10 has-[[data-invalid]]:border-red-500 has-[[data-invalid]]:focus-within:ring-1 has-[[data-invalid]]:after:focus-within:ring-red-500 has-[[data-invalid]]:has-[[data-hover]]:border-red-500 has-[[data-invalid]]:dark:border-red-500 has-[[data-invalid]]:has-[[data-hover]]:dark:border-red-500',
+        
         // Postfix present
         postfix && 'flex'
       ])}
