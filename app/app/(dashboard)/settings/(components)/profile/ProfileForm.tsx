@@ -6,13 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUser } from "@/lib/actions";
 import { type UserFormData, UserSchema } from "@/lib/schemas/userSchema";
 import { toast } from "sonner";
-import FormInputText from "@/components/form/formInput.Text";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import FormInputAvatar from "@/components/form/formInputAvatar";
 import { supabaseInstance } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { type User } from "@prisma/client";
+import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
+import { Input } from "@/components/catalyst/input";
 
 interface Props {
   defaultValues: UserFormData;
@@ -61,7 +62,7 @@ const ProfileForm: React.FC<Props> = ({ avatar, defaultValues }) => {
           });
           return;
         }
-        
+
         userFields.image = supabase.storage.from("avatars").getPublicUrl(result.path).data.publicUrl;
       }
 
@@ -94,22 +95,27 @@ const ProfileForm: React.FC<Props> = ({ avatar, defaultValues }) => {
       onSubmit={handleSubmit(onSubmit)}
       errors={errors}
     >
-      <FormInputAvatar
-        image={avatar}
-        error={errors.avatar?.file}
-        setValue={setValue}
-        register={register("avatar")}
-      />
-      <FormInputText
-        label="Name"
-        errors={errors}
-        register={register("name")}
-      />
-      <FormInputText
-        label="Email"
-        errors={errors}
-        register={register("email")}
-      />
+      <Fieldset className={"col-span-full sm:max-w-md"}>
+        <Field>
+          <FormInputAvatar
+            image={avatar}
+            error={errors.avatar?.file}
+            setValue={setValue}
+            register={register("avatar")}
+          />
+          {errors.avatar?.file && <ErrorMessage>{errors.avatar?.file.message}</ErrorMessage>}
+        </Field>
+        <Field className={"mt-6"}>
+          <Label htmlFor="name">Name</Label>
+          <Input data-invalid={errors["name"]} id="name" {...register("name")} />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        </Field>
+        <Field className={"mt-6"}>
+          <Label htmlFor="name">Email</Label>
+          <Input data-invalid={errors["email"]} id="email" {...register("email")} />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        </Field>
+      </Fieldset>
     </FormSection>
   );
 }

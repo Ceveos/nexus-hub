@@ -2,6 +2,7 @@
 
 import { type FormHTMLAttributes, type ReactNode } from "react";
 import { type FieldErrors, type FieldValues } from "react-hook-form";
+import { Button } from "../catalyst/button";
 
 export interface FormSectionProps extends FormHTMLAttributes<HTMLFormElement> {
   title: string;
@@ -21,8 +22,8 @@ const FormSection: React.FC<FormSectionProps> = ({
   return (
     <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 className="text-base font-semibold leading-7 text-gray-900">{title}</h2>
-        <p className="mt-1 text-sm leading-6 text-gray-600">
+        <h2 className="text-base font-semibold leading-7 text-primary-950 dark:text-white">{title}</h2>
+        <p className="mt-1 text-sm leading-6 text-primary-600 dark:text-primary-dark-500">
           {description}
         </p>
       </div>
@@ -31,12 +32,12 @@ const FormSection: React.FC<FormSectionProps> = ({
           {children}
         </div>
         <div className="mt-8">
-          <button
+          <Button
+            color="accent"
             type="submit"
-            className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
             Save
-          </button>
+          </Button>
           {errors["root"] && <div className="mt-2"><span className="error text-red-600">{errors["root"]?.message?.toString()}</span></div>}
 
         </div>

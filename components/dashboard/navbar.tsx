@@ -30,7 +30,7 @@ const Navbar: React.FC<Props> = ({
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white dark:bg-primary-dark-900 dark:border-primary-dark-800 px-4 shadow-sm sm:gap-x-6">
+    <div className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-x-4 border-b border-primary-300 bg-white dark:bg-primary-dark-900 dark:border-primary-dark-800 px-4 shadow-sm sm:gap-x-6">
       <button
         type="button"
         className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-400 lg:hidden"

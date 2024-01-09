@@ -2,9 +2,9 @@ import { Select as HeadlessSelect, type SelectProps as HeadlessSelectProps } fro
 import { clsx } from 'clsx'
 import { forwardRef } from 'react'
 
-export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(function Select(
+export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps & { ref?: React.Ref<HTMLSelectElement> }>(function Select(
   { className, multiple, ...props },
-  // ref
+  ref
 ) {
   return (
     <span
@@ -29,7 +29,7 @@ export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(functio
       ])}
     >
       <HeadlessSelect
-        // ref={ref}
+        ref={ref}
         multiple={multiple}
         {...props}
         className={clsx([
@@ -63,7 +63,7 @@ export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(functio
           'data-[disabled]:border-zinc-950/20 data-[disabled]:opacity-100 dark:data-[hover]:data-[disabled]:border-white/15 data-[disabled]:dark:border-white/15 data-[disabled]:dark:bg-white/[2.5%]',
         ])}
       />
-      {!multiple && (
+      {/* {!multiple && (
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <svg
             className="size-5 stroke-zinc-500 group-has-[[data-disabled]]:stroke-zinc-600 sm:size-4 dark:stroke-zinc-400 forced-colors:stroke-[CanvasText]"
@@ -75,7 +75,7 @@ export const Select = forwardRef<HTMLSelectElement, HeadlessSelectProps>(functio
             <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
-      )}
+      )} */}
     </span>
   )
 })

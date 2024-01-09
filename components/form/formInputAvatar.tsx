@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { XCircleIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { useState } from "react";
 import { type UseFormSetValue, type UseFormRegisterReturn, type FieldError } from "react-hook-form";
@@ -25,19 +24,19 @@ const FormInputAvatar: React.FC<Props> = ({ image, error, register, setValue }) 
 
   return (
     <>
-      <div className="col-span-full flex items-center gap-x-8">
+      <div className="col-span-full flex items-center gap-x-8 my-2">
         <Image
           src={imagePreviewUrl}
           alt="Avatar"
           width={96}
           height={96}
           className={cn(
-            error && "border-2 border-red-600",
-            "h-24 w-24 flex-none rounded-full bg-gray-200 object-cover")}
+            error && "border-2 border-red-500",
+            "h-24 w-24 flex-none rounded-full bg-primary-200 dark:bg-primary-dark-700 object-cover")}
         />
         <div>
           <label
-            className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500"
+            className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 cursor-pointer"
             htmlFor={register.name}
           >
             Change avatar
@@ -52,24 +51,9 @@ const FormInputAvatar: React.FC<Props> = ({ image, error, register, setValue }) 
           >
 
           </input>
-          <p className={cn("mt-2 text-xs leading-5 text-gray-500", error && "text-red-600")}>PNG, JPG, WEBP, or GIF. 1MB max.</p>
+          <p className={cn("mt-2 text-xs leading-5 text-gray-500", error && "text-red-500")}>PNG, JPG, WEBP, or GIF. 1MB max.</p>
         </div>
       </div>
-
-      {error && (
-        <div className="col-span-full -mt-4 border-l-4 border-red-400 bg-red-50 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-red-700">
-                {error?.message?.toString()}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   )
 }

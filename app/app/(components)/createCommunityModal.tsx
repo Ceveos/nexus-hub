@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/catalyst/button";
 import { Dialog, DialogActions, DialogBody, DialogTitle } from '@/components/catalyst/dialog'
-import { Field, Label } from '@/components/catalyst/fieldset'
+import { ErrorMessage, Field, Fieldset, Label } from '@/components/catalyst/fieldset'
 import { Input } from '@/components/catalyst/input'
 import { createCommunity } from "@/lib/actions";
 import { type CreateCommunityFormData, CreateCommunitySchema } from "@/lib/schemas/community/createCommunitySchema";
@@ -92,28 +92,30 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
       <Dialog open={isOpen} onClose={setIsOpen}>
         <form onSubmit={handleSubmit(onSubmit)}>
 
-          <DialogTitle>Create community</DialogTitle>
+          <DialogTitle>Create a community</DialogTitle>
           {/* <DialogDescription>
           
         </DialogDescription> */}
           <DialogBody>
-            <Field>
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" autoFocus placeholder="My awesome community" data-invalid={errors["name"]} {...register("name")} />
-            </Field>
-            {errors.name && <p className="mt-2 text-red-600">{errors.name.message}</p>}
-            <Field className={"mt-6"}>
-              <Label htmlFor="subdomain">Subdomain</Label>
-              <Input data-invalid={errors["subdomain"]} id="subdomain" placeholder="my-awesome-community" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
-            </Field>
-            {errors.subdomain && <p className="mt-2 text-red-600">{errors.subdomain.message}</p>}
+            <Fieldset>
+              <Field>
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" autoFocus placeholder="My awesome community" data-invalid={errors["name"]} {...register("name")} />
+                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+              </Field>
+              <Field className={"mt-6"}>
+                <Label htmlFor="subdomain">Subdomain</Label>
+                <Input data-invalid={errors["subdomain"]} id="subdomain" placeholder="my-awesome-community" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
+                {errors.subdomain && <ErrorMessage>{errors.subdomain.message}</ErrorMessage>}
+              </Field>
 
-            <Field className={"mt-6"}>
-              <Label htmlFor="description">Description</Label>
-              <Textarea id="description" placeholder="Where wonderful things happen" data-invalid={errors["description"]} {...register("description")} />
-            </Field>
-            {errors.description && <p className="mt-2 text-red-600">{errors.description.message}</p>}
-            {errors.root && <p className="mt-2 text-red-600">{errors.root.message}</p>}
+              <Field className={"mt-6"}>
+                <Label htmlFor="description">Description</Label>
+                <Textarea id="description" placeholder="Where wonderful things happen" data-invalid={errors["description"]} {...register("description")} />
+                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+              </Field>
+              {errors.root && <ErrorMessage>{errors.root.message}</ErrorMessage>}
+            </Fieldset>
           </DialogBody>
           <DialogActions>
             <Button plain onClick={() => setIsOpen(false)}>
