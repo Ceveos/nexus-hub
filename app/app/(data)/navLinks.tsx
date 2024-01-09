@@ -27,9 +27,9 @@ export async function communityLinks(): Promise<NavigationLink[]> {
 
 export async function externalLinks(): Promise<NavigationLink[]> {
   return Promise.resolve([
-    { name: "Discord", href: "https://google.com", initial: "D" },
-    { name: "Tailwind Labs", href: "#", initial: "T" },
-    { name: "Workcation", href: "#", initial: "W" },
+    { name: "Discord", href: "https://discord.gg/nhaqfGvH8W", initial: "D" },
+    // { name: "Tailwind Labs", href: "#", initial: "T" },
+    // { name: "Workcation", href: "#", initial: "W" },
   ]);
 } 
 
