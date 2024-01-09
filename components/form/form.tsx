@@ -14,7 +14,7 @@ const Form: React.FC<FormProps> = ({
   children,
 }) => {
   return (
-    <div className={cn("divide-y divide-gray-200", className)}>
+    <div className={cn("divide-y divide-primary-300 dark:divide-primary-dark-700", className)}>
       {children}
     </div>
   )

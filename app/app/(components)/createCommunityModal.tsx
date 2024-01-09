@@ -100,12 +100,21 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
             <Fieldset>
               <Field>
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" autoFocus placeholder="My awesome community" data-invalid={errors["name"]} {...register("name")} />
+                <Input id="name" autoComplete="off" autoFocus placeholder="My awesome community" data-invalid={errors["name"]} {...register("name")} />
                 {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
               </Field>
               <Field className={"mt-6"}>
                 <Label htmlFor="subdomain">Subdomain</Label>
-                <Input data-invalid={errors["subdomain"]} id="subdomain" placeholder="my-awesome-community" postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`} {...register("subdomain")} />
+                <Input
+                  data-invalid={errors["subdomain"]}
+                  id="subdomain"
+                  placeholder="my-awesome-community"
+                  postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`}
+                  autoCapitalize="off"
+                  pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
+                  maxLength={32}
+                  {...register("subdomain")}
+                />
                 {errors.subdomain && <ErrorMessage>{errors.subdomain.message}</ErrorMessage>}
               </Field>
 

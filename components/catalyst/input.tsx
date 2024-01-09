@@ -9,7 +9,7 @@ export const Input = forwardRef<
   HTMLInputElement,
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   { postfix?: string | JSX.Element, type?: 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url' | DateType } & HeadlessInputProps & { ref?: React.Ref<HTMLInputElement> }
->(function Input({ className, postfix, ...props }, ref) {
+>(function Input({ className, prefix, postfix, ...props }, ref) {
   return (
     <span
       data-slot="control"
@@ -36,11 +36,24 @@ export const Input = forwardRef<
 
         // Invalid state
         'before:has-[[data-invalid]]:shadow-red-500/10 has-[[data-invalid]]:border-red-500 has-[[data-invalid]]:focus-within:ring-1 has-[[data-invalid]]:after:focus-within:ring-red-500 has-[[data-invalid]]:has-[[data-hover]]:border-red-500 has-[[data-invalid]]:dark:border-red-500 has-[[data-invalid]]:has-[[data-hover]]:dark:border-red-500',
-        
-        // Postfix present
-        postfix && 'flex'
+
+        // Pre/Post-fix present
+        (prefix || postfix) && 'flex'
       ])}
     >
+      {prefix && (<span className={clsx(
+        // Basic layout
+        'pl-2 pr-2 rounded-l-lg flex select-none items-center sm:text-sm',
+
+        // Background colors
+        'bg-gray-200 dark:bg-primary-dark-700',
+
+        // Foreground colors
+        'text-gray-600 dark:text-primary-dark-300',
+      )
+      }>
+        {prefix}
+      </span>)}
       <HeadlessInput
         ref={ref}
         className={clsx([
@@ -80,20 +93,23 @@ export const Input = forwardRef<
           'data-[disabled]:border-zinc-950/20 dark:data-[hover]:data-[disabled]:border-white/15 data-[disabled]:dark:border-white/15 data-[disabled]:dark:bg-white/[2.5%]',
 
           // // Postfix present
-          postfix && 'rounded-none rounded-l-lg',
+          (prefix && postfix) && 'rounded-none',
+          (prefix && !postfix) && 'rounded-none rounded-r-lg',
+          (!prefix && postfix) && 'rounded-none rounded-l-lg',
         ])}
+        prefix={prefix}
         {...props}
       />
       {postfix && (<span className={clsx(
         // Basic layout
-        'pl-2 pr-2 rounded-r-lg flex select-none items-center sm:pl-2 sm:pr-3 sm:text-sm',
+        'pl-2 pr-2 rounded-r-lg flex select-none items-center sm:text-sm',
 
         // Background colors
         'bg-gray-200 dark:bg-primary-dark-700',
 
         // Foreground colors
         'text-gray-600 dark:text-primary-dark-300',
-        )
+      )
       }>
         {postfix}
       </span>)}

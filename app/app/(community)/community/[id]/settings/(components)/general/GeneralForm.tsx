@@ -4,14 +4,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCommunity } from "@/lib/actions";
 import { toast } from "sonner";
-import FormInputText from "@/components/form/formInput.Text";
 import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
 import FormSection from "@/components/form/formSection";
 import { type GeneralFormData, GeneralSchema } from "@/lib/schemas/community/generalSchema";
-import FormInputTextArea from "@/components/form/formInput.TextArea";
 import { env } from "@/env.mjs";
 import { useEffect } from "react";
+import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
+import { Input } from "@/components/catalyst/input";
+import { Textarea } from "@/components/catalyst/textarea";
 
 interface Props {
   defaultValues: GeneralFormData;
@@ -53,9 +54,9 @@ const GeneralForm: React.FC<Props> = ({ defaultValues }) => {
         router.refresh();
         toast.success(`${data.name} has been updated.`);
       } else {
-        if (result.errorCode === "P2002") {
-          setError("subdomain", {
-            message: "This subdomain is already in use.",
+        if (result.errorField as keyof typeof errors) {
+          setError(result.errorField as "name" | "subdomain" | "description", {
+            message: result.message,
           });
         } else {
           setError("root", {
@@ -78,27 +79,32 @@ const GeneralForm: React.FC<Props> = ({ defaultValues }) => {
       onSubmit={handleSubmit(onSubmit)}
       errors={errors}
     >
-      <FormInputText
-        label="Name"
-        errors={errors}
-        register={register("name")}
-      />
-      <FormInputText
-        label="Subdomain"
-        prefix="https://"
-        postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`}
-        autoCapitalize="off"
-        pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
-        maxLength={32}
-        errors={errors}
-        register={register("subdomain")}
-      />
-      <FormInputTextArea
-        label="Description"
-        errors={errors}
-        register={register("description")}
-        rows={5}
-      />
+      <Fieldset className={"col-span-full sm:max-w-md"}>
+        <Field>
+          <Label htmlFor="name">Name</Label>
+          <Input data-invalid={errors["name"]} autoComplete="off" id="name" {...register("name")} />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        </Field>
+        <Field className={"mt-6"}>
+          <Label htmlFor="subdomain">Subdomain</Label>
+          <Input
+            data-invalid={errors["subdomain"]}
+            id="subdomain"
+            prefix="https://"
+            postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`}
+            autoCapitalize="off"
+            pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
+            maxLength={32}
+            {...register("subdomain")}
+          />
+          {errors.subdomain && <ErrorMessage>{errors.subdomain.message}</ErrorMessage>}
+        </Field>
+        <Field className={"mt-6"}>
+          <Label htmlFor="description">Description</Label>
+          <Textarea data-invalid={errors["description"]} id="description" rows={4} {...register("description")} />
+          {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+        </Field>
+      </Fieldset>
     </FormSection>
   );
 }

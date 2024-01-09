@@ -143,7 +143,7 @@ export const createCommunity = async (data: Pick<Community, "name" |  "subdomain
 
 export const updateCommunity = async (
   data: Partial<Community>,
-): Promise<ActionResult<string>> => {
+): Promise<ActionResult<Community>> => {
   try {
     const session = await getServerAuthSession();
     if (!session?.user.id) {
@@ -218,12 +218,19 @@ export const updateCommunity = async (
     };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
-      return {
-        success: false,
-        message: error.message,
-        errorCode: error.code,
-        errorDetails: error.meta,
-      };
+      if (error.code === "P2002") {
+        return {
+          success: false,
+          message: `This subdomain is already taken`,
+          errorField: "subdomain",
+        };
+      } else {
+        return {
+          success: false,        
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          message: error.message ?? error,
+        };
+      }
     }
     return {
       success: false,
