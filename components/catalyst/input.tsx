@@ -86,7 +86,7 @@ export const Input = forwardRef<
       />
       {postfix && (<span className={clsx(
         // Basic layout
-        'pl-1 pr-2 rounded-r-lg flex select-none items-center sm:pl-2 sm:pr-3 sm:text-sm',
+        'pl-2 pr-2 rounded-r-lg flex select-none items-center sm:pl-2 sm:pr-3 sm:text-sm',
 
         // Background colors
         'bg-gray-200 dark:bg-primary-dark-700',
