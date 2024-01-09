@@ -69,35 +69,34 @@ export default function Hero() {
               </a>
             </div> */}
             <h1 className="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Manage servers with confidence
+              Manage your community
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-              fugiat aliqua.
+              Nexus Hub is a platform that allows you to create and manage your community.
+              Easily harness the power of real-time in-game chat, web moderation tools, and a custom site for your community.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <a
                 href="/dashboard"
-                className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                className="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
                 Get started
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-sm font-semibold leading-6 text-white"
               >
                 Documentation <span aria-hidden="true">→</span>
-              </a>
+              </a> */}
             </div>
           </div>
           <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
             <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-              <img
-                src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              <Image
+                src="/hero.png"
                 alt="App screenshot"
-                width={2432}
-                height={1442}
+                width={1548}
+                height={1057}
                 className="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
               />
             </div>
