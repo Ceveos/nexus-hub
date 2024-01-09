@@ -63,10 +63,10 @@ export default function CommunityCard({ community }: Props) {
                 href={`${https}://${communityLink}`}
                 target="_blank"
                 rel="noreferrer"
-                className="z-20 flex flex-shrink-1 truncate rounded-md bg-stone-200 dark:bg-stone-600 dark:text-stone-100 px-2 py-1 text-sm font-medium text-stone-600 hover:bg-stone-300 hover:dark:bg-stone-500 focus:bg-stone-300 focus:hover:dark:bg-stone-500 focus:ring-0 focus:outline-none">
+                className="z-10 flex flex-shrink-1 truncate rounded-md bg-primary-200 dark:bg-primary-dark-600 dark:text-primary-dark-100 px-2 py-1 text-sm font-medium text-primary-600 hover:bg-primary-300 hover:dark:bg-primary-dark-500 focus:bg-primary-300 focus:dark:bg-primary-dark-500 focus:ring-0 focus:outline-none">
                 
                 <span
-                  className="flex-shrink-1 truncate break-all"
+                  className="flex-shrink-1 truncate break-all select-none"
                 >
                   {communityLink}
                 </span>

@@ -12,89 +12,28 @@ import { type User, type Community } from "@prisma/client";
 import { getColorForName } from "./utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-export const createCommunity = async (formData: FormData) => {
-  const session = await getServerAuthSession();
-  if (!session?.user.id) {
-    return {
-      error: "Not authenticated",
-    };
-  }
-  const name = formData.get("name") as string;
-  const subdomain = formData.get("subdomain") as string;
-  const description = formData.get("description") as string;
-  const avatarClass = getColorForName(name);
-
-  if (subdomain.length < 4) {
-    return {
-      error: "Subdomain must be at least 4 characters",
-    };
-  }
-
-  try {
-    const response = await prisma.community.create({
-      data: {
-        name,
-        subdomain,
-        description,
-        avatarClass,
-        owner: {
-          connect: {
-            id: session.user.id,
-          },
-        },
-        members: {
-          create: {
-            user: {
-              connect: {
-                id: session.user.id,
-              },
-            },
-            role: "ADMIN",
-          },
-        },
-      },
-    });
-    revalidateTag(
-      `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
-    );
-    return response;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (error.code === "P2002") {
-      return {
-        error: `This subdomain is already taken`,
-      };
-    } else {
-      return {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        error: error.message,
-      };
-    }
-  }
-};
-
 // Define an interface for the successful update result
-interface SuccessUpdateResult {
+interface SuccessResult<T> {
   success: true;
   message: string;
-  data?: any; // Optionally include data related to the update
+  data?: T; // Optionally include data related to the update
 }
 
 // Define an interface for the update result containing an error
-interface ErrorUpdateResult {
+interface ErrorResult {
   success: false;
   message: string;
   errorCode?: string; // Optional code indicating the type of error
+  errorField?: string; // Optional field that caused the error
   errorDetails?: any; // Additional details about the error
 }
 
 // Create a type that encompasses both possible results
-export type UpdateResult = SuccessUpdateResult | ErrorUpdateResult;
+export type ActionResult<T> = SuccessResult<T> | ErrorResult;
 
 export const updateUser = async (
   data: Partial<User>,
-): Promise<UpdateResult> => {
+): Promise<ActionResult<string>> => {
   const session = await getServerAuthSession();
   if (!session?.user.id) {
     return {
@@ -131,9 +70,80 @@ export const updateUser = async (
   }
 };
 
+
+export const createCommunity = async (data: Pick<Community, "name" |  "subdomain" |"description">): Promise<ActionResult<Community>> => {
+  const session = await getServerAuthSession();
+  if (!session?.user.id) {
+    return {
+      success: false,
+      message: "Not authenticated",
+    };
+  }
+  const avatarClass = getColorForName(data.name);
+
+  if (data.subdomain.length < 4) {
+    return {
+      success: false,
+      errorField: "subdomain",
+      message: "Subdomain must be at least 4 characters",
+    };
+  }
+
+  try {
+    const response = await prisma.community.create({
+      data: {
+        name: data.name,
+        subdomain: data.subdomain,
+        description: data.description,
+        avatarClass,
+        owner: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        members: {
+          create: {
+            user: {
+              connect: {
+                id: session.user.id,
+              },
+            },
+            role: "ADMIN",
+          },
+        },
+      },
+    });
+    revalidateTag(
+      `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+    );
+    
+    return {
+      success: true,
+      message: "Community created successfully",
+      data: response,
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        message: `This subdomain is already taken`,
+        errorField: "subdomain",
+      };
+    } else {
+      return {
+        success: false,        
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        message: error.message ?? error,
+      };
+    }
+  }
+};
+
 export const updateCommunity = async (
   data: Partial<Community>,
-): Promise<UpdateResult> => {
+): Promise<ActionResult<string>> => {
   try {
     const session = await getServerAuthSession();
     if (!session?.user.id) {

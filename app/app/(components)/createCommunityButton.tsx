@@ -1,17 +1,15 @@
 "use client"
 
-import { useModal } from "@/components/modal/provider";
 import SectionHeadingButton from "@/components/dashboard/sectionHeadingButton";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {
-  children: React.ReactNode;
-};
+interface Props {
+  setIsOpen: (isOpen: boolean) => void;
+}
 
-export default function CreateCommunityButton({children}: Props) {
-  const modal = useModal();
+export default function CreateCommunityButton({ setIsOpen }: Props) {
 
-  return (
-    <SectionHeadingButton action={() => modal?.show(children)}>Create</SectionHeadingButton>
+  return (<>
+    <SectionHeadingButton action={() => setIsOpen(true)}>Create</SectionHeadingButton>
+  </>
   );
 }

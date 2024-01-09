@@ -19,7 +19,7 @@ export default {
         primary: {
           ...colors.slate,
           dark: {
-            ...colors.neutral,
+            ...colors.zinc,
           },
         },
         accent: {
@@ -33,7 +33,7 @@ export default {
         th: {
           background: {
             DEFAULT: colors.white,
-            dark: colors.neutral[900],
+            dark: colors.zinc[900],
           },
 
           foreground: {
