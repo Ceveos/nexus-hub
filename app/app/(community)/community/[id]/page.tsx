@@ -1,7 +1,6 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/catalyst/table";
 import Section from "@/components/dashboard/section";
 import SectionHeading from "@/components/dashboard/sectionHeading";
-import { Stat, StatSet } from "@/components/dashboard/stats";
-import { ServerIcon } from "@heroicons/react/24/outline";
 // import { getServerAuthSession } from "@/lib/auth";
 // import WebsocketTest from "../(components)/websocketTest";
 
@@ -11,12 +10,28 @@ export default function Page() {
 
   return <>
     <Section>
-      <SectionHeading>Overview</SectionHeading>
-      <StatSet>
-        <Stat id="users" name="Users" stat="0" icon={ServerIcon} />
-        <Stat id="users" name="Users" stat="0" icon={ServerIcon} />
-        <Stat id="users" name="Users" stat="0" icon={ServerIcon} />
-      </StatSet>
+      <SectionHeading>Servers</SectionHeading>
+      <Table striped>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Name</TableHeader>
+            <TableHeader>Email</TableHeader>
+            <TableHeader>Role</TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow key={1} href="server/test">
+              <TableCell className="font-medium">Test</TableCell>
+              <TableCell>Test 2</TableCell>
+              <TableCell className="text-zinc-500">Test 3</TableCell>
+            </TableRow>
+            <TableRow key={2} href="server/test">
+            <TableCell className="font-medium">Test</TableCell>
+              <TableCell>Test 2</TableCell>
+              <TableCell className="text-zinc-500">Test 3</TableCell>
+            </TableRow>
+        </TableBody>
+      </Table>
     </Section>
   </>;
 }

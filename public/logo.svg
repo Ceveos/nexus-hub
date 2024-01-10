@@ -1,30 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="42px" height="43px" viewBox="0 0 42 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g transform="matrix(1,0,0,1,1,1)">
-        <g id="Landing">
-            <g id="Landing-page">
-                <g id="topbar">
-                    <g id="left">
-                        <g id="Logo">
-                            <g id="Oval">
-                                <circle id="path-1" cx="20" cy="20" r="20"/>
-                                <circle id="path-11" serif:id="path-1" cx="20" cy="20" r="20" style="fill:white;"/>
-                            </g>
-                            <g transform="matrix(0.101059,0,0,0.101059,-10.3422,-4.51498)">
-                                <path d="M412.605,257.366L411.948,256.709C383.023,296.244 343.395,314.651 300.197,333.055C278.409,323.76 262.351,313.524 251.083,299.249C208.917,257.179 188.633,201.207 180.463,142.514C240.002,138.289 303.578,147.962 357.011,175.946C378.139,185.712 398.52,199.704 418.147,218.017C420.119,196.701 421.058,171.532 421.058,141.669C344.239,106.924 256.153,106.924 179.43,141.669C179.43,319.062 211.452,328.736 300.197,379.449C363.678,343.198 398.145,327.892 412.605,257.366Z" style="fill:url(#_Linear1);fill-rule:nonzero;"/>
-                                <path d="M260.941,309.673C232.863,284.597 225.351,246.002 229.201,166.838C283.011,152.094 333.159,159.229 379.456,188.06C331.092,156.132 261.131,135.66 179.43,141.669C189.854,217.83 218.214,272.579 260.941,309.673Z" style="fill:url(#_Linear2);fill-rule:nonzero;"/>
-                                <path d="M412.605,257.366C375.792,218.111 326.304,195.292 264.229,188.718C313.062,216.889 344.427,247.506 361.145,278.777C350.531,304.695 330.81,319.907 300.197,333.055C328.463,326.481 384.995,294.74 412.605,257.366Z" style="fill:url(#_Linear3);fill-rule:nonzero;"/>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
+<svg width="100%" height="100%" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g>
+        <circle cx="20" cy="20" r="20" style="fill:white;"/>
     </g>
-    <defs>
-        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-409.087,-214.528,214.528,-409.087,499.907,333.598)"><stop offset="0" style="stop-color:rgb(45,51,201);stop-opacity:1"/><stop offset="0.5" style="stop-color:rgb(17,126,184);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(0,164,255);stop-opacity:1"/></linearGradient>
-        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(137.431,106.314,-106.314,137.431,170.446,133.021)"><stop offset="0" style="stop-color:rgb(45,51,201);stop-opacity:1"/><stop offset="0.5" style="stop-color:rgb(17,126,184);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(0,164,255);stop-opacity:1"/></linearGradient>
-        <linearGradient id="_Linear3" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(147.589,133.496,-133.496,147.589,252.963,201.172)"><stop offset="0" style="stop-color:rgb(45,51,201);stop-opacity:1"/><stop offset="0.5" style="stop-color:rgb(17,126,184);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(0,164,255);stop-opacity:1"/></linearGradient>
-    </defs>
+    <g transform="matrix(0.0982916,0,0,0.0947548,-9.51146,-3.45464)">
+        <path d="M356.623,175.743C316.793,157.49 274.282,154.486 229.201,166.838C225.847,235.797 231.112,273.975 251.086,299.246C254.041,302.986 257.322,306.441 260.941,309.673C260.781,309.534 260.62,309.394 260.46,309.254C270.749,318.587 283.862,326.086 300.197,333.055C330.81,319.907 350.531,304.695 361.145,278.777C344.427,247.506 313.062,216.889 264.229,188.718C326.304,195.292 375.792,218.111 412.605,257.366C398.145,327.892 363.678,343.198 300.197,379.449C211.452,328.736 179.43,319.062 179.43,141.669C256.153,106.924 344.239,106.924 421.058,141.669C421.058,171.532 420.119,196.701 418.147,218.017C398.52,199.704 378.139,185.712 357.011,175.946C356.882,175.878 356.752,175.811 356.623,175.743Z" style="fill:rgb(36,175,248);"/>
+    </g>
 </svg>

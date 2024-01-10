@@ -4,7 +4,6 @@ import NavbarAvatar from "@/components/dashboard/navbar.avatar.component";
 import { type Metadata } from "next";
 import { dashboardLinks, externalLinks } from "../(data)/navLinks";
 import { userNavigationLinks } from "../(data)/navLinks.client";
-import DashboardContent from "@/components/dashboard/dashboardContent";
 
 const title =
   "Nexus Hub - Dashboard";
@@ -35,9 +34,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       navbarAvatar={<NavbarAvatar />}
       sidebarProps={sidebarProps}
     >
-      <DashboardContent>
         {children}
-      </DashboardContent>
     </Dashboard>
   );
 };
