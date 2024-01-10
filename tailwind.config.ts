@@ -32,13 +32,13 @@ export default {
         /* Theme colors */
         th: {
           background: {
-            DEFAULT: colors.white,
-            dark: colors.zinc[900],
+            DEFAULT: colors.gray[200],
+            dark: colors.neutral[800],
           },
 
           foreground: {
             DEFAULT: colors.white,
-            dark: colors.neutral[800],
+            dark: colors.zinc[900],
           },
         },
       },

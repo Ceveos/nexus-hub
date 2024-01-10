@@ -4,6 +4,7 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
 import { type NavigationLink } from "@/types";
+import { cn } from "@/lib/utils";
 
 export interface SidebarProps {
   header?: React.ReactNode;
@@ -16,9 +17,12 @@ type Props = {
   children: ReactNode;
   sidebarProps: SidebarProps;
   navbarAvatar: ReactNode;
+  content?: {
+    className?: string;
+  }
 };
 
-export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Props) {
+export default function Dashboard({ content, sidebarProps, children, navbarAvatar, }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -31,7 +35,7 @@ export default function Dashboard({ sidebarProps, children, navbarAvatar, }: Pro
           setOpen={setSidebarOpen}
         />
 
-        <div className="lg:pl-72 h-full flex flex-col">
+        <div className={cn("lg:pl-72 h-full flex flex-col", content && content.className)}>
           <Navbar
             userNavigation={sidebarProps.userNavigationLinks}
             setSidebarOpen={setSidebarOpen}

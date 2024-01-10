@@ -3,6 +3,7 @@ import CommunityCard from "../../(components)/communityCard";
 import CardContainer from "@/components/dashboard/cardContainer";
 import { getServerAuthSession } from "@/lib/auth";
 import SectionHeading from "@/components/dashboard/sectionHeading";
+import DashboardContent from "@/components/dashboard/dashboardContent";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {
@@ -18,12 +19,14 @@ export default async function Page() {
   });
 
   return <>
-    <SectionHeading>Overview</SectionHeading>
-    <CardContainer>
-      {communities.map(community  => (
-        <CommunityCard key={community.id} community={community} />
-      ))}
-    </CardContainer>
+    <DashboardContent>
+      <SectionHeading>Overview</SectionHeading>
+      <CardContainer>
+        {communities.map(community => (
+          <CommunityCard key={community.id} community={community} />
+        ))}
+      </CardContainer>
+    </DashboardContent>
     {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
     {/* <WebsocketTest /> */}
   </>;
