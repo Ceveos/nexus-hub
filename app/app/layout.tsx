@@ -1,5 +1,9 @@
 import { type ReactNode } from "react";
 import { type Metadata } from "next";
+import { cal, inter } from "@/styles/fonts";
+import { Analytics } from "@vercel/analytics/react";
+import { Providers } from "../(providers)/providers";
+import { cn } from "@/lib/utils";
 
 const title =
   "Nexus Hub - Dashboard";
@@ -19,7 +23,16 @@ export const metadata: Metadata = {
 };
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
-  return children;
+  return (
+    <html lang="en" className="h-full" suppressHydrationWarning>
+    <body className={cn(cal.variable, inter.variable, "h-full flex flex-col bg-th-foreground dark:bg-th-foreground-dark")}>
+      <Providers>
+        {children}
+        <Analytics />
+      </Providers>
+    </body>
+  </html>
+  );
 };
 
 export default AppLayout;

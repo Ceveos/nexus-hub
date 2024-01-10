@@ -1,9 +1,5 @@
 import "@/styles/globals.css";
-import { cal, inter } from "@/styles/fonts";
-import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./(providers)/providers";
 import { type Metadata } from "next";
-import { cn } from "@/lib/utils";
 
 const title =
   "Nexus Hub";
@@ -28,14 +24,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn(cal.variable, inter.variable, "h-full flex flex-col bg-th-foreground dark:bg-th-foreground-dark")}>
-        <Providers>
-          {children}
-          <Analytics />
-        </Providers>
-      </body>
-    </html>
-  );
+  return children;
 }
