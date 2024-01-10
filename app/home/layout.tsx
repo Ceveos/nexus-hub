@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Providers } from "../(providers)/providers";
 import { Analytics } from "@vercel/analytics/react";
-import { cn } from "@/lib/utils";
 
 const title =
   "Nexus Hub";
