@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { nodes as defaultNodes, Tag } from '@markdoc/markdoc'
 import { slugifyWithCounter } from '@sindresorhus/slugify'
 import yaml from 'js-yaml'
@@ -13,10 +11,12 @@ const nodes = {
   document: {
     ...defaultNodes.document,
     render: DocsLayout,
+    // @ts-ignore
     transform(node, config) {
       documentSlugifyMap.set(config, slugifyWithCounter())
 
       return new Tag(
+        // @ts-ignore
         this.render,
         {
           frontmatter: yaml.load(node.attributes.frontmatter),
@@ -28,10 +28,12 @@ const nodes = {
   },
   heading: {
     ...defaultNodes.heading,
+    // @ts-ignore
     transform(node, config) {
       let slugify = documentSlugifyMap.get(config)
       let attributes = node.transformAttributes(config)
       let children = node.transformChildren(config)
+      // @ts-ignore
       let text = children.filter((child) => typeof child === 'string').join(' ')
       let id = attributes.id ?? slugify(text)
 

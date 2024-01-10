@@ -52,13 +52,13 @@ export default function withSearch(nextConfig = {}) {
         test: __filename,
         use: [
           createLoader(function () {
-            let pagesDir = path.resolve('./app/(docs)/app/docs')
+            let pagesDir = path.resolve('./app/docs')
             this.addContextDependency(pagesDir)
 
             let files = glob.sync('**/page.md', { cwd: pagesDir })
             let data = files.map((file) => {
               let url =
-                file === 'page.md' ? '/' : `/${file.replace(/\/page\.md$/, '')}`
+                file === 'page.md' ? '/docs' : `/docs/${file.replace(/\/page\.md$/, '')}`
               let md = fs.readFileSync(path.join(pagesDir, file), 'utf8')
 
               let sections

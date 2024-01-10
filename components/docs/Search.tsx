@@ -46,9 +46,9 @@ function useAutocomplete({
 }: {
   close: (autocomplete: Autocomplete) => void
 }) {
-  let id = useId()
-  let router = useRouter()
-  let [autocompleteState, setAutocompleteState] = useState<
+  const id = useId()
+  const router = useRouter()
+  const [autocompleteState, setAutocompleteState] = useState<
     AutocompleteState<Result> | EmptyObject
   >({})
 
@@ -67,7 +67,7 @@ function useAutocomplete({
     }
   }
 
-  let [autocomplete] = useState<Autocomplete>(() =>
+  const [autocomplete] = useState<Autocomplete>(() =>
     createAutocomplete<
       Result,
       React.SyntheticEvent,
@@ -109,7 +109,7 @@ function useAutocomplete({
 }
 
 function LoadingIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
-  let id = useId()
+  const id = useId()
 
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
@@ -159,12 +159,12 @@ function SearchResult({
   collection: AutocompleteCollection<Result>
   query: string
 }) {
-  let id = useId()
+  const id = useId()
 
-  let sectionTitle = navigation.find((section) =>
+  const sectionTitle = navigation.find((section) =>
     section.links.find((link) => link.href === result.url.split('#')[0]),
   )?.title
-  let hierarchy = [sectionTitle, result.pageTitle].filter(
+  const hierarchy = [sectionTitle, result.pageTitle].filter(
     (x): x is string => typeof x === 'string',
   )
 
@@ -254,7 +254,7 @@ const SearchInput = forwardRef<
     onClose: () => void
   }
 >(function SearchInput({ autocomplete, autocompleteState, onClose }, inputRef) {
-  let inputProps = autocomplete.getInputProps({ inputElement: null })
+  const inputProps = autocomplete.getInputProps({ inputElement: null })
 
   return (
     <div className="group relative flex h-12">
@@ -300,8 +300,8 @@ function CloseOnNavigation({
   close: (autocomplete: Autocomplete) => void
   autocomplete: Autocomplete
 }) {
-  let pathname = usePathname()
-  let searchParams = useSearchParams()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     close(autocomplete)
@@ -319,11 +319,11 @@ function SearchDialog({
   setOpen: (open: boolean) => void
   className?: string
 }) {
-  let formRef = useRef<React.ElementRef<'form'>>(null)
-  let panelRef = useRef<React.ElementRef<'div'>>(null)
-  let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
+  const formRef = useRef<React.ElementRef<'form'>>(null)
+  const panelRef = useRef<React.ElementRef<'div'>>(null)
+  const inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
 
-  let close = useCallback(
+  const close = useCallback(
     (autocomplete: Autocomplete) => {
       setOpen(false)
       autocomplete.setQuery('')
@@ -331,7 +331,7 @@ function SearchDialog({
     [setOpen],
   )
 
-  let { autocomplete, autocompleteState } = useAutocomplete({
+  const { autocomplete, autocompleteState } = useAutocomplete({
     close() {
       close(autocomplete)
     },
@@ -392,7 +392,7 @@ function SearchDialog({
                     <SearchResults
                       autocomplete={autocomplete}
                       query={autocompleteState.query}
-                      collection={autocompleteState.collections[0]}
+                      collection={autocompleteState.collections[0]!}
                     />
                   )}
                 </div>
@@ -406,8 +406,8 @@ function SearchDialog({
 }
 
 function useSearchProps() {
-  let buttonRef = useRef<React.ElementRef<'button'>>(null)
-  let [open, setOpen] = useState(false)
+  const buttonRef = useRef<React.ElementRef<'button'>>(null)
+  const [open, setOpen] = useState(false)
 
   return {
     buttonProps: {
@@ -419,7 +419,7 @@ function useSearchProps() {
     dialogProps: {
       open,
       setOpen: useCallback((open: boolean) => {
-        let { width = 0, height = 0 } =
+        const { width = 0, height = 0 } =
           buttonRef.current?.getBoundingClientRect() ?? {}
         if (!open || (width !== 0 && height !== 0)) {
           setOpen(open)
@@ -430,8 +430,8 @@ function useSearchProps() {
 }
 
 export function Search() {
-  let [modifierKey, setModifierKey] = useState<string>()
-  let { buttonProps, dialogProps } = useSearchProps()
+  const [modifierKey, setModifierKey] = useState<string>()
+  const { buttonProps, dialogProps } = useSearchProps()
 
   useEffect(() => {
     setModifierKey(

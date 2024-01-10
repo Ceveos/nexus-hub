@@ -25,6 +25,7 @@ type H3Node = HeadingNode & {
 function isHeadingNode(node: Node): node is HeadingNode {
   return (
     node.type === 'heading' &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     [1, 2, 3, 4, 5, 6].includes(node.attributes.level) &&
     (typeof node.attributes.id === 'string' ||
       typeof node.attributes.id === 'undefined')
@@ -41,7 +42,7 @@ function isH3Node(node: Node): node is H3Node {
 
 function getNodeText(node: Node) {
   let text = ''
-  for (let child of node.children ?? []) {
+  for (const child of node.children ?? []) {
     if (child.type === 'text') {
       text += child.attributes.content
     }
@@ -66,20 +67,20 @@ export function collectSections(
   nodes: Array<Node>,
   slugify = slugifyWithCounter(),
 ) {
-  let sections: Array<Section> = []
+  const sections: Array<Section> = []
 
-  for (let node of nodes) {
+  for (const node of nodes) {
     if (isH2Node(node) || isH3Node(node)) {
-      let title = getNodeText(node)
+      const title = getNodeText(node)
       if (title) {
-        let id = slugify(title)
+        const id = slugify(title)
         if (isH3Node(node)) {
           if (!sections[sections.length - 1]) {
             throw new Error(
               'Cannot add `h3` to table of contents without a preceding `h2`',
             )
           }
-          sections[sections.length - 1].children.push({
+          sections[sections.length - 1]?.children.push({
             ...node.attributes,
             id,
             title,
