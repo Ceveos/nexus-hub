@@ -10,7 +10,7 @@ export const config = {
      * 3. /_static (inside /public)
      * 4. all root files inside /public (e.g. /favicon.ico)
      */
-    "/((?!api/|docs|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
+    "/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
     "/",
   ],
 };
@@ -37,6 +37,10 @@ export default async function middleware(req: NextRequest) {
 
   // rewrites for app pages
   if (hostname == process.env.NEXT_PUBLIC_ROOT_DOMAIN && path !== "/") {
+    if (path.startsWith("/docs")) {
+      return;
+    }
+
     const session = await getToken({ req });
     if (!session && url.pathname !== "/login") {
       return NextResponse.redirect(new URL(`/login?callbackUrl=${encodeURIComponent(path)}`, req.url));
