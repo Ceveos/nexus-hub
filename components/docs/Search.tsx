@@ -266,6 +266,7 @@ const SearchInput = forwardRef<
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
         {...inputProps}
+        autoFocus
         onKeyDown={(event) => {
           if (
             event.key === 'Escape' &&
@@ -452,8 +453,8 @@ export function Search() {
         </span>
         {modifierKey && (
           <kbd className="ml-auto hidden font-medium text-slate-400 dark:text-slate-500 md:block">
-            <kbd className="font-sans">{modifierKey}</kbd>
-            <kbd className="font-sans">K</kbd>
+            <kbd className="font-sansdoc">{modifierKey}</kbd>
+            <kbd className="font-sansdoc">K</kbd>
           </kbd>
         )}
       </button>

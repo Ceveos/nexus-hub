@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { Providers } from '@/app/docs/providers'
 import { Layout } from '@/components/docs/Layout'
 
-import '@/styles/globals.css'
+// import '@/styles/globals.css'
 
 const inter = Inter({
   subsets: ['latin'],

@@ -60,7 +60,7 @@ export default {
         wiggle: "wiggle 0.8s both",
       },
       fontFamily: {
-        sans: 'var(--font-inter)',
+        sansdoc: 'var(--font-inter)',
         display: ['var(--font-lexend)', { fontFeatureSettings: '"ss01"' }],
       },
       maxWidth: {
