@@ -3,10 +3,12 @@
  * for Docker builds.
  */
 await import("./env.mjs");
+import withMarkdoc from '@markdoc/next.js'
+import withSearch from './markdoc/search.mjs'
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   experimental: {
     serverActions: {
       allowedOrigins: ["localhost:3000"],
@@ -16,6 +18,7 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  pageExtensions: ['js', 'jsx', 'md', 'ts', 'tsx'],
   images: {
     remotePatterns: [
       { hostname: "public.blob.vercel-storage.com" },
@@ -33,4 +36,6 @@ const config = {
   },
 };
 
-export default config;
+export default withSearch(
+  withMarkdoc({ schemaPath: './markdoc' })(config),
+)

@@ -7,11 +7,12 @@ export default {
     hoverOnlyWhenSupported: true
   },
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./lib/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}", // Tremor module
+    "./pages/**/*.{js,ts,jsx,tsx,mdx,md}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx,md}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx,md}",
+    "./lib/**/*.{js,ts,jsx,tsx,md}",
+    "./markdoc/**/*.{js,ts,jsx,tsx,md}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx,md", // Tremor module
   ],
   theme: {
     extend: {
@@ -58,6 +59,28 @@ export default {
       animation: {
         wiggle: "wiggle 0.8s both",
       },
+      fontFamily: {
+        sansdoc: 'var(--font-inter)',
+        display: ['var(--font-lexend)', { fontFeatureSettings: '"ss01"' }],
+      },
+      maxWidth: {
+        '8xl': '88rem',
+      },
+    },
+    fontSize: {
+      xs: ['0.75rem', { lineHeight: '1rem' }],
+      sm: ['0.875rem', { lineHeight: '1.5rem' }],
+      base: ['1rem', { lineHeight: '2rem' }],
+      lg: ['1.125rem', { lineHeight: '1.75rem' }],
+      xl: ['1.25rem', { lineHeight: '2rem' }],
+      '2xl': ['1.5rem', { lineHeight: '2.5rem' }],
+      '3xl': ['2rem', { lineHeight: '2.5rem' }],
+      '4xl': ['2.5rem', { lineHeight: '3rem' }],
+      '5xl': ['3rem', { lineHeight: '3.5rem' }],
+      '6xl': ['3.75rem', { lineHeight: '1' }],
+      '7xl': ['4.5rem', { lineHeight: '1' }],
+      '8xl': ['6rem', { lineHeight: '1' }],
+      '9xl': ['8rem', { lineHeight: '1' }],
     },
   },
   plugins: [

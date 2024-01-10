@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { type Dispatch, Fragment, type SetStateAction } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { type NavigationLink } from "@/types";
+import { type NavigationLink } from "@/types/Navigation";
 import { useSelectedLayoutSegments, usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";

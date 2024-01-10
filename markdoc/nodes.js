@@ -1,0 +1,67 @@
+import { nodes as defaultNodes, Tag } from '@markdoc/markdoc'
+import { slugifyWithCounter } from '@sindresorhus/slugify'
+import yaml from 'js-yaml'
+
+import { DocsLayout } from '@/components/docs/DocsLayout'
+import { Fence } from '@/components/docs/Fence'
+
+let documentSlugifyMap = new Map()
+
+const nodes = {
+  document: {
+    ...defaultNodes.document,
+    render: DocsLayout,
+    // @ts-ignore
+    transform(node, config) {
+      documentSlugifyMap.set(config, slugifyWithCounter())
+
+      return new Tag(
+        // @ts-ignore
+        this.render,
+        {
+          frontmatter: yaml.load(node.attributes.frontmatter),
+          nodes: node.children,
+        },
+        node.transformChildren(config),
+      )
+    },
+  },
+  heading: {
+    ...defaultNodes.heading,
+    // @ts-ignore
+    transform(node, config) {
+      let slugify = documentSlugifyMap.get(config)
+      let attributes = node.transformAttributes(config)
+      let children = node.transformChildren(config)
+      // @ts-ignore
+      let text = children.filter((child) => typeof child === 'string').join(' ')
+      let id = attributes.id ?? slugify(text)
+
+      return new Tag(
+        `h${node.attributes.level}`,
+        { ...attributes, id },
+        children,
+      )
+    },
+  },
+  th: {
+    ...defaultNodes.th,
+    attributes: {
+      ...defaultNodes.th.attributes,
+      scope: {
+        type: String,
+        default: 'col',
+      },
+    },
+  },
+  fence: {
+    render: Fence,
+    attributes: {
+      language: {
+        type: String,
+      },
+    },
+  },
+}
+
+export default nodes
