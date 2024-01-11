@@ -367,7 +367,9 @@ function SearchDialog({
       <Dialog
         onClose={setOpen}
         className={clsx('fixed inset-0 z-50', className)}
+        tabIndex={-1}
         initialFocus={inputRef}
+        onFocus={() => inputRef.current?.focus()}
       >
         <Transition.Child
           as={Fragment}
