@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "cd nextjs && pnpm run dev",
     "build": "cd nextjs && pnpm run build",
-    "ws": "cd websocket && pnpm run dev",
-    "ws-start": "cd websocket && pnpm run start",
-    "ws-deploy": "cd websocket && pnpm run deploy"
+    "dev-ws": "cd websocket && pnpm run dev",
+    "start-ws": "cd websocket && pnpm run start",
+    "deploy-ws": "cd websocket && pnpm run deploy"
   }
 }

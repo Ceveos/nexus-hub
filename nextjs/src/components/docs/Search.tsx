@@ -287,6 +287,7 @@ const SearchInput = forwardRef<
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
         {...inputProps}
+        autoFocus
         onKeyDown={(event) => {
           if (
             event.key === 'Escape' &&
