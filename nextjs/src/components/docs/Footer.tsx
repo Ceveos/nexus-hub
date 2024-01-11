@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { Button } from '@/components/docs/Button'
-import { navigation } from '@/components/docs/Navigation'
+import { Button } from '@nextjs/components/docs/Button'
+import { navigation } from '@nextjs/components/docs/Navigation'
 
 function PageLink({
   label,

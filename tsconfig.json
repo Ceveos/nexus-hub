@@ -1,7 +1,13 @@
 {
 	"compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
+      "@nextjs/*": ["./nextjs/src/*"],
+      "@nextjs-root*": ["./nextjs/*"],
+      "@ws/*": ["./websocket/src/*"],
+      "@ws-root/*": ["./websocket/*"],
+      "@shared/*": ["./shared/*"],
     },
 	}
 }

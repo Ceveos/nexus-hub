@@ -1,5 +1,5 @@
-import Form from "@/components/form/form";
-import { getCommunityDataById } from "@/lib/fetchers";
+import Form from "@nextjs/components/form/form";
+import { getCommunityDataById } from "@nextjs/lib/fetchers";
 import { notFound } from "next/navigation";
 import DomainSection from "../(components)/domain/DomainSection";
 

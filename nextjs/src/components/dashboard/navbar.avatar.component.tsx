@@ -1,6 +1,6 @@
-import { getServerAuthSession } from "@/lib/auth";
+import { getServerAuthSession } from "@nextjs/lib/auth";
 import { Avatar } from "../catalyst/avatar";
-import { generateInitials } from "@/lib/utils";
+import { generateInitials } from "@nextjs/lib/utils";
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 
 const NavbarAvatar: React.FC = async () => {

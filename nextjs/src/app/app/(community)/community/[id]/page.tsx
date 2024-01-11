@@ -1,7 +1,7 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/catalyst/table";
-import Section from "@/components/dashboard/section";
-import SectionHeading from "@/components/dashboard/sectionHeading";
-// import { getServerAuthSession } from "@/lib/auth";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@nextjs/components/catalyst/table";
+import Section from "@nextjs/components/dashboard/section";
+import SectionHeading from "@nextjs/components/dashboard/sectionHeading";
+// import { getServerAuthSession } from "@nextjs/lib/auth";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default function Page() {

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
-import SettingsTabs, { type Tab } from "@/components/dashboard/tabs";
-import DashboardContent from "@/components/dashboard/dashboardContent";
+import SettingsTabs, { type Tab } from "@nextjs/components/dashboard/tabs";
+import DashboardContent from "@nextjs/components/dashboard/dashboardContent";
 
 const tabs: Tab[] = [
   { name: "General" },

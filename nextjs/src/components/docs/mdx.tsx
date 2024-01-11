@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import clsx from 'clsx'
 
-import { Feedback } from '@/components/docs/Feedback'
-import { Heading } from '@/components/docs/Heading'
-import { Prose } from '@/components/docs/Prose'
+import { Feedback } from '@nextjs/components/docs/Feedback'
+import { Heading } from '@nextjs/components/docs/Heading'
+import { Prose } from '@nextjs/components/docs/Prose'
 
 export const a = Link
-export { Button } from '@/components/docs/Button'
-export { CodeGroup, Code as code, Pre as pre } from '@/components/docs/Code'
+export { Button } from '@nextjs/components/docs/Button'
+export { CodeGroup, Code as code, Pre as pre } from '@nextjs/components/docs/Code'
 
 export function wrapper({ children }: { children: React.ReactNode }) {
   return (

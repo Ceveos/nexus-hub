@@ -1,5 +1,5 @@
 
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 
 interface Props {
   className?: string;

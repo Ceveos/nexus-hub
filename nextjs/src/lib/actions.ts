@@ -1,13 +1,13 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import prisma from "@nextjs/lib/prisma";
 import { revalidateTag } from "next/cache";
-import { getServerAuthSession } from "@/lib/auth";
+import { getServerAuthSession } from "@nextjs/lib/auth";
 import {
   addDomainToVercel,
   removeDomainFromVercelProject,
   validDomainRegex,
-} from "@/lib/domains";
+} from "@nextjs/lib/domains";
 import { type User, type Community } from "@prisma/client";
 import { getColorForName } from "./utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";

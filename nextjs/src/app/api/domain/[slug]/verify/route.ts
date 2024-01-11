@@ -2,8 +2,8 @@ import {
   getConfigResponse,
   getDomainResponse,
   verifyDomain,
-} from "@/lib/domains";
-import { type DomainVerificationStatusProps } from "@/lib/types";
+} from "@nextjs/lib/domains";
+import { type DomainVerificationStatusProps } from "@nextjs/lib/types";
 import { NextResponse } from "next/server";
 
 export async function GET(

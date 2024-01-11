@@ -1,9 +1,9 @@
-import { cn, generateInitials, getColorForName } from "@/lib/utils";
+import { cn, generateInitials, getColorForName } from "@nextjs/lib/utils";
 import { Prisma } from "@prisma/client";
 
-import { Avatar } from "@/components/catalyst/avatar";
+import { Avatar } from "@nextjs/components/catalyst/avatar";
 import Link from "next/link";
-import { Badge } from "@/components/catalyst/badge";
+import { Badge } from "@nextjs/components/catalyst/badge";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 
 const communityWith = Prisma.validator<Prisma.CommunityDefaultArgs>()({

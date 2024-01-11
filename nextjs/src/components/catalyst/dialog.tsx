@@ -11,7 +11,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { Fragment } from 'react'
 import { Text } from './text'
-import { cn } from '@/lib/utils'
+import { cn } from '@nextjs/lib/utils'
 
 const sizes = {
   xs: 'sm:max-w-xs',

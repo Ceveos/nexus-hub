@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
-import Dashboard, { type SidebarProps } from "@/components/dashboard/dashboard";
-import NavbarAvatar from "@/components/dashboard/navbar.avatar.component";
+import Dashboard, { type SidebarProps } from "@nextjs/components/dashboard/dashboard";
+import NavbarAvatar from "@nextjs/components/dashboard/navbar.avatar.component";
 import { type Metadata } from "next";
 import { dashboardLinks, externalLinks } from "../(data)/navLinks";
 import { userNavigationLinks } from "../(data)/navLinks.client";

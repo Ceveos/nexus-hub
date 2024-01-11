@@ -1,10 +1,10 @@
 import glob from 'fast-glob'
 
-import { Providers } from '@/app/docs/providers'
-import { Layout } from '@/components/docs/Layout'
+import { Providers } from '@nextjs/app/docs/providers'
+import { Layout } from '@nextjs/components/docs/Layout'
 
 import { type Metadata } from 'next'
-import { type Section } from '@/components/docs/SectionProvider'
+import { type Section } from '@nextjs/components/docs/SectionProvider'
 
 export const metadata: Metadata = {
   title: {

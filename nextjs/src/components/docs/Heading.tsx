@@ -4,9 +4,9 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useInView } from 'framer-motion'
 
-import { useSectionStore } from '@/components/docs/SectionProvider'
-import { Tag } from '@/components/docs/Tag'
-import { remToPx } from '@/lib/remToPx'
+import { useSectionStore } from '@nextjs/components/docs/SectionProvider'
+import { Tag } from '@nextjs/components/docs/Tag'
+import { remToPx } from '@nextjs/lib/remToPx'
 
 function AnchorIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (

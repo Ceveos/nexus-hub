@@ -1,9 +1,9 @@
-import prisma from "@/lib/prisma";
+import prisma from "@nextjs/lib/prisma";
 import CommunityCard from "../../(components)/communityCard";
-import CardContainer from "@/components/dashboard/cardContainer";
-import { getServerAuthSession } from "@/lib/auth";
-import SectionHeading from "@/components/dashboard/sectionHeading";
-import DashboardContent from "@/components/dashboard/dashboardContent";
+import CardContainer from "@nextjs/components/dashboard/cardContainer";
+import { getServerAuthSession } from "@nextjs/lib/auth";
+import SectionHeading from "@nextjs/components/dashboard/sectionHeading";
+import DashboardContent from "@nextjs/components/dashboard/dashboardContent";
 // import WebsocketTest from "../(components)/websocketTest";
 
 export default async function Page() {

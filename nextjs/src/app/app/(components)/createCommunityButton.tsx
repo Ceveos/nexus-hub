@@ -1,6 +1,6 @@
 "use client"
 
-import SectionHeadingButton from "@/components/dashboard/sectionHeadingButton";
+import SectionHeadingButton from "@nextjs/components/dashboard/sectionHeadingButton";
 
 interface Props {
   setIsOpen: (isOpen: boolean) => void;

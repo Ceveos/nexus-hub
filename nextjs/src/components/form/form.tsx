@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 import { type ReactNode } from "react";
 
 export interface FormProps{

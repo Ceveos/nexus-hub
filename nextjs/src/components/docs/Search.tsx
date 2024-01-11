@@ -21,8 +21,8 @@ import {
 import { Dialog, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-import { navigation } from '@/components/docs/Navigation'
-import { type Result } from '@/mdx/search.mjs'
+import { navigation } from '@nextjs/components/docs/Navigation'
+import { type Result } from '@nextjs/mdx/search.mjs'
 
 type EmptyObject = Record<string, never>
 
@@ -75,7 +75,7 @@ function useAutocomplete({ close }: { close: () => void }) {
         navigate,
       },
       getSources({ query }) {
-        return import('@/mdx/search.mjs').then(({ search }) => {
+        return import('@nextjs/mdx/search.mjs').then(({ search }) => {
           return [
             {
               sourceId: 'documentation',

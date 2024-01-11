@@ -2,17 +2,17 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateCommunity } from "@/lib/actions";
+import { updateCommunity } from "@nextjs/lib/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
-import FormSection from "@/components/form/formSection";
-import { type GeneralFormData, GeneralSchema } from "@/lib/schemas/community/generalSchema";
-import { env } from "~/env.mjs";
+import FormSection from "@nextjs/components/form/formSection";
+import { type GeneralFormData, GeneralSchema } from "@nextjs/lib/schemas/community/generalSchema";
+import { env } from "@nextjs-root/env.mjs";
 import { useEffect } from "react";
-import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
-import { Input } from "@/components/catalyst/input";
-import { Textarea } from "@/components/catalyst/textarea";
+import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
+import { Input } from "@nextjs/components/catalyst/input";
+import { Textarea } from "@nextjs/components/catalyst/textarea";
 
 interface Props {
   defaultValues: GeneralFormData;

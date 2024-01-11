@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-import { Footer } from '@/components/docs/Footer'
-import { Header } from '@/components/docs/Header'
-import { Logo } from '@/components/docs/Logo'
-import { Navigation } from '@/components/docs/Navigation'
-import { type Section, SectionProvider } from '@/components/docs/SectionProvider'
+import { Footer } from '@nextjs/components/docs/Footer'
+import { Header } from '@nextjs/components/docs/Header'
+import { Logo } from '@nextjs/components/docs/Logo'
+import { Navigation } from '@nextjs/components/docs/Navigation'
+import { type Section, SectionProvider } from '@nextjs/components/docs/SectionProvider'
 
 export function Layout({
   children,

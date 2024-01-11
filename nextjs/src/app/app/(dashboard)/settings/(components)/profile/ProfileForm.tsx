@@ -1,19 +1,19 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import FormSection from "@/components/form/formSection";
+import FormSection from "@nextjs/components/form/formSection";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateUser } from "@/lib/actions";
-import { type UserFormData, UserSchema } from "@/lib/schemas/userSchema";
+import { updateUser } from "@nextjs/lib/actions";
+import { type UserFormData, UserSchema } from "@nextjs/lib/schemas/userSchema";
 import { toast } from "sonner";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import FormInputAvatar from "@/components/form/formInputAvatar";
-import { supabaseInstance } from "@/lib/supabase";
+import FormInputAvatar from "@nextjs/components/form/formInputAvatar";
+import { supabaseInstance } from "@nextjs/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import { type User } from "@prisma/client";
-import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
-import { Input } from "@/components/catalyst/input";
+import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
+import { Input } from "@nextjs/components/catalyst/input";
 
 interface Props {
   defaultValues: UserFormData;

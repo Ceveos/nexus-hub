@@ -4,7 +4,7 @@ import {
   type DomainVerificationResponse,
   type RemoveDomainResponse,
   type RemoveDomainByNameResponse,
-} from "@/lib/types";
+} from "@nextjs/lib/types";
 
 export const addDomainToVercel = async (domain: string) => {
   return await fetch(

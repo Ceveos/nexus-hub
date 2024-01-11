@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 import { type TextareaHTMLAttributes } from "react";
 import { type FieldErrors, type FieldValues } from "react-hook-form";
 import { type UseFormRegisterReturn } from "react-hook-form";

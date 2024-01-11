@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import prisma from "@/lib/prisma";
+import prisma from "@nextjs/lib/prisma";
 
 export async function getCommunityDataByDomain(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)

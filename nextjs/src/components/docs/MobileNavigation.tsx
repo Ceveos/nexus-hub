@@ -13,8 +13,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { create } from 'zustand'
 
-import { Header } from '@/components/docs/Header'
-import { Navigation } from '@/components/docs/Navigation'
+import { Header } from '@nextjs/components/docs/Header'
+import { Navigation } from '@nextjs/components/docs/Navigation'
 
 function MenuIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (

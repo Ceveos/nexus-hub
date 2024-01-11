@@ -1,5 +1,5 @@
-import { Button } from '@/components/docs/Button'
-import { HeroPattern } from '@/components/docs/HeroPattern'
+import { Button } from '@nextjs/components/docs/Button'
+import { HeroPattern } from '@nextjs/components/docs/HeroPattern'
 
 export default function NotFound() {
   return (

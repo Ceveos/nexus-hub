@@ -1,10 +1,10 @@
 import { type ReactNode } from "react";
-import Dashboard, { type SidebarProps } from "@/components/dashboard/dashboard";
-import NavbarAvatar from "@/components/dashboard/navbar.avatar.component";
-import DashboardContent from "@/components/dashboard/dashboardContent";
+import Dashboard, { type SidebarProps } from "@nextjs/components/dashboard/dashboard";
+import NavbarAvatar from "@nextjs/components/dashboard/navbar.avatar.component";
+import DashboardContent from "@nextjs/components/dashboard/dashboardContent";
 import { type Metadata } from "next";
 import { communityLinks, externalLinks } from "../../../(data)/navLinks";
-import { getCommunityDataById } from "@/lib/fetchers";
+import { getCommunityDataById } from "@nextjs/lib/fetchers";
 import { notFound } from "next/navigation";
 import communitySidebarHeader from "../../../(components)/communitySidebarHeader";
 import { userNavigationLinks } from "../../../(data)/navLinks.client";

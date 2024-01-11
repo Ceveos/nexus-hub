@@ -1,9 +1,9 @@
 import { type ReactNode } from "react";
 import { type Metadata } from "next";
-import { cal, inter } from "@/styles/fonts";
+import { cal, inter } from "@nextjs/styles/fonts";
 import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "../(providers)/providers";
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 
 const title =
   "Nexus Hub - Dashboard";

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
-import { getCommunityDataByDomain } from "@/lib/fetchers";
+import { getCommunityDataByDomain } from "@nextjs/lib/fetchers";
 import { type Metadata } from "next";
 
 export async function generateMetadata({

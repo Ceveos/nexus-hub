@@ -1,5 +1,5 @@
-import { Avatar } from "@/components/catalyst/avatar";
-import { cn, generateInitials } from "@/lib/utils";
+import { Avatar } from "@nextjs/components/catalyst/avatar";
+import { cn, generateInitials } from "@nextjs/lib/utils";
 
 interface Props {
   id: string;

@@ -1,8 +1,8 @@
-import prisma from "@/lib/prisma";
+import prisma from "@nextjs/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getServerAuthSession } from "@/lib/auth";
-import { getCommunityDataByDomain } from "@/lib/fetchers";
+import { getServerAuthSession } from "@nextjs/lib/auth";
+import { getCommunityDataByDomain } from "@nextjs/lib/fetchers";
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({

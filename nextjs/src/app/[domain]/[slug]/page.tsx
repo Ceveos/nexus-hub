@@ -1,4 +1,4 @@
-import { getCommunityDataByDomain } from "@/lib/fetchers";
+import { getCommunityDataByDomain } from "@nextjs/lib/fetchers";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({

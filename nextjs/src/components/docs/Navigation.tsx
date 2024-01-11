@@ -6,11 +6,11 @@ import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 
-// import { Button } from '@/components/docs/Button'
-import { useIsInsideMobileNavigation } from '@/components/docs/MobileNavigation'
-import { useSectionStore } from '@/components/docs/SectionProvider'
-import { Tag } from '@/components/docs/Tag'
-import { remToPx } from '@/lib/remToPx'
+// import { Button } from '@nextjs/components/docs/Button'
+import { useIsInsideMobileNavigation } from '@nextjs/components/docs/MobileNavigation'
+import { useSectionStore } from '@nextjs/components/docs/SectionProvider'
+import { Tag } from '@nextjs/components/docs/Tag'
+import { remToPx } from '@nextjs/lib/remToPx'
 
 interface NavGroup {
   title: string

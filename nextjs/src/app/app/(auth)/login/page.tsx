@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 import LoginButtons from "./login-buttons";
-import LogoIcon from "~/public/logo.svg";
+import LogoIcon from "@nextjs-root/public/logo.svg";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 
 export default function LoginPage() {

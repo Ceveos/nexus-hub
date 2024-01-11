@@ -1,10 +1,10 @@
 'use client';
 
 import CommunityCard from "../../(components)/communityCard";
-import CardContainer from "@/components/dashboard/cardContainer";
+import CardContainer from "@nextjs/components/dashboard/cardContainer";
 import CreateCommunityCard from "../../(components)/createCommunityCard";
 import CreateCommunityButton from "../../(components)/createCommunityButton";
-import SectionHeading from "@/components/dashboard/sectionHeading";
+import SectionHeading from "@nextjs/components/dashboard/sectionHeading";
 import { type Community } from "@prisma/client";
 import { useState } from "react";
 import CreateCommunityModal from "../../(components)/createCommunityModal";

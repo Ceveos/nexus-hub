@@ -1,5 +1,9 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["nextjs", "websocket"]
+  "workspaces": ["nextjs", "websocket"],
+  "scripts": {
+    "dev": "cd nextjs && pnpm run dev",
+    "build": "cd nextjs && pnpm run build"
+  }
 }

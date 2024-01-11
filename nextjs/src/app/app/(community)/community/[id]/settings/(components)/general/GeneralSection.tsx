@@ -1,5 +1,5 @@
 
-import { getCommunityDataById } from "@/lib/fetchers";
+import { getCommunityDataById } from "@nextjs/lib/fetchers";
 import React from "react";
 import { notFound } from "next/navigation";
 import GeneralForm from "./GeneralForm";

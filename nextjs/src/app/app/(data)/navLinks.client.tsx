@@ -1,6 +1,6 @@
 "use client";
 
-import { DropdownItem, DropdownSeparator } from "@/components/catalyst/dropdown";
+import { DropdownItem, DropdownSeparator } from "@nextjs/components/catalyst/dropdown";
 import { signOut } from "next-auth/react";
 
 export const userNavigationLinks: JSX.Element = (

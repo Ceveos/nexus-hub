@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@nextjs/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import { type UseFormSetValue, type UseFormRegisterReturn, type FieldError } from "react-hook-form";

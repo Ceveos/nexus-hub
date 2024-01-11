@@ -8,12 +8,12 @@ import {
   useMotionValue,
 } from 'framer-motion'
 
-import { GridPattern } from '@/components/docs/GridPattern'
-import { Heading } from '@/components/docs/Heading'
-import { ChatBubbleIcon } from '@/components/docs/icons/ChatBubbleIcon'
-import { EnvelopeIcon } from '@/components/docs/icons/EnvelopeIcon'
-import { UserIcon } from '@/components/docs/icons/UserIcon'
-import { UsersIcon } from '@/components/docs/icons/UsersIcon'
+import { GridPattern } from '@nextjs/components/docs/GridPattern'
+import { Heading } from '@nextjs/components/docs/Heading'
+import { ChatBubbleIcon } from '@nextjs/components/docs/icons/ChatBubbleIcon'
+import { EnvelopeIcon } from '@nextjs/components/docs/icons/EnvelopeIcon'
+import { UserIcon } from '@nextjs/components/docs/icons/UserIcon'
+import { UsersIcon } from '@nextjs/components/docs/icons/UsersIcon'
 
 interface Resource {
   href: string

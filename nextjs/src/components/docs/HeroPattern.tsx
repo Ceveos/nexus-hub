@@ -1,4 +1,4 @@
-import { GridPattern } from '@/components/docs/GridPattern'
+import { GridPattern } from '@nextjs/components/docs/GridPattern'
 
 export function HeroPattern() {
   return (

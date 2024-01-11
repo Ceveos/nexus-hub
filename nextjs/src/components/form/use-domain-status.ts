@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
-import { type DomainResponse, type DomainVerificationStatusProps } from "@/lib/types";
+import { fetcher } from "@nextjs/lib/utils";
+import { type DomainResponse, type DomainVerificationStatusProps } from "@nextjs/lib/types";
 
 export function useDomainStatus({ domain }: { domain: string }) {
   const { data, isValidating } = useSWR<{

@@ -1,5 +1,5 @@
-import { Button } from '@/components/docs/Button'
-import { Heading } from '@/components/docs/Heading'
+import { Button } from '@nextjs/components/docs/Button'
+import { Heading } from '@nextjs/components/docs/Heading'
 
 const guides = [
   {

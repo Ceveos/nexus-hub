@@ -1,5 +1,5 @@
 
-import { getServerAuthSession } from "@/lib/auth";
+import { getServerAuthSession } from "@nextjs/lib/auth";
 import ProfileForm from "./ProfileForm";
 import React from "react";
 

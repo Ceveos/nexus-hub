@@ -1,4 +1,4 @@
-import { getServerAuthSession } from "@/lib/auth";
+import { getServerAuthSession } from "@nextjs/lib/auth";
 import { NextResponse } from "next/server";
 
 export async function GET() {

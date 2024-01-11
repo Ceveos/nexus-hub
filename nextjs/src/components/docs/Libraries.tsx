@@ -1,12 +1,12 @@
 import Image from 'next/image'
 
-import { Button } from '@/components/docs/Button'
-import { Heading } from '@/components/docs/Heading'
-import logoGo from '@/images/logos/go.svg'
-import logoNode from '@/images/logos/node.svg'
-import logoPhp from '@/images/logos/php.svg'
-import logoPython from '@/images/logos/python.svg'
-import logoRuby from '@/images/logos/ruby.svg'
+import { Button } from '@nextjs/components/docs/Button'
+import { Heading } from '@nextjs/components/docs/Heading'
+import logoGo from '@nextjs/images/logos/go.svg'
+import logoNode from '@nextjs/images/logos/node.svg'
+import logoPhp from '@nextjs/images/logos/php.svg'
+import logoPython from '@nextjs/images/logos/python.svg'
+import logoRuby from '@nextjs/images/logos/ruby.svg'
 
 const libraries = [
   {

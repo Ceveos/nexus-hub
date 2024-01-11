@@ -1,19 +1,19 @@
 "use client"
 
-import { Button } from "@/components/catalyst/button";
-import { Dialog, DialogActions, DialogBody, DialogTitle } from '@/components/catalyst/dialog'
-import { ErrorMessage, Field, Fieldset, Label } from '@/components/catalyst/fieldset'
-import { Input } from '@/components/catalyst/input'
-import { createCommunity } from "@/lib/actions";
-import { type CreateCommunityFormData, CreateCommunitySchema } from "@/lib/schemas/community/createCommunitySchema";
+import { Button } from "@nextjs/components/catalyst/button";
+import { Dialog, DialogActions, DialogBody, DialogTitle } from '@nextjs/components/catalyst/dialog'
+import { ErrorMessage, Field, Fieldset, Label } from '@nextjs/components/catalyst/fieldset'
+import { Input } from '@nextjs/components/catalyst/input'
+import { createCommunity } from "@nextjs/lib/actions";
+import { type CreateCommunityFormData, CreateCommunitySchema } from "@nextjs/lib/schemas/community/createCommunitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Community } from "@prisma/client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Textarea } from "@/components/catalyst/textarea";
-import { env } from "~/env.mjs";
+import { Textarea } from "@nextjs/components/catalyst/textarea";
+import { env } from "@nextjs-root/env.mjs";
 
 type Props = {
   isOpen: boolean;

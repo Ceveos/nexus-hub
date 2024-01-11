@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@nextjs/lib/utils';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx';
 

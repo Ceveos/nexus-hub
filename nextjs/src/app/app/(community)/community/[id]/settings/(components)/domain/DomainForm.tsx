@@ -2,16 +2,16 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateCommunity } from "@/lib/actions";
+import { updateCommunity } from "@nextjs/lib/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
-import FormSection from "@/components/form/formSection";
-import { type DomainFormData, DomainSchema } from "@/lib/schemas/community/domainSchema";
-import DomainConfiguration from "@/components/form/domain-configuration";
-import DomainStatus from "@/components/form/domain-status";
-import { ErrorMessage, Field, Fieldset, Label } from "@/components/catalyst/fieldset";
-import { Input } from "@/components/catalyst/input";
+import FormSection from "@nextjs/components/form/formSection";
+import { type DomainFormData, DomainSchema } from "@nextjs/lib/schemas/community/domainSchema";
+import DomainConfiguration from "@nextjs/components/form/domain-configuration";
+import DomainStatus from "@nextjs/components/form/domain-status";
+import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
+import { Input } from "@nextjs/components/catalyst/input";
 
 interface Props {
   defaultValues: DomainFormData;

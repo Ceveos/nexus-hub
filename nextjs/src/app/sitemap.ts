@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-// import { getPostsForSite } from "@/lib/fetchers";
+// import { getPostsForSite } from "@nextjs/lib/fetchers";
 
 export default function Sitemap() {
   const headersList = headers();

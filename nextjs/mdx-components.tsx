@@ -1,4 +1,4 @@
-import * as mdxComponents from '@/components/docs/mdx'
+import * as mdxComponents from '@nextjs/components/docs/mdx'
 import { type MDXComponents } from 'mdx/types'
 
 export function useMDXComponents(components: MDXComponents) {

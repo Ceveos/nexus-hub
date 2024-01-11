@@ -3,8 +3,8 @@ import { type ReactNode, useState } from "react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
-import { type NavigationLink } from "@/types/Navigation";
-import { cn } from "@/lib/utils";
+import { type NavigationLink } from "@nextjs/types/Navigation";
+import { cn } from "@nextjs/lib/utils";
 
 export interface SidebarProps {
   header?: React.ReactNode;

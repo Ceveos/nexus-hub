@@ -3,15 +3,15 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-// import { Button } from '@/components/docs/Button'
-import { Logo } from '@/components/docs/Logo'
+// import { Button } from '@nextjs/components/docs/Button'
+import { Logo } from '@nextjs/components/docs/Logo'
 import {
   MobileNavigation,
   useIsInsideMobileNavigation,
-} from '@/components/docs/MobileNavigation'
-import { useMobileNavigationStore } from '@/components/docs/MobileNavigation'
-import { MobileSearch, Search } from '@/components/docs/Search'
-import { ThemeToggle } from '@/components/docs/ThemeToggle'
+} from '@nextjs/components/docs/MobileNavigation'
+import { useMobileNavigationStore } from '@nextjs/components/docs/MobileNavigation'
+import { MobileSearch, Search } from '@nextjs/components/docs/Search'
+import { ThemeToggle } from '@nextjs/components/docs/ThemeToggle'
 
 function TopLevelNavItem({
   href,
