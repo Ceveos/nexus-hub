@@ -35,10 +35,12 @@ const GeneralForm: React.FC<Props> = ({ defaultValues }) => {
   const name = watch("name");
 
   useEffect(() => {
-    setValue("subdomain", name.toLowerCase()
+    if (name != defaultValues.name) {
+      setValue("subdomain", name.toLowerCase()
       .trim()
       .replace(/[\W_]+/g, "-"));
-  }, [name, setValue]);
+    }
+  }, [defaultValues.name, name, setValue]);
 
   const onSubmit = async (data: GeneralFormData): Promise<void> => {
     const communityFields: Partial<Community> = {
