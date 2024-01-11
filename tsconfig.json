@@ -1,13 +1,24 @@
 {
+  "exclude": ["node_modules"],
 	"compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
       "@nextjs/*": ["./nextjs/src/*"],
-      "@nextjs-root*": ["./nextjs/*"],
       "@ws/*": ["./websocket/src/*"],
-      "@ws-root/*": ["./websocket/*"],
       "@shared/*": ["./shared/*"],
     },
-	}
+	},
+  "include": [
+    ".eslintrc.cjs",
+    "globals.d.ts",
+    "next-env.d.ts",
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.cjs",
+    "**/*.mjs",
+    ".next/types/**/*.ts"
+  ],
 }

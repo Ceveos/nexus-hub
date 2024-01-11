@@ -1,4 +1,4 @@
-name = "orange-forest-5e6d"
+name = "nexushub-websocket"
 main = "src/index.ts"
 compatibility_date = "2023-12-18"
 

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { type Community } from "@prisma/client";
 import FormSection from "@nextjs/components/form/formSection";
 import { type GeneralFormData, GeneralSchema } from "@nextjs/lib/schemas/community/generalSchema";
-import { env } from "@nextjs-root/env.mjs";
+import { env } from "~/nextjs/env.mjs";
 import { useEffect } from "react";
 import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
 import { Input } from "@nextjs/components/catalyst/input";

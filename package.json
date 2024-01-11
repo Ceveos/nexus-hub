@@ -4,6 +4,9 @@
   "workspaces": ["nextjs", "websocket"],
   "scripts": {
     "dev": "cd nextjs && pnpm run dev",
-    "build": "cd nextjs && pnpm run build"
+    "build": "cd nextjs && pnpm run build",
+    "ws": "cd websocket && pnpm run dev",
+    "ws-start": "cd websocket && pnpm run start",
+    "ws-deploy": "cd websocket && pnpm run deploy"
   }
 }

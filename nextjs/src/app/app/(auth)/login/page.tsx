@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 import LoginButtons from "./login-buttons";
-import LogoIcon from "@nextjs-root/public/logo.svg";
+import LogoIcon from "~/nextjs/public/logo.svg";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "@nextjs/lib/utils";

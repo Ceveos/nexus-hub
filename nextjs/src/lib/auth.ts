@@ -13,7 +13,7 @@ import {
 import { type DefaultJWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
-import { env } from "@nextjs-root/env.mjs";
+import { env } from "~/nextjs/env.mjs";
 import prisma from "@nextjs/lib/prisma";
 import { type Site } from "@prisma/client";
 import jwt from "jsonwebtoken"

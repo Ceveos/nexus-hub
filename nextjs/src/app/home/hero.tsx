@@ -1,4 +1,4 @@
-import LogoIcon from "@nextjs-root/public/logo.svg";
+import LogoIcon from "~/nextjs/public/logo.svg";
 import Image from "next/image";
 
 export default function Hero() {
