@@ -40,9 +40,9 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
 
   const onSubmit = async (data: CreateCommunityFormData): Promise<void> => {
     const communityFields: Pick<Community, "name" | "subdomain" | "description"> = {
-      name: data.name,
-      subdomain: data.subdomain,
-      description: data.description ?? null,
+      name: data.name.trim(),
+      subdomain: data.subdomain.trim(),
+      description: data.description?.trim() ?? null,
     }
 
     try {

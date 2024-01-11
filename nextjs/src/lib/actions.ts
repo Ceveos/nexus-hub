@@ -11,6 +11,7 @@ import {
 import { type User, type Community } from "@prisma/client";
 import { getColorForName } from "./utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { blacklist } from "./actions.blacklist";
 
 // Define an interface for the successful update result
 interface SuccessResult<T> {
@@ -81,12 +82,21 @@ export const createCommunity = async (
     };
   }
   const avatarClass = getColorForName(data.name);
+  data.subdomain = data.subdomain.trim().toLowerCase();
 
   if (data.subdomain.length < 4) {
     return {
       success: false,
       errorField: "subdomain",
       message: "Subdomain must be at least 4 characters",
+    };
+  }
+
+  if (blacklist.indexOf(data.subdomain.toLowerCase()) !== -1) {
+    return {
+      success: false,
+      errorField: "subdomain",
+      message: "This name is reserved and cannot be used",
     };
   }
 
@@ -159,6 +169,10 @@ export const updateCommunity = async (
         success: false,
         message: "Community ID is required",
       };
+    }
+
+    if (data.customDomain) {
+      data.customDomain = data.customDomain.trim().toLowerCase();
     }
 
     if (data.customDomain && !validDomainRegex.test(data.customDomain)) {
