@@ -9,11 +9,7 @@ export default {
     hoverOnlyWhenSupported: true
   },
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx,md}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx,md}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx,md}",
-    "./lib/**/*.{js,ts,jsx,tsx,md}",
-    "./mdx/**/*.{js,ts,jsx,tsx,md}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx,md}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx,md", // Tremor module
   ],
   theme: {

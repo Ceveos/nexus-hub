@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/catalyst/textarea";
-import { env } from "@/env.mjs";
+import { env } from "~/env.mjs";
 
 type Props = {
   isOpen: boolean;

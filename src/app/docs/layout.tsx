@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const pages = await glob('**/*.mdx', { cwd: 'app/docs' })
+  const pages = await glob('**/*.mdx', { cwd: 'src/app/docs' })
   const allSectionsEntries = (await Promise.all(
     pages.map(async (filename) => [
       getDirectoryPath(filename),
