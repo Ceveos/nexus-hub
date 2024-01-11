@@ -9,7 +9,6 @@ import { type Community } from "@prisma/client";
 import FormSection from "@nextjs/components/form/formSection";
 import { type GeneralFormData, GeneralSchema } from "@nextjs/lib/schemas/community/generalSchema";
 import { env } from "~/nextjs/env.mjs";
-import { useEffect } from "react";
 import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
 import { Input } from "@nextjs/components/catalyst/input";
 import { Textarea } from "@nextjs/components/catalyst/textarea";
@@ -24,23 +23,12 @@ const GeneralForm: React.FC<Props> = ({ defaultValues }) => {
     register,
     handleSubmit,
     setError,
-    setValue,
-    watch,
     formState: { errors }
   } = useForm<GeneralFormData>({
     resolver: zodResolver(GeneralSchema),
     defaultValues
   });
 
-  const name = watch("name");
-
-  useEffect(() => {
-    if (name != defaultValues.name) {
-      setValue("subdomain", name.toLowerCase()
-      .trim()
-      .replace(/[\W_]+/g, "-"));
-    }
-  }, [defaultValues.name, name, setValue]);
 
   const onSubmit = async (data: GeneralFormData): Promise<void> => {
     const communityFields: Partial<Community> = {
