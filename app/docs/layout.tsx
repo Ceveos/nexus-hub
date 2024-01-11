@@ -5,7 +5,6 @@ import { Layout } from '@/components/docs/Layout'
 
 import { type Metadata } from 'next'
 import { type Section } from '@/components/docs/SectionProvider'
-import path from 'path'
 
 export const metadata: Metadata = {
   title: {

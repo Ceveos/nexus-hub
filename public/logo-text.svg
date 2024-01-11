@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 182 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(0.157267,0,0,0.151608,-28.2184,-17.5274)">
+        <path d="M356.623,175.743C316.793,157.49 274.282,154.486 229.201,166.838C225.351,246.002 232.863,284.597 260.941,309.673C260.74,309.498 260.539,309.324 260.339,309.148C270.646,318.531 283.799,326.059 300.197,333.055C330.81,319.907 350.531,304.695 361.145,278.777C344.427,247.506 313.062,216.889 264.229,188.718C326.304,195.292 375.792,218.111 412.605,257.366C398.145,327.892 363.678,343.198 300.197,379.449C211.452,328.736 179.43,319.062 179.43,141.669C256.153,106.924 344.239,106.924 421.058,141.669C421.058,171.532 420.119,196.701 418.147,218.017C398.52,199.704 378.139,185.712 357.011,175.946C356.882,175.878 356.752,175.811 356.623,175.743Z" style="fill:rgb(36,175,248);"/>
+    </g>
+    <g transform="matrix(2.36656,0,0,2.36656,-71.0324,-16.741)">
+        <g transform="matrix(12,0,0,12,107.325,19.7497)">
+        </g>
+        <text x="47.964px" y="19.75px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Nexus Hub</text>
+    </g>
+</svg>
