@@ -25,8 +25,17 @@ export interface Env {
 	// MY_QUEUE: Queue;
 }
 
+
+
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		return new Response('Hello World!');
 	},
 };
+
+async function handleRequest(request) {
+  const upgradeHeader = request.headers.get('Upgrade');
+  if (!upgradeHeader || upgradeHeader !== 'websocket') {
+    return new Response('Expected Upgrade: websocket', { status: 426 });
+  }
+}
