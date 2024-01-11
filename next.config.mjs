@@ -3,8 +3,20 @@
  * for Docker builds.
  */
 await import("./env.mjs");
-import withMarkdoc from '@markdoc/next.js'
-import withSearch from './markdoc/search.mjs'
+import nextMDX from '@next/mdx'
+
+import { recmaPlugins } from './mdx/recma.mjs'
+import { rehypePlugins } from './mdx/rehype.mjs'
+import { remarkPlugins } from './mdx/remark.mjs'
+import withSearch from './mdx/search.mjs'
+
+const withMDX = nextMDX({
+  options: {
+    remarkPlugins,
+    rehypePlugins,
+    recmaPlugins,
+  },
+})
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -18,7 +30,7 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  pageExtensions: ['js', 'jsx', 'md', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     remotePatterns: [
       { hostname: "public.blob.vercel-storage.com" },
@@ -36,6 +48,5 @@ const config = {
   },
 };
 
-export default withSearch(
-  withMarkdoc({ schemaPath: './markdoc' })(config),
+export default withSearch(withMDX(config),
 )

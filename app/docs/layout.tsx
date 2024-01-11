@@ -1,49 +1,51 @@
-import { type Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import localFont from 'next/font/local'
-import clsx from 'clsx'
+import glob from 'fast-glob'
 
 import { Providers } from '@/app/docs/providers'
 import { Layout } from '@/components/docs/Layout'
 
-// import '@/styles/globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
-
-// Use local version of Lexend so that we can use OpenType features
-const lexend = localFont({
-  src: '../../fonts/lexend.woff2',
-  display: 'swap',
-  variable: '--font-lexend',
-})
+import { type Metadata } from 'next'
+import { type Section } from '@/components/docs/SectionProvider'
+import path from 'path'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s - Docs',
-    default: 'Nexus Hub Docs',
+    template: '%s - Protocol API Reference',
+    default: 'Protocol API Reference',
   },
-  description:
-    'Official documentation for the Nexus Hub platform.',
 }
 
-export default function RootLayout({
+function getDirectoryPath(filePath: string): string {
+  const basePath = '/docs';
+  const pathComponents = filePath.split('/');
+
+  // Remove the last component (page.mdx)
+  pathComponents.pop();
+
+  // Join the components back with the base path
+  return basePath + (pathComponents.length > 0 ? '/' + pathComponents.join('/') : '');
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const pages = await glob('**/*.mdx', { cwd: 'app/docs' })
+  const allSectionsEntries = (await Promise.all(
+    pages.map(async (filename) => [
+      getDirectoryPath(filename),
+      (await import(`./${filename}`)).sections,
+    ]),
+  )) as Array<[string, Array<Section>]>
+  const allSections = Object.fromEntries(allSectionsEntries)
+
   return (
-    <html
-      lang="en"
-      className={clsx('h-full antialiased font-sansdoc', inter.variable, lexend.variable)}
-      suppressHydrationWarning
-    >
-      <body className="flex min-h-full bg-white dark:bg-slate-900">
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className="flex min-h-full bg-white antialiased dark:bg-zinc-900">
         <Providers>
-          <Layout>{children}</Layout>
+          <div className="w-full">
+            <Layout allSections={allSections}>{children}</Layout>
+          </div>
         </Providers>
       </body>
     </html>

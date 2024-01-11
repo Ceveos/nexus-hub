@@ -3,7 +3,7 @@ const path = require("path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
-  ignorePatterns: ["*.js"],
+  ignorePatterns: ["*.mjs"],
   overrides: [
     {
       extends: [
@@ -19,6 +19,7 @@ const config = {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-floating-promises": "off",
       }
     },
   ],

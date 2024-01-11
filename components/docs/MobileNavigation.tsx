@@ -1,103 +1,174 @@
 'use client'
 
-import { Suspense, useCallback, useEffect, useState } from 'react'
-import Link from 'next/link'
+import {
+  createContext,
+  Fragment,
+  Suspense,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { Dialog } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
+import { motion } from 'framer-motion'
+import { create } from 'zustand'
 
-import { Logo } from '@/components/docs/Logo'
+import { Header } from '@/components/docs/Header'
 import { Navigation } from '@/components/docs/Navigation'
 
 function MenuIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
+      viewBox="0 0 10 9"
       fill="none"
-      strokeWidth="2"
       strokeLinecap="round"
+      aria-hidden="true"
       {...props}
     >
-      <path d="M4 7h16M4 12h16M4 17h16" />
+      <path d="M.5 1h9M.5 8h9M.5 4.5h9" />
     </svg>
   )
 }
 
-function CloseIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+function XIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
+      viewBox="0 0 10 9"
       fill="none"
-      strokeWidth="2"
       strokeLinecap="round"
+      aria-hidden="true"
       {...props}
     >
-      <path d="M5 5l14 14M19 5l-14 14" />
+      <path d="m1.5 1 7 7M8.5 1l-7 7" />
     </svg>
   )
 }
 
-function CloseOnNavigation({ close }: { close: () => void }) {
+const IsInsideMobileNavigationContext = createContext(false)
+
+function MobileNavigationDialog({
+  isOpen,
+  close,
+}: {
+  isOpen: boolean
+  close: () => void
+}) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const initialPathname = useRef(pathname).current
+  const initialSearchParams = useRef(searchParams).current
 
   useEffect(() => {
-    close()
-  }, [pathname, searchParams, close])
+    if (pathname !== initialPathname || searchParams !== initialSearchParams) {
+      close()
+    }
+  }, [pathname, searchParams, close, initialPathname, initialSearchParams])
 
-  return null
-}
+  function onClickDialog(event: React.MouseEvent<HTMLDivElement>) {
+    if (!(event.target instanceof HTMLElement)) {
+      return
+    }
 
-export function MobileNavigation() {
-  const [isOpen, setIsOpen] = useState(false)
-  const close = useCallback(() => setIsOpen(false), [setIsOpen])
-
-  function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
-    const link = event.currentTarget
+    const link = event.target.closest('a')
     if (
+      link &&
       link.pathname + link.search + link.hash ===
-      window.location.pathname + window.location.search + window.location.hash
+        window.location.pathname + window.location.search + window.location.hash
     ) {
       close()
     }
   }
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="relative"
-        aria-label="Open navigation"
-      >
-        <MenuIcon className="h-6 w-6 stroke-slate-500" />
-      </button>
-      <Suspense fallback={null}>
-        <CloseOnNavigation close={close} />
-      </Suspense>
+    <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
-        open={isOpen}
-        onClose={() => close()}
-        className="fixed inset-0 z-50 flex items-start overflow-y-auto bg-slate-900/50 pr-10 backdrop-blur lg:hidden"
-        aria-label="Navigation"
+        onClickCapture={onClickDialog}
+        onClose={close}
+        className="fixed inset-0 z-50 lg:hidden"
       >
-        <Dialog.Panel className="min-h-full w-full max-w-xs bg-white px-4 pb-12 pt-5 dark:bg-slate-900 sm:px-6">
-          <div className="flex items-center">
-            <button
-              type="button"
-              onClick={() => close()}
-              aria-label="Close navigation"
+        <Transition.Child
+          as={Fragment}
+          enter="duration-300 ease-out"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="duration-200 ease-in"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-sm dark:bg-black/40" />
+        </Transition.Child>
+
+        <Dialog.Panel>
+          <Transition.Child
+            as={Fragment}
+            enter="duration-300 ease-out"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="duration-200 ease-in"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Header />
+          </Transition.Child>
+
+          <Transition.Child
+            as={Fragment}
+            enter="duration-500 ease-in-out"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="duration-500 ease-in-out"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
+          >
+            <motion.div
+              layoutScroll
+              className="fixed bottom-0 left-0 top-14 w-full overflow-y-auto bg-white px-4 pb-4 pt-6 shadow-lg shadow-zinc-900/10 ring-1 ring-zinc-900/7.5 min-[416px]:max-w-sm sm:px-6 sm:pb-10 dark:bg-zinc-900 dark:ring-zinc-800"
             >
-              <CloseIcon className="h-6 w-6 stroke-slate-500" />
-            </button>
-            <Link href="/" className="ml-6" aria-label="Home page">
-              <Logo className="h-9 w-9" />
-            </Link>
-          </div>
-          <Navigation className="mt-5 px-1" onLinkClick={onLinkClick} />
+              <Navigation />
+            </motion.div>
+          </Transition.Child>
         </Dialog.Panel>
       </Dialog>
-    </>
+    </Transition.Root>
+  )
+}
+
+export function useIsInsideMobileNavigation() {
+  return useContext(IsInsideMobileNavigationContext)
+}
+
+export const useMobileNavigationStore = create<{
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
+}>()((set) => ({
+  isOpen: false,
+  open: () => set({ isOpen: true }),
+  close: () => set({ isOpen: false }),
+  toggle: () => set((state) => ({ isOpen: !state.isOpen })),
+}))
+
+export function MobileNavigation() {
+  const isInsideMobileNavigation = useIsInsideMobileNavigation()
+  const { isOpen, toggle, close } = useMobileNavigationStore()
+  const ToggleIcon = isOpen ? XIcon : MenuIcon
+
+  return (
+    <IsInsideMobileNavigationContext.Provider value={true}>
+      <button
+        type="button"
+        className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
+        aria-label="Toggle navigation"
+        onClick={toggle}
+      >
+        <ToggleIcon className="w-2.5 stroke-zinc-900 dark:stroke-white" />
+      </button>
+      {!isInsideMobileNavigation && (
+        <Suspense fallback={null}>
+          <MobileNavigationDialog isOpen={isOpen} close={close} />
+        </Suspense>
+      )}
+    </IsInsideMobileNavigationContext.Provider>
   )
 }

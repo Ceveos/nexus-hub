@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { Providers } from "../(providers)/providers";
 import { Analytics } from "@vercel/analytics/react";
 
