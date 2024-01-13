@@ -9,7 +9,7 @@ import {
   validDomainRegex,
 } from "@nextjs/lib/domains";
 import { type User, type Community } from "@prisma/client";
-import { getColorForName } from "./utils";
+import { generateSecureString, getColorForName } from "./utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { blacklist } from "./actions.blacklist";
 
@@ -106,6 +106,7 @@ export const createCommunity = async (
         name: data.name,
         subdomain: data.subdomain,
         description: data.description,
+        secretId: generateSecureString(),
         avatarClass,
         owner: {
           connect: {

@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { randomBytes } from "crypto";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]): string {
@@ -97,3 +98,7 @@ export const getColorForName = (name: string): string => {
 const index = hashString(name) % colors.length;
 return colors[index]!;
 };
+
+export const generateSecureString = (): string => {
+  return randomBytes(16).toString('hex');
+}

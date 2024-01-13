@@ -72,8 +72,11 @@ export default async function SiteLayout({
   }
 
   return <>
-    <div className="h-full">
-      {children}
-    </div>
+
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className="h-full">
+        {children}
+      </body>
+    </html>
   </>;
 }
