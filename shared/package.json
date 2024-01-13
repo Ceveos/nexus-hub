@@ -1,0 +1,16 @@
+{
+  "name": "shared",
+  "private": true,
+  "scripts": {
+    "dev": "prisma generate",
+    "build": "prisma generate",
+    "generate": "prisma generate",
+    "push": "prisma db push"
+  },
+  "devDependencies": {
+    "prisma": "^5.7.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1"
+  }
+}

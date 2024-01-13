@@ -1,12 +1,14 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["nextjs", "websocket"],
+  "workspaces": ["nextjs", "websocket", "shared"],
   "scripts": {
-    "dev": "cd nextjs && pnpm run dev",
-    "build": "cd nextjs && pnpm run build",
-    "dev-ws": "cd websocket && pnpm run dev",
-    "start-ws": "cd websocket && pnpm run start",
-    "deploy-ws": "cd websocket && pnpm run deploy"
+    "dev:nextjs": "pnpm run prisma:generate && cd nextjs && pnpm run dev:start",
+    "build:nextjs": "pnpm run prisma:generate && pnpm run prisma:push && cd nextjs && pnpm run build:start",
+    "prisma:generate": "cd shared && pnpm run generate && cd ../",
+    "prisma:push": "cd shared && pnpm run push && cd ../",
+    "dev:ws": "cd websocket && pnpm run dev",
+    "start:ws": "cd websocket && pnpm run start",
+    "deploy:ws": "cd websocket && pnpm run deploy"
   }
 }

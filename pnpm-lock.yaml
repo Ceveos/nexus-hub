@@ -121,6 +121,9 @@ importers:
       remark-mdx:
         specifier: ^3.0.0
         version: 3.0.0
+      shared:
+        specifier: workspace:*
+        version: link:../shared
       shiki:
         specifier: ^0.14.7
         version: 0.14.7
@@ -206,9 +209,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.5.9
         version: 0.5.11(prettier@3.1.1)
-      prisma:
-        specifier: ^5.7.1
-        version: 5.8.0
       sharp:
         specifier: ^0.33.1
         version: 0.33.1
@@ -222,7 +222,21 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  shared:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.7.1
+        version: 5.8.0(prisma@5.8.0)
+    devDependencies:
+      prisma:
+        specifier: ^5.7.1
+        version: 5.8.0
+
   websocket:
+    dependencies:
+      shared:
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20231218.0
