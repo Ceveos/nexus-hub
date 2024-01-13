@@ -65,7 +65,7 @@ model Server {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  @@unique([ip, port])
+  @@unique([game, ip, port])
 }
 
 model ServerData {
