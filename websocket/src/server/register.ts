@@ -2,7 +2,7 @@ import prisma from "~/nextjs/src/lib/prisma";
 import { Env } from "..";
 import { MetadataRequestMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
-import { Community, Game } from "~/generated/prisma-client";
+import { Game } from "@prisma/client";
 
 const metadataReq: MetadataRequestMessage = {
   type: "metadata/request",

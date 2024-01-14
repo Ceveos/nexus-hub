@@ -1,4 +1,5 @@
 packages:
-  - 'shared'
   - 'nextjs'
   - 'websocket'
+  - 'shared'
+  - '!**/test/**'

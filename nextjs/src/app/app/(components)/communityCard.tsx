@@ -1,5 +1,5 @@
 import { cn, generateInitials, getColorForName } from "@nextjs/lib/utils";
-import { Prisma } from "~/generated/prisma-client";
+import { Prisma } from "@prisma/client";
 
 import { Avatar } from "@nextjs/components/catalyst/avatar";
 import Link from "next/link";

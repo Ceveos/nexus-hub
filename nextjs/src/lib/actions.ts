@@ -1,6 +1,5 @@
 "use server";
 
-import prisma from "@nextjs/lib/prisma";
 import { revalidateTag } from "next/cache";
 import { getServerAuthSession } from "@nextjs/lib/auth";
 import {
@@ -8,10 +7,11 @@ import {
   removeDomainFromVercelProject,
   validDomainRegex,
 } from "@nextjs/lib/domains";
-import { type User, type Community } from "~/generated/prisma-client";
+import { type User, type Community } from "@prisma/client";
 import { generateSecureString, getColorForName } from "./utils";
 import { blacklist } from "./actions.blacklist";
-import { PrismaClientKnownRequestError } from "~/generated/prisma-client/runtime/library";
+import prisma from "./prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 // Define an interface for the successful update result
 interface SuccessResult<T> {

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCommunity } from "@nextjs/lib/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { type Community } from "~/generated/prisma-client";
+import { type Community } from "@prisma/client";
 import FormSection from "@nextjs/components/form/formSection";
 import { type DomainFormData, DomainSchema } from "@nextjs/lib/schemas/community/domainSchema";
 import DomainConfiguration from "@nextjs/components/form/domain-configuration";
