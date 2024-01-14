@@ -31,6 +31,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
   const [client, server] = Object.values(webSocketPair);
 
   server.addEventListener('message', (event) => {
+    console.log(`[server] Received message ${event}`);
     const message = parseMessage(event);
     if (!message) {
       return;
@@ -48,6 +49,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
     }
   });
 
+  server.accept();
   server.send(JSON.stringify(metadataReq));
 
   return new Response(null, {
