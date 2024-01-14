@@ -1,7 +1,7 @@
 import { Env } from "..";
 import { MetadataRequestMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
-import { Game } from "@prisma/client";
+import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
 // import { PrismaClient } from "@prisma/client/edge";
 
@@ -66,19 +66,19 @@ interface ServerData {
   gameMode: string;
 }
 
-// const registerNewServer = (community: Community, serverData: ServerData) => {
-//   prisma.server.create({
-//     data: {
-//       name: serverData.name,
-//       ip: serverData.ip,
-//       port: serverData.port,
-//       game: serverData.game,
-//       gameMode: serverData.gameMode,
-//       community: {
-//         connect: {
-//           id: community.id,
-//         },
-//       },
-//     },
-//   });
-// }
+const registerNewServer = (community: Community, serverData: ServerData, env: Env) => {
+  prisma(env).server.create({
+    data: {
+      name: serverData.name,
+      ip: serverData.ip,
+      port: serverData.port,
+      game: serverData.game,
+      gameMode: serverData.gameMode,
+      community: {
+        connect: {
+          id: community.id,
+        },
+      },
+    },
+  });
+}

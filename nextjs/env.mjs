@@ -7,8 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    POSTGRES_PRISMA_URL: z.string().url(),
-    POSTGRES_URL_NON_POOLING: z.string().url(),
+    DATABASE_URL: z.string().url(),
+    DIRECT_DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
     SUPABASE_JWT_SECRET: z.string().min(1),
     NEXTAUTH_SECRET:
@@ -50,7 +50,8 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL,
+    DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_DATABASE_URL: process.env.DIRECT_DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     SUPABASE_JWT_SECRET: process.env.SUPABASE_JWT_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
@@ -63,7 +64,6 @@ export const env = createEnv({
     PROJECT_ID_VERCEL: process.env.PROJECT_ID_VERCEL,
     TEAM_ID_VERCEL: process.env.TEAM_ID_VERCEL,
     AUTH_BEARER_TOKEN: process.env.AUTH_BEARER_TOKEN,
-    POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
     GITHUB_AUTH_ID: process.env.GITHUB_AUTH_ID,
     GITHUB_AUTH_SECRET: process.env.GITHUB_AUTH_SECRET,
     NEXT_PUBLIC_WEBSOCKET_URL: process.env.NEXT_PUBLIC_WEBSOCKET_URL,
