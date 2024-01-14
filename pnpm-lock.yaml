@@ -236,10 +236,20 @@ importers:
         version: 5.8.0
 
   websocket:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.8.0
+        version: 5.8.0(prisma@5.8.0)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20231218.0
         version: 4.20231218.0
+      prisma:
+        specifier: ^5.8.0
+        version: 5.8.0
+      shared:
+        specifier: workspace:*
+        version: link:../shared
       typescript:
         specifier: ^5.0.4
         version: 5.3.3
