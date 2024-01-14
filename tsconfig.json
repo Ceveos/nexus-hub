@@ -3,7 +3,6 @@
 	"compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"],
       "~/*": ["./*"],
       "@nextjs/*": ["./nextjs/src/*"],
       "@ws/*": ["./websocket/src/*"],
