@@ -1,7 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["nextjs", "websocket", "shared"],
   "scripts": {
     "dev:nextjs": "pnpm run prisma:generate && cd nextjs && pnpm run dev:start",
     "build:nextjs": "pnpm run prisma:generate && pnpm run prisma:push && cd nextjs && pnpm run build:start",
@@ -9,6 +8,7 @@
     "prisma:push": "cd shared && pnpm run push && cd ../",
     "dev:ws": "cd websocket && pnpm run dev",
     "start:ws": "cd websocket && pnpm run start",
-    "deploy:ws": "cd websocket && pnpm run deploy"
+    "deploy:ws": "cd websocket && pnpm run deploy",
+    "vercel-build": "pnpm run build:nextjs"
   }
 }
