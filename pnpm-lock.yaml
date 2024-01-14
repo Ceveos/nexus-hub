@@ -224,16 +224,6 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/shared-prisma:
-    dependencies:
-      '@prisma/client':
-        specifier: ^5.7.1
-        version: 5.8.0(prisma@5.8.0)
-    devDependencies:
-      prisma:
-        specifier: ^5.7.1
-        version: 5.8.0
-
   shared: {}
 
   websocket:
