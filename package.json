@@ -1,7 +1,6 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["nextjs", "websocket", "shared"],
   "scripts": {
     "dev:nextjs": "pnpm run prisma:generate && cd nextjs && pnpm run dev:start",
     "build:nextjs": "pnpm run prisma:generate && pnpm run prisma:push && cd nextjs && pnpm run build:start",
