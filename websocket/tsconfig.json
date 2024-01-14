@@ -98,15 +98,5 @@
 		/* Completeness */
 		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
-	},
-	"include": [
-		".eslintrc.cjs",
-		"globals.d.ts",
-		"**/*.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		"**/*.js",
-		"**/*.cjs",
-		"**/*.mjs",
-	]
+	}
 }

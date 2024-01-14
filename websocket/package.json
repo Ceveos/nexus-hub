@@ -3,18 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
+    "prisma:generate": "prisma generate --schema ../prisma/schema.prisma",
+    "prisma:generate-prod": "prisma generate --no-engine --schema ../prisma/schema.prisma",
+    "deploy": "pnpm run prisma:generate-prod && wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev"
   },
   "dependencies": {
-    "@prisma/client": "^5.8.0"
+    "@prisma/client": "^5.8.0",
+    "@prisma/extension-accelerate": "^0.6.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
     "prisma": "^5.8.0",
+    "shared": "workspace:*",
     "typescript": "^5.0.4",
-    "wrangler": "^3.0.0",
-    "shared": "workspace:*"
+    "wrangler": "^3.0.0"
   }
 }

@@ -6,11 +6,5 @@
     "build": "prisma generate",
     "generate": "prisma generate",
     "push": "prisma db push"
-  },
-  "devDependencies": {
-    "prisma": "^5.8.0"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.8.0"
   }
 }

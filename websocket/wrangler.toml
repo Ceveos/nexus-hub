@@ -5,7 +5,10 @@ compatibility_date = "2023-12-18"
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
-# [vars]
+[vars]
+# DATABASE_URL = "postgresql://postgres:password@localhost:5432/postgres"
+DATABASE_URL = "prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMDQ5ZDcwYzgtMTcxOC00NDYxLTg2Y2QtYjViNGU4YTM5N2NkIiwidGVuYW50X2lkIjoiYjQ0MjFhZDJjZmZhZjBiZTRkMWUxZDk5NDE1N2RkY2ViYjA2OTY3MDY4YjdiMTQ2NmI2YTc2YjczNjcyMWEzZiIsImludGVybmFsX3NlY3JldCI6ImI1Nzg2MDJhLTE3MTQtNDY0Ny1iMWJmLWFhZmY0ODRlMjFmMCJ9.EZrSSptr5h9t-gJQ666eNjQjVkwGJmhdYfL3ANG0Lfw"
+PRISMA_CLIENT_OUTPUT = "../websocket/.prisma"
 # MY_VARIABLE = "production_value"
 
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.

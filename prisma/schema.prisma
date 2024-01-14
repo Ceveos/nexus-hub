@@ -57,7 +57,7 @@ model Server {
   game        Game
   gameMode    String
   ip          String
-  port        String?
+  port        Int?
   community   Community    @relation(fields: [communityId], references: [id])
   communityId String
   serverData  ServerData[]

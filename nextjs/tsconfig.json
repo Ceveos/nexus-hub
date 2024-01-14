@@ -28,6 +28,7 @@
     ]
   },
   "include": [
+    ".prisma/*",
     ".eslintrc.cjs",
     "globals.d.ts",
     "next-env.d.ts",
