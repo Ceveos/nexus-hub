@@ -8,7 +8,6 @@
     "prisma:push": "cd shared && pnpm run push && cd ../",
     "dev:ws": "cd websocket && pnpm run dev",
     "start:ws": "cd websocket && pnpm run start",
-    "deploy:ws": "cd websocket && pnpm run deploy",
-    "vercel-build": "pnpm run build:nextjs"
+    "deploy:ws": "cd websocket && pnpm run deploy"
   }
 }
