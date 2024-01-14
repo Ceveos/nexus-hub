@@ -121,6 +121,9 @@ importers:
       remark-mdx:
         specifier: ^3.0.0
         version: 3.0.0
+      shared:
+        specifier: workspace:*
+        version: link:../shared
       shiki:
         specifier: ^0.14.7
         version: 0.14.7
