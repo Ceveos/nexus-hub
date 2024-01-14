@@ -121,9 +121,6 @@ importers:
       remark-mdx:
         specifier: ^3.0.0
         version: 3.0.0
-      shared:
-        specifier: workspace:*
-        version: link:../shared
       shiki:
         specifier: ^0.14.7
         version: 0.14.7
@@ -236,10 +233,6 @@ importers:
         version: 5.8.0
 
   websocket:
-    dependencies:
-      shared:
-        specifier: workspace:*
-        version: link:../shared
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20231218.0
