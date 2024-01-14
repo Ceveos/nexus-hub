@@ -15,8 +15,8 @@ import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 import { env } from "~/nextjs/env.mjs";
 import jwt from "jsonwebtoken"
-import prisma from "./prisma";
 import { type Site } from "@prisma/client";
+import prisma from "@nextjs/lib/prisma";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 

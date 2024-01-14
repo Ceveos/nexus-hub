@@ -10,8 +10,8 @@ import {
 import { type User, type Community } from "@prisma/client";
 import { generateSecureString, getColorForName } from "./utils";
 import { blacklist } from "./actions.blacklist";
-import prisma from "./prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import prisma from "@nextjs/lib/prisma";
 
 // Define an interface for the successful update result
 interface SuccessResult<T> {
