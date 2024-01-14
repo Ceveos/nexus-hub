@@ -7,7 +7,7 @@ import { Input } from '@nextjs/components/catalyst/input'
 import { createCommunity } from "@nextjs/lib/actions";
 import { type CreateCommunityFormData, CreateCommunitySchema } from "@nextjs/lib/schemas/community/createCommunitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Community } from "@prisma/client";
+import { type Community } from "~/generated/prisma-client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

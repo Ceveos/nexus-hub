@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import FormInputAvatar from "@nextjs/components/form/formInputAvatar";
 import { supabaseInstance } from "@nextjs/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
-import { type User } from "@prisma/client";
+import { type User } from "~/generated/prisma-client";
 import { ErrorMessage, Field, Fieldset, Label } from "@nextjs/components/catalyst/fieldset";
 import { Input } from "@nextjs/components/catalyst/input";
 
