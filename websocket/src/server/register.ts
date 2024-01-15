@@ -1,9 +1,8 @@
 import { Env } from "..";
-import { MetadataRequestMessage } from "~/shared/types/server/registerMessage";
+import { MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
 import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
-// import { PrismaClient } from "@prisma/client/edge";
 
 const metadataReq: MetadataRequestMessage = {
   type: "metadata/request",
@@ -30,7 +29,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
   const webSocketPair = new WebSocketPair();
   const [client, server] = Object.values(webSocketPair);
 
-  server.addEventListener('message', (event) => {
+  server.addEventListener('message', async (event) => {
     console.log(`[server] Received message ${event}`);
     const message = parseMessage(event);
     if (!message) {
@@ -38,9 +37,31 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
     }
     switch (message.type) {
       case "metadata/response": {
+        if (!isValidMetadataResponseMessage(message) ||
+            !Object.values(Game).includes(message.payload.game as Game)) {
+          console.log(`[server] Received invalid metadata response`);
+          return;
+        }
+
         const { payload } = message;
         console.log(`[server] Received metadata response from ${community.name} (${community.id})`);
         console.log(payload);
+        const serverId = await registerNewServer(community, {
+          name: payload.name,
+          ip: request.headers.get("CF-Connecting-IP") || "",
+          port: payload.port,
+          game: payload.game as Game,
+          gameMode: payload.gameMode,
+        }, env);
+
+        const serverRegisteredMessage: ServerRegisteredMessage = {
+          type: "server/registered",
+          version: "1.0.0",
+          serverId: serverId,
+        }
+
+        server.send(JSON.stringify(serverRegisteredMessage));
+        server.close();
         break;
       }
       default: {
@@ -66,14 +87,23 @@ interface ServerData {
   gameMode: string;
 }
 
-const registerNewServer = (community: Community, serverData: ServerData, env: Env) => {
-  prisma(env).server.create({
-    data: {
-      name: serverData.name,
+const registerNewServer = async (community: Community, serverData: ServerData, env: Env): Promise<string> => {
+  const server = await prisma(env).server.findFirst({
+    where: {
+      game: serverData.game,
       ip: serverData.ip,
       port: serverData.port,
-      game: serverData.game,
-      gameMode: serverData.gameMode,
+    },
+  });
+
+  if (server) {
+    console.log(`[server] Server already registered`);
+    return server.id;
+  }
+
+  const result = await prisma(env).server.create({
+    data: {
+      ...serverData,
       community: {
         connect: {
           id: community.id,
@@ -81,4 +111,7 @@ const registerNewServer = (community: Community, serverData: ServerData, env: En
       },
     },
   });
+
+  console.log(`[server] Server registered: `, result.id);
+  return result.id;
 }
