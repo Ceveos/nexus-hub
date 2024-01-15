@@ -23,6 +23,7 @@ export const parseMessage = (messageEvent: WebSocketEventMap['message']): Websoc
       }
       return undefined;
   } catch (e) {
+    console.error(e);
       // If parsing fails, return undefined
       return undefined;
   }

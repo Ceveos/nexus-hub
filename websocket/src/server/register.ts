@@ -30,9 +30,10 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
   const [client, server] = Object.values(webSocketPair);
 
   server.addEventListener('message', async (event) => {
-    console.log(`[server] Received message ${event}`);
     const message = parseMessage(event);
     if (!message) {
+      console.log(`[server] Received unknown message`);
+      console.log(JSON.stringify(message))
       return;
     }
     switch (message.type) {
@@ -48,7 +49,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         console.log(payload);
         const serverId = await registerNewServer(community, {
           name: payload.name,
-          ip: request.headers.get("CF-Connecting-IP") || "",
+          ip: request.headers.get("CF-Connecting-IP") || "localhost",
           port: payload.port,
           game: payload.game as Game,
           gameMode: payload.gameMode,
@@ -68,6 +69,11 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         console.log(`Unexpected message type: ${message.type}`);
       }
     }
+  });
+
+  server.addEventListener('close', async (event) => {
+    console.log(`[server] Connection closed with code ${event.code}`);
+    server.close();
   });
 
   server.accept();
