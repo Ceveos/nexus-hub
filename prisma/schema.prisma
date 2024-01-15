@@ -24,6 +24,14 @@ enum Role {
   MEMBER
 }
 
+model Domain {
+  id        String   @id @default(uuid())
+  domain    String   @unique
+  community Community[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Community {
   id            String             @id @default(uuid())
   secretId      String             @unique
@@ -31,10 +39,12 @@ model Community {
   description   String?            @default("Powered by Nexus Hub") @db.Text
   logo          String?            @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text
   subdomain     String             @unique
+  domain        Domain?            @relation(fields: [domainId], references: [id])
+  domainId      String?
   customDomain  String?            @unique
   avatarClass   String             @default("bg-blue-100 text-blue-900")
   owner         User               @relation("CommunityToOwner", fields: [ownerId], references: [id])
-  ownerId       String // Foreign key
+  ownerId       String
   members       UserCommunityMap[] @relation("UserCommunityMapToCommunity")
   servers       Server[]
   communityData CommunityData[]
