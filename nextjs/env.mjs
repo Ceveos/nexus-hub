@@ -42,6 +42,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_KEY: z.string().min(1),
     NEXT_PUBLIC_ROOT_DOMAIN: z.string().min(1),
+    NEXT_PUBLIC_HUB_DOMAIN: z.string().min(1),
     NEXT_PUBLIC_WEBSOCKET_URL: z.string().min(1),
   },
 
@@ -61,6 +62,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
     NEXT_PUBLIC_ROOT_DOMAIN: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+    NEXT_PUBLIC_HUB_DOMAIN: process.env.NEXT_PUBLIC_HUB_DOMAIN,
     PROJECT_ID_VERCEL: process.env.PROJECT_ID_VERCEL,
     TEAM_ID_VERCEL: process.env.TEAM_ID_VERCEL,
     AUTH_BEARER_TOKEN: process.env.AUTH_BEARER_TOKEN,

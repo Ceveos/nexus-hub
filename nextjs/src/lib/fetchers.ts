@@ -2,8 +2,8 @@ import { unstable_cache } from "next/cache";
 import prisma from "@nextjs/lib/prisma";
 
 export async function getCommunityDataByDomain(domain: string) {
-  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
-  ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`)
+  ? domain.replace(`.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`, "")
   : null;
 
   return await unstable_cache(

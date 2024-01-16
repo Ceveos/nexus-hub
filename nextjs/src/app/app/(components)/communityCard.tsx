@@ -18,7 +18,7 @@ type Props = {
 
 export default function CommunityCard({ community }: Props) {
   const https = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-  const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;;
+  const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`;;
 
   return (
     <li key={community.id} className=" relative rounded-xl border border-primary-200 hover:border-primary-400 dark:border-primary-dark-700 dark:hover:border-primary-dark-500 text-primary-500 hover:text-primary-600 dark:text-primary-dark-400 dark:hover:text-primary-dark-200" >

@@ -81,7 +81,7 @@ const GeneralForm: React.FC<Props> = ({ defaultValues }) => {
             data-invalid={errors["subdomain"]}
             id="subdomain"
             prefix="https://"
-            postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`}
+            postfix={`.${env.NEXT_PUBLIC_HUB_DOMAIN}`}
             autoCapitalize="off"
             pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
             maxLength={32}

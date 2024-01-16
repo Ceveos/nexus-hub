@@ -58,7 +58,9 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         const serverRegisteredMessage: ServerRegisteredMessage = {
           type: "server/registered",
           version: "1.0.0",
-          serverId: serverId,
+          payload: {
+            serverId: serverId,
+          }
         }
 
         server.send(JSON.stringify(serverRegisteredMessage));

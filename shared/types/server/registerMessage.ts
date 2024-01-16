@@ -20,7 +20,9 @@ export interface MetadataResponseMessage extends WebsocketMessage {
 export interface ServerRegisteredMessage extends WebsocketMessage {
   type: "server/registered";
   version: "1.0.0";
-  serverId: string;
+  payload: {
+    serverId: string;
+  }
 }
 
 export function isValidMetadataResponseMessage(obj: any): obj is MetadataResponseMessage {

@@ -126,7 +126,7 @@ export const createCommunity = async (
       },
     });
     revalidateTag(
-      `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+      `${data.subdomain}.${process.env.NEXT_PUBLIC_HUB_DOMAIN}-metadata`,
     );
 
     return {

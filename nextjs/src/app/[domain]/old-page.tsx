@@ -15,7 +15,7 @@ export async function generateStaticParams() {
   const allPaths = allSites
     .flatMap(({ subdomain, customDomain }) => [
       subdomain && {
-        domain: `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
+        domain: `${subdomain}.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`,
       },
       customDomain && {
         domain: customDomain,

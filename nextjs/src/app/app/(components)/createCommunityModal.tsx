@@ -109,7 +109,7 @@ export default function CreateCommunityCard({ isOpen, setIsOpen }: Props) {
                   data-invalid={errors["subdomain"]}
                   id="subdomain"
                   placeholder="my-awesome-community"
-                  postfix={`.${env.NEXT_PUBLIC_ROOT_DOMAIN}`}
+                  postfix={`.${env.NEXT_PUBLIC_HUB_DOMAIN}`}
                   autoCapitalize="off"
                   pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
                   maxLength={32}

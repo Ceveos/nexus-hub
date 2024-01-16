@@ -18,7 +18,7 @@ export async function generateMetadata({
   return {
     description
     // Optional: Set canonical URL to custom domain if it exists
-    // ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+    // ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`) &&
     //   siteData.customDomain && {
     //     alternates: {
     //       canonical: `https://${siteData.customDomain}/${params.slug}`,
@@ -49,7 +49,7 @@ export async function generateMetadata({
 //   const allPaths = allPosts
 //     .flatMap(({ site, slug }) => [
 //       site?.subdomain && {
-//         domain: `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
+//         domain: `${site.subdomain}.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`,
 //         slug,
 //       },
 //       site?.customDomain && {

@@ -39,7 +39,7 @@ export async function generateMetadata({
     // icons: [logo],
     metadataBase: new URL(`https://${domain}`),
     // Optional: Set canonical URL to custom domain if it exists
-    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`) &&
       data.customDomain && {
       alternates: {
         canonical: `https://${data.customDomain}`,
@@ -64,7 +64,7 @@ export default async function SiteLayout({
 
   // Optional: Redirect to custom domain if it exists
   if (
-    domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+    domain.endsWith(`.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`) &&
     data.customDomain &&
     process.env.REDIRECT_TO_CUSTOM_DOMAIN_IF_EXISTS === "true"
   ) {

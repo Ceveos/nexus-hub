@@ -148,7 +148,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
                 <p className="mt-2 font-mono text-sm">
                   {recordType === "A"
                     ? `76.76.21.21`
-                    : `cname.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`}
+                    : `cname.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`}
                 </p>
               </div>
               <div>
