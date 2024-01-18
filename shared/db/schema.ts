@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { pgTable, uniqueIndex, pgEnum, text, timestamp, index, integer, primaryKey, jsonb } from "drizzle-orm/pg-core"
 
 export const game = pgEnum("Game", ['MINECRAFT', 'RUST', 'GARRYS_MOD'])
@@ -16,9 +17,12 @@ export const domains = pgTable("Domain", {
 	}
 });
 
+export const domainsRelations = relations(domains, ({ many }) => ({
+  community: many(communities),
+}));
+
 export type Domain = typeof domains.$inferSelect; // return type when queried
 export type NewDomain = typeof domains.$inferInsert; // insert type
-
 
 export const communities = pgTable("Community", {
 	id: text("id").primaryKey().notNull(),
@@ -41,6 +45,14 @@ export const communities = pgTable("Community", {
 		customDomainKey: uniqueIndex("Community_customDomain_key").on(table.customDomain),
 	}
 });
+
+export const communitiesRelations = relations(communities, ({ one, many }) => ({
+	domain: one(domains, { fields: [communities.domainId], references: [domains.id]}),
+	owner: one(users, { fields: [communities.ownerId], references: [users.id]}),
+  members: many(userCommunityMaps),
+	servers: many(servers),
+	communityData: many(communityData),
+}));
 
 export type Community = typeof communities.$inferSelect; // return type when queried
 export type NewCommunity = typeof communities.$inferInsert; // insert type
@@ -67,6 +79,10 @@ export const accounts = pgTable("Account", {
 	}
 });
 
+export const accountsRelations = relations(accounts, ({ one }) => ({
+	user: one(users, { fields: [accounts.userId], references: [users.id]}),
+}));
+
 export type Account = typeof accounts.$inferSelect; // return type when queried
 export type NewAccount = typeof accounts.$inferInsert; // insert type
 
@@ -82,6 +98,10 @@ export const sessions = pgTable("Session", {
 		userIdIdx: index("Session_userId_idx").on(table.userId),
 	}
 });
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+	user: one(users, { fields: [sessions.userId], references: [users.id]}),
+}));
 
 export type Session = typeof sessions.$inferSelect; // return type when queried
 export type NewSession = typeof sessions.$inferInsert; // insert type
@@ -114,6 +134,14 @@ export const users = pgTable("User", {
 	}
 });
 
+export const usersRelations = relations(users, ({ many }) => ({
+	accounts: many(accounts),
+	sessions: many(sessions),
+	sites: many(sites),
+	ownedCommunities: many(communities),
+	memberOfCommunities: many(userCommunityMaps),
+}));
+
 export type User = typeof users.$inferSelect; // return type when queried
 export type NewUser = typeof users.$inferInsert; // insert type
 
@@ -134,6 +162,11 @@ export const servers = pgTable("Server", {
 		gameIpPortKey: uniqueIndex("Server_game_ip_port_key").on(table.game, table.ip, table.port),
 	}
 });
+
+export const serversRelations = relations(servers, ({ one, many }) => ({
+	community: one(communities, { fields: [servers.communityId], references: [communities.id]}),
+	serverData: many(serverData),
+}));
 
 export type Server = typeof servers.$inferSelect; // return type when queried
 export type NewServer = typeof servers.$inferInsert; // insert type
@@ -161,6 +194,10 @@ export const sites = pgTable("Site", {
 	}
 });
 
+export const sitesRelations = relations(sites, ({ one }) => ({
+	user: one(users, { fields: [sites.userId], references: [users.id]}),
+}));
+
 export type Site = typeof sites.$inferSelect; // return type when queried
 export type NewSite = typeof sites.$inferInsert; // insert type
 
@@ -174,6 +211,12 @@ export const userCommunityMaps = pgTable("UserCommunityMap", {
 		userCommunityMapPkey: primaryKey({ columns: [table.communityId, table.userId], name: "UserCommunityMap_pkey"})
 	}
 });
+
+export const userCommunityMapsRelations = relations(userCommunityMaps, ({ one }) => ({
+	community: one(communities, { fields: [userCommunityMaps.communityId], references: [communities.id]}),
+	user: one(users, { fields: [userCommunityMaps.userId], references: [users.id]}),
+}));
+
 
 export type UserCommunityMap = typeof userCommunityMaps.$inferSelect; // return type when queried
 export type NewUserCommunityMap = typeof userCommunityMaps.$inferInsert; // insert type
@@ -191,6 +234,10 @@ export const serverData = pgTable("ServerData", {
 	}
 });
 
+export const serverDataRelations = relations(serverData, ({ one }) => ({
+	server: one(servers, { fields: [serverData.serverId], references: [servers.id]}),
+}));
+
 export type ServerData = typeof serverData.$inferSelect; // return type when queried
 export type NewServerData = typeof serverData.$inferInsert; // insert type
 
@@ -206,6 +253,10 @@ export const communityData = pgTable("CommunityData", {
 		communityDataPkey: primaryKey({ columns: [table.communityId, table.key], name: "CommunityData_pkey"})
 	}
 });
+
+export const communityDataRelations = relations(communityData, ({ one }) => ({
+	community: one(communities, { fields: [communityData.communityId], references: [communities.id]}),
+}));
 
 export type CommunityData = typeof communityData.$inferSelect; // return type when queried
 export type NewCommunityData = typeof communityData.$inferInsert; // insert type
