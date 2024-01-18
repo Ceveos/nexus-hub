@@ -8,10 +8,11 @@
     "start:ws": "cd websocket && pnpm run start",
     "deploy:ws": "cd websocket && pnpm run deploy"
   },
-  "devDependencies": {
-    "prisma": "^5.8.0"
-  },
   "dependencies": {
-    "@prisma/client": "^5.8.0"
+    "drizzle-orm": "^0.29.3"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.13",
+    "postgres": "^3.4.3"
   }
 }

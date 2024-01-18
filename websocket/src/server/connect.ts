@@ -1,6 +1,6 @@
 import { Env } from '../env';
 import { ConnectToCommunity, ServerConnection } from '../helpers/communityTypes';
-import prisma from '../lib/prisma';
+import db from '../lib/db';
 
 export async function serverConnectReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
 	const serverId = path.shift();
@@ -9,14 +9,12 @@ export async function serverConnectReq(request: Request, env: Env, ctx: Executio
 		return new Response('Server ID not provided', { status: 404 });
 	}
 
-	const serverData = await prisma(env).server.findUnique({
-		where: {
-			id: serverId,
-		},
-		include: {
-			community: true,
-		},
-	});
+  const serverData = await db(env).query.servers.findFirst({
+    where: (server, {eq}) => eq(server.id, serverId),
+    with: {
+      community: true
+    }
+  })
 
 	if (!serverData) {
 		return new Response('Server for server not found', { status: 404 });

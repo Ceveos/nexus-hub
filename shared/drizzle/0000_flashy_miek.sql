@@ -11,11 +11,11 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Account" (
-	"id" text PRIMARY KEY NOT NULL,
-	"userId" text NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"userId" uuid NOT NULL,
 	"type" text NOT NULL,
 	"provider" text NOT NULL,
-	"providerAccountId" text NOT NULL,
+	"providerAccountId" uuid NOT NULL,
 	"refresh_token" text,
 	"refresh_token_expires_in" integer,
 	"access_token" text,
@@ -27,67 +27,67 @@ CREATE TABLE IF NOT EXISTS "Account" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Community" (
-	"id" text PRIMARY KEY NOT NULL,
-	"secretId" text NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"secretId" uuid NOT NULL,
 	"name" text NOT NULL,
 	"description" text DEFAULT 'Powered by Nexus Hub',
 	"logo" text DEFAULT 'https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png',
 	"subdomain" text NOT NULL,
 	"customDomain" text,
 	"avatarClass" text DEFAULT 'bg-blue-100 text-blue-900' NOT NULL,
-	"ownerId" text NOT NULL,
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL,
-	"domainId" text
+	"ownerId" uuid NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL,
+	"domainId" uuid
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "CommunityData" (
-	"communityId" text NOT NULL,
+	"communityId" uuid NOT NULL,
 	"key" text NOT NULL,
 	"value" jsonb NOT NULL,
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL,
 	CONSTRAINT "CommunityData_pkey" PRIMARY KEY("communityId","key")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Domain" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"domain" text NOT NULL,
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ServerData" (
-	"serverId" text NOT NULL,
+	"serverId" uuid NOT NULL,
 	"key" text NOT NULL,
 	"value" jsonb NOT NULL,
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL,
 	CONSTRAINT "ServerData_pkey" PRIMARY KEY("serverId","key")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Server" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"game" "Game" NOT NULL,
-	"communityId" text NOT NULL,
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL,
+	"communityId" uuid NOT NULL,
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL,
 	"gameMode" text NOT NULL,
 	"ip" text NOT NULL,
-	"verifiedAt" timestamp(3),
+	"verifiedAt" timestamp,
 	"port" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Session" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"sessionToken" text NOT NULL,
-	"userId" text NOT NULL,
-	"expires" timestamp(3) NOT NULL
+	"userId" uuid NOT NULL,
+	"expires" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Site" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
 	"description" text,
 	"logo" text DEFAULT 'https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png',
@@ -97,30 +97,30 @@ CREATE TABLE IF NOT EXISTS "Site" (
 	"subdomain" text,
 	"customDomain" text,
 	"message404" text DEFAULT 'Blimey! You've found a page that doesn't exist.',
-	"createdAt" timestamp(3) DEFAULT now() NOT NULL,
-	"updatedAt" timestamp(3) NOT NULL,
-	"userId" text
+	"createdAt" timestamp DEFAULT now() NOT NULL,
+	"updatedAt" timestamp NOT NULL,
+	"userId" uuid
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "UserCommunityMap" (
-	"communityId" text NOT NULL,
-	"userId" text NOT NULL,
+	"communityId" uuid NOT NULL,
+	"userId" uuid NOT NULL,
 	"role" "Role" NOT NULL,
 	CONSTRAINT "UserCommunityMap_pkey" PRIMARY KEY("communityId","userId")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "User" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
 	"email" text,
-	"emailVerified" timestamp(3),
+	"emailVerified" timestamp,
 	"image" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "VerificationToken" (
 	"identifier" text NOT NULL,
 	"token" text NOT NULL,
-	"expires" timestamp(3) NOT NULL
+	"expires" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "Account_userId_idx" ON "Account" ("userId");--> statement-breakpoint

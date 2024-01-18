@@ -1,15 +1,19 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uniqueIndex, pgEnum, text, timestamp, index, integer, primaryKey, jsonb } from "drizzle-orm/pg-core"
+import { pgTable, uniqueIndex, pgEnum, text, timestamp, index, integer, primaryKey, jsonb, uuid } from "drizzle-orm/pg-core"
 
 export const game = pgEnum("Game", ['MINECRAFT', 'RUST', 'GARRYS_MOD'])
+export const Game = game.enumValues;
+
 export const role = pgEnum("Role", ['MEMBER', 'MODERATOR', 'ADMIN'])
+export const Role = role.enumValues;
+
 
 
 export const domains = pgTable("Domain", {
-	id: text("id").primaryKey().notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	domain: text("domain").notNull(),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
 },
 (table) => {
 	return {
@@ -25,18 +29,18 @@ export type Domain = typeof domains.$inferSelect; // return type when queried
 export type NewDomain = typeof domains.$inferInsert; // insert type
 
 export const communities = pgTable("Community", {
-	id: text("id").primaryKey().notNull(),
-	secretId: text("secretId").notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
+	secretId: uuid("secretId").notNull(),
 	name: text("name").notNull(),
 	description: text("description").default('Powered by Nexus Hub'),
 	logo: text("logo").default('https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png'),
 	subdomain: text("subdomain").notNull(),
 	customDomain: text("customDomain"),
 	avatarClass: text("avatarClass").default('bg-blue-100 text-blue-900').notNull(),
-	ownerId: text("ownerId").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" } ),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
-	domainId: text("domainId").references(() => domains.id, { onDelete: "set null", onUpdate: "cascade" } ),
+	ownerId: uuid("ownerId").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
+	domainId: uuid("domainId").references(() => domains.id, { onDelete: "set null", onUpdate: "cascade" } ),
 },
 (table) => {
 	return {
@@ -58,11 +62,11 @@ export type Community = typeof communities.$inferSelect; // return type when que
 export type NewCommunity = typeof communities.$inferInsert; // insert type
 
 export const accounts = pgTable("Account", {
-	id: text("id").primaryKey().notNull(),
-	userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
+	userId: uuid("userId").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	type: text("type").notNull(),
 	provider: text("provider").notNull(),
-	providerAccountId: text("providerAccountId").notNull(),
+	providerAccountId: uuid("providerAccountId").notNull(),
 	refreshToken: text("refresh_token"),
 	refreshTokenExpiresIn: integer("refresh_token_expires_in"),
 	accessToken: text("access_token"),
@@ -87,10 +91,10 @@ export type Account = typeof accounts.$inferSelect; // return type when queried
 export type NewAccount = typeof accounts.$inferInsert; // insert type
 
 export const sessions = pgTable("Session", {
-	id: text("id").primaryKey().notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	sessionToken: text("sessionToken").notNull(),
-	userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	expires: timestamp("expires", { precision: 3, mode: 'string' }).notNull(),
+	userId: uuid("userId").notNull().references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	expires: timestamp("expires").notNull(),
 },
 (table) => {
 	return {
@@ -109,7 +113,7 @@ export type NewSession = typeof sessions.$inferInsert; // insert type
 export const verificationTokens = pgTable("VerificationToken", {
 	identifier: text("identifier").notNull(),
 	token: text("token").notNull(),
-	expires: timestamp("expires", { precision: 3, mode: 'string' }).notNull(),
+	expires: timestamp("expires").notNull(),
 },
 (table) => {
 	return {
@@ -122,10 +126,10 @@ export type VerificationToken = typeof verificationTokens.$inferSelect; // retur
 export type NewVerificationToken = typeof verificationTokens.$inferInsert; // insert type
 
 export const users = pgTable("User", {
-	id: text("id").primaryKey().notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: text("name"),
 	email: text("email"),
-	emailVerified: timestamp("emailVerified", { precision: 3, mode: 'string' }),
+	emailVerified: timestamp("emailVerified"),
 	image: text("image"),
 },
 (table) => {
@@ -146,15 +150,15 @@ export type User = typeof users.$inferSelect; // return type when queried
 export type NewUser = typeof users.$inferInsert; // insert type
 
 export const servers = pgTable("Server", {
-	id: text("id").primaryKey().notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: text("name").notNull(),
 	game: game("game").notNull(),
-	communityId: text("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
+	communityId: uuid("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
 	gameMode: text("gameMode").notNull(),
 	ip: text("ip").notNull(),
-	verifiedAt: timestamp("verifiedAt", { precision: 3, mode: 'string' }),
+	verifiedAt: timestamp("verifiedAt"),
 	port: integer("port"),
 },
 (table) => {
@@ -172,7 +176,7 @@ export type Server = typeof servers.$inferSelect; // return type when queried
 export type NewServer = typeof servers.$inferInsert; // insert type
 
 export const sites = pgTable("Site", {
-	id: text("id").primaryKey().notNull(),
+	id: uuid("id").primaryKey().notNull().defaultRandom(),
 	name: text("name"),
 	description: text("description"),
 	logo: text("logo").default('https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png'),
@@ -182,9 +186,9 @@ export const sites = pgTable("Site", {
 	subdomain: text("subdomain"),
 	customDomain: text("customDomain"),
 	message404: text("message404").default('Blimey! You\'ve found a page that doesn\'t exist.'),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
-	userId: text("userId").references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
+	userId: uuid("userId").references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 },
 (table) => {
 	return {
@@ -202,8 +206,8 @@ export type Site = typeof sites.$inferSelect; // return type when queried
 export type NewSite = typeof sites.$inferInsert; // insert type
 
 export const userCommunityMaps = pgTable("UserCommunityMap", {
-	communityId: text("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
-	userId: text("userId").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	communityId: uuid("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	userId: uuid("userId").notNull().references(() => users.id, { onDelete: "restrict", onUpdate: "cascade" } ),
 	role: role("role").notNull(),
 },
 (table) => {
@@ -222,11 +226,11 @@ export type UserCommunityMap = typeof userCommunityMaps.$inferSelect; // return 
 export type NewUserCommunityMap = typeof userCommunityMaps.$inferInsert; // insert type
 
 export const serverData = pgTable("ServerData", {
-	serverId: text("serverId").notNull().references(() => servers.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	serverId: uuid("serverId").notNull().references(() => servers.id, { onDelete: "restrict", onUpdate: "cascade" } ),
 	key: text("key").notNull(),
 	value: jsonb("value").notNull(),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
 },
 (table) => {
 	return {
@@ -242,11 +246,11 @@ export type ServerData = typeof serverData.$inferSelect; // return type when que
 export type NewServerData = typeof serverData.$inferInsert; // insert type
 
 export const communityData = pgTable("CommunityData", {
-	communityId: text("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
+	communityId: uuid("communityId").notNull().references(() => communities.id, { onDelete: "restrict", onUpdate: "cascade" } ),
 	key: text("key").notNull(),
 	value: jsonb("value").notNull(),
-	createdAt: timestamp("createdAt", { precision: 3, mode: 'string' }).defaultNow().notNull(),
-	updatedAt: timestamp("updatedAt", { precision: 3, mode: 'string' }).notNull(),
+	createdAt: timestamp("createdAt").defaultNow().notNull(),
+	updatedAt: timestamp("updatedAt").notNull(),
 },
 (table) => {
 	return {
