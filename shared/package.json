@@ -2,9 +2,15 @@
   "name": "shared",
   "private": true,
   "scripts": {
-    "dev": "prisma generate",
-    "build": "prisma generate",
-    "generate": "prisma generate",
-    "push": "prisma db push"
+    "generate": "drizzle-kit generate:pg",
+    "migrate": "node -r ts-node/register --env-file=.env db/migrate.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.29.3",
+    "postgres": "^3.4.3"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.13",
+    "ts-node": "^10.9.2"
   }
 }
