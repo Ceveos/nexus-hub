@@ -1,4 +1,4 @@
-import { Env } from "..";
+import { Env } from "../env";
 import { MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
 import { Community, Game } from "@prisma/client";
@@ -41,6 +41,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         if (!isValidMetadataResponseMessage(message) ||
             !Object.values(Game).includes(message.payload.game as Game)) {
           console.log(`[server] Received invalid metadata response`);
+          server.close(1002, "Invalid metadata response")
           return;
         }
 

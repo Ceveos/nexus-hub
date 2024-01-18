@@ -1,4 +1,4 @@
-import { Env } from '..';
+import { Env } from '../env';
 import { serverRegisterReq } from './register';
 
 export async function serverReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
