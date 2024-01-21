@@ -1,6 +1,6 @@
-import { Env } from '..';
 import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
+import { Env } from '../env';
 
 const createAcceleratedPrismaClient = (env: Env) => {
 	return new PrismaClient({

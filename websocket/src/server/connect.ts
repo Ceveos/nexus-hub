@@ -1,5 +1,5 @@
 import { Env } from '../env';
-import { ConnectToCommunity, ServerConnection } from '../helpers/communityTypes';
+import { ConnectToCommunity, ServerMessage } from '../helpers/objectInteraction';
 import prisma from '../lib/prisma';
 
 export async function serverConnectReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
@@ -26,8 +26,8 @@ export async function serverConnectReq(request: Request, env: Env, ctx: Executio
 		return new Response('Community for server not found', { status: 404 });
 	}
   
-	const serverConnectMessage: ServerConnection = {
-		type: 'server',
+	const serverConnectMessage: ServerMessage = {
+		to: 'server',
 		id: serverId,
     ip: request.headers.get('CF-Connecting-IP') || 'localhost',
 	};

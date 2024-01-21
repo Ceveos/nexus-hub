@@ -1,10 +1,17 @@
 import { Env } from '../env';
-import { ServerClient, ServerConnection, UserClient, validateConnectionType } from '../helpers/communityTypes';
+import { ServerClient, ServerMessage, UserClient, validateMessage } from '../helpers/objectInteraction';
+
+export interface Message {
+  from: string;
+  text: string;
+  timestamp: Date;
+}
+
 
 export class CommunityObject implements DurableObject {
 	state: DurableObjectState;
 	env: Env;
-	servers: Map<string, ServerClient> = new Map();
+	servers: Map<string, Server> = new Map();
 	users: Map<string, UserClient> = new Map();
 
 	constructor(state: DurableObjectState, env: Env) {
@@ -21,11 +28,11 @@ export class CommunityObject implements DurableObject {
 		const requestData = await request.json();
 
 		// Runtime type validation
-		if (!validateConnectionType(requestData)) {
+		if (!validateMessage(requestData)) {
 			return new Response('Invalid data format', { status: 400 });
 		}
 
-		switch (requestData.type) {
+		switch (requestData.to) {
 			case 'server':
 				return await this.serverRequest(requestData);
 		}
@@ -44,7 +51,7 @@ export class CommunityObject implements DurableObject {
 		return new Response(value.toString());
 	}
 
-	async serverRequest(connection: ServerConnection): Promise<any> {
+	async serverRequest(connection: ServerMessage): Promise<any> {
 		const webSocketPair = new WebSocketPair();
 		const [client, server] = Object.values(webSocketPair);
 
@@ -56,12 +63,11 @@ export class CommunityObject implements DurableObject {
 		server.accept();
 		// server.send(JSON.stringify(metadataReq));
 
-    this.servers.set(connection.id, {
-      server,
-      ip: connection.ip,
-      chatMessages: [],
-      lastSeen: Date.now(),
-    });
+		this.servers.set(connection.id, new Server(this.state, this.env, {
+			ip: connection.ip,
+			lastSeen: Date.now(),
+			server
+		}));
 
 		return new Response(null, {
 			status: 101,
