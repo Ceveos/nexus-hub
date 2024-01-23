@@ -8,6 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 import { Env } from './env';
+import { clientReq } from './client';
 import { serverReq } from './server';
 
 // Export durable objects
@@ -49,8 +50,10 @@ export default {
 			}
 
 			switch (path.shift()) {
-				case 'server':
-					return await serverReq(request, env, ctx, path);
+				case 'client':
+					return await clientReq(request, env, ctx, path);
+        case 'server':
+          return await serverReq(request, env, ctx, path);
 				default:
 					return new Response('Not found', { status: 404 });
 			}

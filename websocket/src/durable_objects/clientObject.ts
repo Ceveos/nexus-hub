@@ -17,6 +17,8 @@ export class ClientObject implements DurableObject {
 		this.state = state;
 		this.storage = state.storage;
 		this.env = env;
+    this.initializeServers();
+    this.initializeCommunities();
 	}
 
 	async initialize() {
@@ -47,12 +49,13 @@ export class ClientObject implements DurableObject {
 			await this.initialize();
 		}
 
+
 		// Handle client websocket connection
 		if (request.headers.get('Upgrade') !== 'websocket') {
 			return new Response('Expected websocket', { status: 400 });
 		}
 
-		if (this.clientWs?.readyState === WebSocket.OPEN) {
+		if (this.clientWs && this.clientWs.readyState === WebSocket.OPEN) {
 			// This should never happen
 			return new Response('Another client already connected', { status: 400 });
 		}
@@ -116,13 +119,15 @@ export class ClientObject implements DurableObject {
 		console.log('[client] message', message);
 	}
 
-	webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
+	async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
 		console.log(`[client] Connection closed with code ${code}`);
 		ws.close();
+    await this.state.storage.deleteAll(); 
 	}
 
-	webSocketError(ws: WebSocket, error: unknown) {
+	async webSocketError(ws: WebSocket, error: unknown) {
 		console.log('[client] error', error);
+    await this.state.storage.deleteAll(); 
 	}
 
 	async subscribe(type: ConnectionType, to: string): Promise<boolean> {
