@@ -10,6 +10,14 @@ export interface MetadataRequestMessage extends WebsocketMessage {
     action: "metadata/request"
   }
 }
+
+export interface MetadataInvalidMessage extends WebsocketMessage {
+  type: 'server';
+  version: "1.0.0";
+  payload: {
+    action: "metadata/invalid"
+  }
+}
 export interface MetadataResponseMessage extends WebsocketMessage {
   type: 'server';
   version: "1.0.0";

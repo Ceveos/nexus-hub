@@ -1,5 +1,5 @@
 import { Env } from "../env";
-import { MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
+import { MetadataInvalidMessage, MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
 import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
@@ -9,6 +9,14 @@ const metadataReq: MetadataRequestMessage = {
   version: "1.0.0",
   payload: {
     action: "metadata/request",
+  }
+};
+
+const invalidMetadataMessage: MetadataInvalidMessage = {
+  type: 'server',
+  version: "1.0.0",
+  payload: {
+    action: "metadata/invalid",
   }
 };
 
@@ -44,7 +52,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         if (!isValidMetadataResponseMessage(message) ||
             !Object.values(Game).includes(message.payload.data.game as Game)) {
           console.log(`[server] Received invalid metadata response`);
-          server.close(1002, "Invalid metadata response")
+          server.send(JSON.stringify(invalidMetadataMessage));
           return;
         }
 
