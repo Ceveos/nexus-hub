@@ -7,55 +7,54 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-import { Env } from "./env";
-import { serverReq } from "./server";
-
+import { isValidMessage } from '~/shared/types/shared/websocketMessage';
+import { Env } from './env';
+import { serverReq } from './server';
+import { fetch } from './helpers/objectInteraction';
 
 // Export durable objects
 export * from './durable_objects';
 
 async function handleErrors(request: Request, env: Env, ctx: ExecutionContext, func: () => Promise<Response>) {
-  try {
-    return await func();
-  } catch (err) {
-    if (request.headers.get("Upgrade") == "websocket") {
-      // Annoyingly, if we return an HTTP error in response to a WebSocket request, Chrome devtools
-      // won't show us the response body! So... let's send a WebSocket response with an error
-      // frame instead.
-      let pair = new WebSocketPair();
-			
-  		pair[1].accept();
-      pair[1].send(JSON.stringify({error: (err as any).stack}));
-      pair[1].close(1011, "Uncaught exception during session setup");
-      return new Response(null, { status: 101, webSocket: pair[0] });
-    } else {
-      return new Response((err as any).stack, {status: 500});
-    }
-  }
-}
+	try {
+		return await func();
+	} catch (err) {
+		if (request.headers.get('Upgrade') == 'websocket') {
+			// Annoyingly, if we return an HTTP error in response to a WebSocket request, Chrome devtools
+			// won't show us the response body! So... let's send a WebSocket response with an error
+			// frame instead.
+			let pair = new WebSocketPair();
 
+			pair[1].accept();
+			pair[1].send(JSON.stringify({ error: (err as any).stack }));
+			pair[1].close(1011, 'Uncaught exception during session setup');
+			return new Response(null, { status: 101, webSocket: pair[0] });
+		} else {
+			return new Response((err as any).stack, { status: 500 });
+		}
+	}
+}
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    return await handleErrors(request, env, ctx, async () => {
+		return await handleErrors(request, env, ctx, async () => {
 			const upgradeHeader = request.headers.get('Upgrade');
 			if (!upgradeHeader || upgradeHeader !== 'websocket') {
 				return new Response('Expected Upgrade: websocket', { status: 426 });
 			}
 
 			let url = new URL(request.url);
-      let path = url.pathname.slice(1).split('/');
+			let path = url.pathname.slice(1).split('/');
 
-      if (!path[0]) {
-        // Serve our HTML at the root path.
-        return new Response('Location not found', { status: 404 });
-      }
+			if (!path[0]) {
+        return new Response('Not found', { status: 404 });
+			}
 
 			switch (path.shift()) {
 				case 'server':
 					return await serverReq(request, env, ctx, path);
 				default:
-					return new Response("Not found", {status: 404});
+					return new Response('Not found', { status: 404 });
 			}
 		});
 	},

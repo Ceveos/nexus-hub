@@ -1,8 +1,7 @@
-import { ConnectionType, isValidMessage } from '~/shared/types/shared/websocketMessage';
 import { Env } from '../env';
+import { ConnectionType, isValidConnectMessage, isValidMessage } from '~/shared/types/shared/websocketMessage';
 import { WebsocketMetadata, subscribe } from '../helpers/objectInteraction';
-
-
+import { ConnectedMessage } from '~/shared/types/server/connectMessage';
 
 export class ClientObject implements DurableObject {
 	state: DurableObjectState;
@@ -71,39 +70,43 @@ export class ClientObject implements DurableObject {
 		const requestData = await request.json();
 
 		// Runtime type validation
-		if (!isValidMessage(requestData)) {
+		if (!isValidConnectMessage(requestData)) {
 			return new Response('Invalid data format', { status: 400 });
+		}
+
+		if (requestData.type !== 'client') {
+			return new Response('This type cannot connect to client', { status: 400 });
+		}
+
+		if (this.clientId && requestData.from !== this.clientId) {
+			return new Response('Different client already connected', { status: 400 });
+		}
+
+		if (this.clientWs?.readyState === WebSocket.OPEN) {
+			// This should never happen
+			return new Response('Client already connected', { status: 400 });
 		}
 
 		const webSocketPair = new WebSocketPair();
 		const [client, server] = Object.values(webSocketPair);
 
-		// If client is connecting
-		if (requestData.type === 'client') {
-			if (this.clientWs?.readyState === WebSocket.OPEN) {
-				// This should never happen
-				return new Response('Client already connected', { status: 400 });
-			}
+		this.clientId = requestData.from;
+		this.clientWs = server;
+		this.storage.put('clientId', this.clientId);
 
-			this.clientId = requestData.from;
-			this.clientWs = server;
-			this.storage.put('clientId', this.clientId);
-			await this.initializeCommunities();
-			await this.initializeServers();
-		} else if (requestData.type === 'server') {
-			// If server is connecting
-			if (!this.servers.includes(requestData.from)) {
-				return new Response('Server not subscribed', { status: 400 });
-			}
-		} else if (requestData.type === 'community') {
-			// If community is connecting
-			if (!this.communities.includes(requestData.from)) {
-				return new Response('Community not subscribed', { status: 400 });
-			}
-		}
+		// Should be empty but just in case
+		await this.initializeCommunities();
+		await this.initializeServers();
 
 		server.serializeAttachment({ id: requestData.from, type: requestData.type } as WebsocketMetadata);
 		this.state.acceptWebSocket(server, [requestData.type, requestData.from]);
+
+		server.send(JSON.stringify({ 
+      type: 'client',
+      to: requestData.from,
+      payload: { action: 'connected' },
+      version: '1.0.0' } as ConnectedMessage));
+
 		return new Response(null, {
 			status: 101,
 			webSocket: client,
@@ -141,14 +144,18 @@ export class ClientObject implements DurableObject {
 		}
 	}
 
-	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {}
+	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+		console.log('[client] message', message);
+	}
 
 	webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
 		console.log(`[client] Connection closed with code ${code}`);
 		ws.close();
 	}
 
-	webSocketError(ws: WebSocket, error: unknown) {}
+	webSocketError(ws: WebSocket, error: unknown) {
+		console.log('[client] error', error);
+	}
 
 	async subscribe(type: ConnectionType, to: string): Promise<boolean> {
 		if (!this.clientId) {
@@ -157,10 +164,10 @@ export class ClientObject implements DurableObject {
 
 		const response = await subscribe(type, to, this.clientId, this.env);
 
-    // Double-check that Response.webSocket is defined
-    // https://developers.cloudflare.com/workers/runtime-apis/response/
+		// Double-check that Response.webSocket is defined
+		// https://developers.cloudflare.com/workers/runtime-apis/response/
 		if (response.webSocket) {
-      response.webSocket.serializeAttachment({ type, id: to } as WebsocketMetadata);
+			response.webSocket.serializeAttachment({ type, id: to } as WebsocketMetadata);
 			this.state.acceptWebSocket(response.webSocket, [type, to]);
 
 			switch (to) {
@@ -180,18 +187,18 @@ export class ClientObject implements DurableObject {
 	}
 
 	async unsubscribe(to: ConnectionType, id: string) {
-    // Close websocket
-    const websockets = this.state.getWebSockets(id);
+		// Close websocket
+		const websockets = this.state.getWebSockets(id);
 
-    // Realistically this should only ever be 0 or 1 websockets
-    for (let i = websockets.length - 1; i >= 0; i--) {
-      const ws = websockets[i];
-      const metadata = ws.deserializeAttachment() as WebsocketMetadata;
+		// Realistically this should only ever be 0 or 1 websockets
+		for (let i = websockets.length - 1; i >= 0; i--) {
+			const ws = websockets[i];
+			const metadata = ws.deserializeAttachment() as WebsocketMetadata;
 
-      if (metadata.type === to && metadata.id === id) {
-        ws.close();
-      }
-    }
+			if (metadata.type === to && metadata.id === id) {
+				ws.close();
+			}
+		}
 
 		switch (to) {
 			case 'server':

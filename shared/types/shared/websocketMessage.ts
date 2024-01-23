@@ -5,8 +5,8 @@ export interface ChatMessage {
 }
 
 export type ConnectionType = 'client' | 'community' | 'server';
-export type ConnectionAction = 'connect' | 'message';
-export type SubscriptionAction = | 'subscribe' | 'unsubscribe';
+export type ConnectionAction = 'connect';
+export type SubscriptionAction = 'subscribe' | 'unsubscribe';
 export type MessageAction = 'message';
 
 export interface Payload {
@@ -33,24 +33,44 @@ export interface SubscribePayload extends Payload {
 
 export interface Message {
   type: ConnectionType;
-  to: string;
-  from: string;
+  to?: string;
+  from?: string;
   payload?: Payload
 }
 
 export interface ServerMessage extends Message {
   type: 'server';
-  action: MessageAction | SubscriptionAction | ConnectPayload;
+  to: string;
+  from: string;
+  payload: MessagePayload | SubscribePayload;
 }
 
 export interface CommunityMessage extends Message {
   type: 'community';
+  to: string;
+  from: string;
   action: MessageAction | SubscriptionAction;
 }
 
 export interface ClientMessage extends Message {
   type: 'client';
+  to: string;
+  from: string;
   action: MessageAction | SubscriptionAction;
+}
+
+export interface ConnectMessage extends Message {
+  type: 'client' | 'server';
+  to: never;
+  from: string;
+  payload: ConnectPayload;
+}
+
+export interface SubscribeMessage extends Message {
+  type: 'community' | 'server';
+  to: string;
+  from: string;
+  payload: SubscribePayload;
 }
 
 export function isValidPayload(data: any): data is Payload {
@@ -64,14 +84,41 @@ export function isValidMessage(data: any): data is Message {
   return data
       && typeof data === 'object'
       && 'type' in data
-      && 'to' in data
-      && 'from' in data
+      && (!('to' in data) || typeof data.to === 'string')
+      && (!('from' in data) || typeof data.from === 'string')
       && 'payload' in data
       && (data.type === 'client' || data.type === 'community' || data.type === 'server')
-      && typeof data.to === 'string'
-      && typeof data.from === 'string'
       && isValidPayload(data.payload);
 }
+
+
+export function isValidConnectPayload(data: any): data is ConnectPayload {
+  return data
+    && isValidPayload(data)
+    && data.action === 'connect'
+}
+
+export function isValidSubscriptionPayload(data: any): data is SubscribePayload {
+  return data
+    && isValidPayload(data)
+    && (data.action === 'subscribe' || data.action === 'unsubscribe');
+}
+
+export function isValidConnectMessage(data: any): data is ConnectMessage {
+  return data
+    && isValidMessage(data)
+    && data.type === 'client' || data.type === 'server'
+    && isValidConnectPayload(data.payload);
+}
+
+export function isValidSubscribeMessage(data: any): data is SubscribeMessage {
+  return data
+    && isValidMessage(data)
+    && data.type === 'community' || data.type === 'server'
+    && isValidPayload(data.payload)
+    && isValidSubscriptionPayload(data.payload);
+}
+
 export interface WebsocketMessage extends Message {
   version: string;
 }

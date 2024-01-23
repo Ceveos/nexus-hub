@@ -5,8 +5,11 @@ import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
 
 const metadataReq: MetadataRequestMessage = {
-  type: "metadata/request",
+  type: 'server',
   version: "1.0.0",
+  payload: {
+    action: "metadata/request",
+  }
 };
 
 export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
@@ -36,31 +39,34 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
       console.log(JSON.stringify(message))
       return;
     }
-    switch (message.type) {
+    switch (message.payload?.action) {
       case "metadata/response": {
         if (!isValidMetadataResponseMessage(message) ||
-            !Object.values(Game).includes(message.payload.game as Game)) {
+            !Object.values(Game).includes(message.payload.data.game as Game)) {
           console.log(`[server] Received invalid metadata response`);
           server.close(1002, "Invalid metadata response")
           return;
         }
 
-        const { payload } = message;
+        const { data } = message.payload;
         console.log(`[server] Received metadata response from ${community.name} (${community.id})`);
-        console.log(payload);
+        console.log(data);
         const serverId = await registerNewServer(community, {
-          name: payload.name,
+          name: data.name,
           ip: request.headers.get("CF-Connecting-IP") || "localhost",
-          port: payload.port,
-          game: payload.game as Game,
-          gameMode: payload.gameMode,
+          port: data.port,
+          game: data.game as Game,
+          gameMode: data.gameMode,
         }, env);
 
         const serverRegisteredMessage: ServerRegisteredMessage = {
-          type: "server/registered",
+          type: "server",
           version: "1.0.0",
           payload: {
-            serverId: serverId,
+            action: "registered",
+            data: {
+              serverId: serverId,
+            }
           }
         }
 

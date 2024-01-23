@@ -14,8 +14,8 @@ export interface UserClient extends Client {}
 export interface ServerClient extends Client {
 }
 
-function getDurableObject(from: ConnectionType, id: string,  env: Env) {
-  switch (from) {
+function getDurableObject(type: ConnectionType, id: string,  env: Env) {
+  switch (type) {
     case 'client':
       return env.CLIENT.get(env.CLIENT.idFromString(id));
     case 'community':
@@ -26,6 +26,10 @@ function getDurableObject(from: ConnectionType, id: string,  env: Env) {
 }
 
 export function fetch(req: Request, env: Env, message: Message): Promise<Response> {
+  if (!message.to) {
+    throw new Error('Missing message.to');
+  }
+
   const durableObject = getDurableObject(message.type, message.to, env);
   return durableObject.fetch(req, {
     method: 'POST',
@@ -34,6 +38,10 @@ export function fetch(req: Request, env: Env, message: Message): Promise<Respons
 }
 
 export function send(message: Message, env: Env): Promise<Response> {
+  if (!message.to) {
+    throw new Error('Missing message.to');
+  }
+
   const durableObject = getDurableObject(message.type, message.to, env);
   return durableObject.fetch('https://fake-url.com', {
     method: 'POST',

@@ -1,34 +1,33 @@
+import { ChatMessage, isValidConnectMessage, isValidMessage, isValidSubscribeMessage } from '~/shared/types/shared/websocketMessage';
 import { Env } from '../env';
 import handleErrors from '../helpers/handleErrors';
 
-
 interface Session {
-  type: string;
+	type: string;
 }
 
-interface ServerMetadata {
-}
+interface ServerMetadata {}
 
 interface ServerSession extends Session {
-  type: 'server';  
-  metadata: ServerMetadata;
+	type: 'server';
+	metadata: ServerMetadata;
 }
 
 interface UserSession extends Session {
-  type: 'user';  
+	type: 'user';
 }
 
 type SessionType = ServerSession | UserSession;
 
 function isServerSession(session: SessionType): session is ServerSession {
-  return session.type === 'server';
+	return session.type === 'server';
 }
 
 export class Server implements DurableObject {
-	private messages: Message[] = [];
+	private messages: ChatMessage[] = [];
 	// private metadata?: ServerMetadata;
 	private lastTimeStamp: number = 0;
-  private initialized: boolean = false;
+	private initialized: boolean = false;
 	// private sessions: Map<WebSocket, Session> = new Map();
 	readonly MAX_MESSAGES = 500;
 	readonly TRIM_THRESHOLD = 750;
@@ -42,7 +41,7 @@ export class Server implements DurableObject {
 		this.env = env;
 	}
 
-	async addMessage(message: Message) {
+	async addMessage(message: ChatMessage) {
 		this.messages.push(message);
 		if (this.messages.length > this.TRIM_THRESHOLD) {
 			// Remove the oldest message(s) to maintain the cap
@@ -51,7 +50,7 @@ export class Server implements DurableObject {
 		await this.saveMessages();
 	}
 
-	getMessages(page: number = 0, pageSize: number = 100): Message[] {
+	getMessages(page: number = 0, pageSize: number = 100): ChatMessage[] {
 		const start = Math.max(this.messages.length - page * pageSize, 0);
 		const end = Math.max(start - pageSize, 0);
 		return this.messages.slice(end, start).reverse();
@@ -61,41 +60,58 @@ export class Server implements DurableObject {
 		await this.storage.put('messages', this.messages);
 	}
 
+	async initialize() {
+		let storedMessages = (await this.state.storage.get('messages')) as ChatMessage[];
+		this.messages = storedMessages || [];
+		this.initialized = true;
+	}
+
 	async fetch(request: Request) {
-    if (!this.initialized) {
-      await this.state.blockConcurrencyWhile(async () => {
-        let storedMessages = await this.state.storage.get("messages") as Message[];
-        this.messages = storedMessages || [];
-        this.initialized = true;
-      });
-    }
+		if (!this.initialized) {
+			await this.initialize();
+		}
 
 		return await handleErrors(request, async () => {
-			if (request.headers.get('Upgrade') != 'websocket') {
-				return new Response('expected websocket', { status: 400 });
+			// Handle client websocket connection
+			if (request.headers.get('Upgrade') !== 'websocket') {
+				return new Response('Expected websocket', { status: 400 });
 			}
+
+			// If not client websocket connection, then expect POST request
+			if (request.method !== 'POST') {
+				return new Response('Method not allowed', { status: 405 });
+			}
+
+			const requestData = await request.json();
+
+			const webSocketPair = new WebSocketPair();
+			const [client, server] = Object.values(webSocketPair);
 
 			// Get the client's IP address for use with the rate limiter.
 			let ip = request.headers.get('CF-Connecting-IP') || 'localhost';
-			const webSocketPair = new WebSocketPair();
-			const [client, server] = Object.values(webSocketPair);
-      
-      await this.handleSession(server, ip);
-      
-      return new Response(null, { status: 101, webSocket: client });
+
+      if (isValidConnectMessage(requestData)) {
+        this.state.acceptWebSocket(server, [requestData.type, requestData.from, ip]);
+        return new Response(null, { status: 101, webSocket: client });
+      } else if (isValidSubscribeMessage(requestData)) {
+        this.state.acceptWebSocket(server, [requestData.type, requestData.from, ip]);
+        return new Response(null, { status: 101, webSocket: client });
+      }
+
+      return new Response('Invalid data format', { status: 400 });
 		});
 	}
 
-  async handleSession(webSocket: WebSocket, ip: string) {
-    // Accept our end of the WebSocket. This tells the runtime that we'll be terminating the
-    // WebSocket in JavaScript, not sending it elsewhere.
-    this.state.acceptWebSocket(webSocket);
+	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+		console.log('[server] message', message);
+	}
 
-    // // Queue "join" messages for all online users, to populate the client's roster.
-    // for (let otherSession of this.sessions.values()) {
-    //   if (otherSession.name) {
-    //     session.blockedMessages.push(JSON.stringify({joined: otherSession.name}));
-    //   }
-    // }
-  }
+	webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
+		console.log(`[server] Connection closed with code ${code}`);
+		ws.close();
+	}
+
+	webSocketError(ws: WebSocket, error: unknown) {
+		console.log('[server] error', error);
+	}
 }
