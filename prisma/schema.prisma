@@ -34,7 +34,7 @@ model Domain {
 
 model Community {
   id            String             @id @default(uuid())
-  secretId      String             @unique
+  secret      String               @unique
   name          String
   description   String?            @default("Powered by Nexus Hub") @db.Text
   logo          String?            @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text

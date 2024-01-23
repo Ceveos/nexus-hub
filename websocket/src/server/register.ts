@@ -4,32 +4,31 @@ import { parseMessage } from "../helpers/parseMessage";
 import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
 
-const metadataReq: MetadataRequestMessage = {
-  type: 'server',
-  version: "1.0.0",
+const requestMetadataMessage: MetadataRequestMessage = {
   payload: {
-    action: "metadata/request",
-  }
-};
+    action: 'metadata/request'
+  },
+  version: '1.0.0'
+}
 
 const invalidMetadataMessage: MetadataInvalidMessage = {
-  type: 'server',
-  version: "1.0.0",
   payload: {
-    action: "metadata/invalid",
-  }
-};
+    action: 'metadata/invalid'
+  },
+  version: '1.0.0'
+}
 
-export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
-  const communitySecretId = path.shift();
 
-  if (!communitySecretId) {
+export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, searchParams: URLSearchParams): Promise<Response> {
+  const communitySecret = searchParams.get('communitySecret');
+
+  if (!communitySecret) {
     return new Response("Community Secret ID not provided", { status: 404 });
   }
 
   const community = await prisma(env).community.findUnique({
     where: {
-      secretId: communitySecretId,
+      secret: communitySecret,
     },
   });
   
@@ -68,7 +67,6 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         }, env);
 
         const serverRegisteredMessage: ServerRegisteredMessage = {
-          type: "server",
           version: "1.0.0",
           payload: {
             action: "registered",
@@ -83,7 +81,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         break;
       }
       default: {
-        console.log(`Unexpected message type: ${message.type}`);
+        console.log(`Unexpected message action: ${message.payload?.action}`);
       }
     }
   });
@@ -94,7 +92,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
   });
 
   server.accept();
-  server.send(JSON.stringify(metadataReq));
+  server.send(JSON.stringify(requestMetadataMessage));
 
   return new Response(null, {
     status: 101,

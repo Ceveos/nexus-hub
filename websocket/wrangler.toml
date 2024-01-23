@@ -44,9 +44,13 @@ compatibility_date = "2023-12-18"
 # name = "MY_DURABLE_OBJECT"
 # class_name = "MyDurableObject"
 
-[[durable_objects.bindings]]
-name = "COMMUNITY"
-class_name = "CommunityObject"
+[durable_objects]
+bindings = [
+  { name = "COMMUNITY", class_name = "CommunityObject" },
+  { name = "CLIENT", class_name = "ClientObject" },
+  { name = "SERVER", class_name = "ServerObject" },
+]
+
 
 # Durable Object migrations.
 # Docs: https://developers.cloudflare.com/workers/learning/using-durable-objects#configure-durable-object-classes-with-migrations
@@ -55,4 +59,4 @@ class_name = "CommunityObject"
 # new_classes = ["MyDurableObject"]
 [[migrations]]
 tag = "v1"
-new_classes = ["CommunityObject"]
+new_classes = ["CommunityObject", "ClientObject", "ServerObject"]

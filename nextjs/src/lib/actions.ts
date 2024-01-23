@@ -106,7 +106,7 @@ export const createCommunity = async (
         name: data.name,
         subdomain: data.subdomain,
         description: data.description,
-        secretId: generateSecureString(),
+        secret: generateSecureString(),
         avatarClass,
         owner: {
           connect: {

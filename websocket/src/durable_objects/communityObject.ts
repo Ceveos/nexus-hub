@@ -1,44 +1,88 @@
 import { Env } from '../env';
-import { isValidMessage, isValidSubscribeMessage } from '~/shared/types/shared/websocketMessage';
-import { WebsocketMetadata } from '../helpers/objectInteraction';
+import { Action, SubscribeMessage } from '~/shared/types/shared/websocketMessage';
+import handleErrors from '../helpers/handleErrors';
 
 export class CommunityObject implements DurableObject {
 	state: DurableObjectState;
 	env: Env;
+	communityId?: string;
+	initialized: boolean = false;
 
 	constructor(state: DurableObjectState, env: Env) {
 		this.state = state;
 		this.env = env;
 	}
 
-	// Handle HTTP requests from clients.
+	async initialize(communityId: string) {
+		if (!this.communityId) {
+			const storedCommunityId = await this.state.storage.get('communityId');
+			if (!storedCommunityId) {
+				await this.state.storage.put('communityId', communityId);
+				this.communityId = communityId;
+			} else {
+				this.communityId = storedCommunityId as string;
+			}
+		}
+
+		this.initialized = true;
+	}
+
 	async fetch(request: Request) {
-		// Handle client websocket connection
-		if (request.headers.get('Upgrade') !== 'websocket') {
-			return new Response('Expected websocket', { status: 400 });
-		}
+		return await handleErrors(request, async () => {
+			// Handle client websocket connection
+			if (request.headers.get('Upgrade') !== 'websocket') {
+				return new Response('Expected websocket', { status: 400 });
+			}
 
-		// If not client websocket connection, then expect POST request
-		if (request.method !== 'POST') {
-			return new Response('Method not allowed', { status: 405 });
-		}
+			const searchParams = new URL(request.url).searchParams;
 
-		const requestData = await request.json();
+			const communityId = searchParams.get('communityId');
 
-		// Runtime type validation
-		if (!isValidSubscribeMessage(requestData)) {
-			return new Response('Invalid data format', { status: 400 });
-		}
+			if (!communityId) {
+				return new Response('Community ID not provided', { status: 404 });
+			}
 
+			if (this.env.COMMUNITY.idFromName(communityId) !== this.state.id) {
+				return new Response('Invalid Community ID for object', { status: 401 });
+			}
+
+			if (!this.initialized) await this.initialize(communityId);
+
+			if (this.communityId !== communityId) {
+				return new Response('Community ID does not match expected', { status: 401 });
+			}
+
+			const action = searchParams.get('action');
+			switch (action as Action) {
+				case 'subscribe':
+					return this.subscribeHandler();
+				default:
+					return new Response('Invalid action', { status: 404 });
+			}
+		});
+	}
+
+	async subscribeHandler(): Promise<Response> {
 		const webSocketPair = new WebSocketPair();
 		const [client, server] = Object.values(webSocketPair);
 
-		server.serializeAttachment({ id: requestData.from, type: requestData.type } as WebsocketMetadata);
-		this.state.acceptWebSocket(server, [requestData.type, requestData.from]);
-		return new Response(null, {
-			status: 101,
-			webSocket: client,
-		});
+		const communityConnectedMessage: SubscribeMessage = {
+			from: {
+        type: 'community',
+        id: this.communityId!,
+        stubId: this.state.id.toString(),
+      },
+			payload: {
+				action: 'subscribe',
+			},
+		};
+
+    this.state.acceptWebSocket(server);
+
+    console.log('[Community] Sending connected message');
+		server.send(JSON.stringify(communityConnectedMessage));
+		console.log('[Community] returning websocket client');
+		return new Response(null, { status: 101, webSocket: client });
 	}
 
 	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {

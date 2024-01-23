@@ -1,45 +1,33 @@
 import { isSemanticVersion, isVersionLessThan } from "~/shared/lib/utils";
 
-import { WebsocketMessage, isValidMessage, isValidPayload } from "../shared/websocketMessage";
+import { MetadataInvalidPayload, MetadataRequestPayload, MetadataResponsePayload, ServerRegisteredPayload, WebsocketMessage, isValidMessage, isValidPayload } from "../shared/websocketMessage";
 
-type MetadataAction = "metadata/request" | "metadata/response";
 export interface MetadataRequestMessage extends WebsocketMessage {
-  type: 'server';
+  to?: never;
+  from?: never;
   version: "1.0.0";
-  payload: {
-    action: "metadata/request"
-  }
+  payload: MetadataRequestPayload
 }
 
 export interface MetadataInvalidMessage extends WebsocketMessage {
-  type: 'server';
+  to?: never;
+  from?: never;
   version: "1.0.0";
-  payload: {
-    action: "metadata/invalid"
-  }
+  payload: MetadataInvalidPayload
 }
+
 export interface MetadataResponseMessage extends WebsocketMessage {
-  type: 'server';
+  to?: never;
+  from?: never;
   version: "1.0.0";
-  payload: {
-    action: "metadata/response"
-    data: {
-      game: string;
-      gameMode: string;
-      name: string;
-      port: number;
-    }
-  }
+  payload: MetadataResponsePayload
 }
+
 export interface ServerRegisteredMessage extends WebsocketMessage {
-  type: "server";
+  to?: never;
+  from?: never;
   version: "1.0.0";
-  payload: {
-    action: 'registered'
-    data: {
-      serverId: string;
-    }
-  }
+  payload: ServerRegisteredPayload
 }
 
 export function isValidMetadataResponseMessage(obj: any): obj is MetadataResponseMessage {

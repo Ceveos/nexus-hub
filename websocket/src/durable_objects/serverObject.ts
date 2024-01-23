@@ -1,6 +1,8 @@
-import { ChatMessage, isValidConnectMessage, isValidMessage, isValidSubscribeMessage } from '~/shared/types/shared/websocketMessage';
+import { ChatMessage } from '~/shared/types/shared/websocketMessage';
 import { Env } from '../env';
 import handleErrors from '../helpers/handleErrors';
+import { ConnectedMessage } from '~/shared/types/server/connectMessage';
+import prisma from '../lib/prisma';
 
 interface Session {
 	type: string;
@@ -23,7 +25,7 @@ function isServerSession(session: SessionType): session is ServerSession {
 	return session.type === 'server';
 }
 
-export class Server implements DurableObject {
+export class ServerObject implements DurableObject {
 	private messages: ChatMessage[] = [];
 	// private metadata?: ServerMetadata;
 	private lastTimeStamp: number = 0;
@@ -34,11 +36,14 @@ export class Server implements DurableObject {
 	state: DurableObjectState;
 	storage: DurableObjectStorage;
 	env: Env;
+  server?: WebSocket;
 
 	constructor(state: DurableObjectState, env: Env) {
 		this.state = state;
 		this.storage = state.storage;
 		this.env = env;
+
+    this.server = this.state.getWebSockets('owner')[0];
 	}
 
 	async addMessage(message: ChatMessage) {
@@ -77,29 +82,73 @@ export class Server implements DurableObject {
 				return new Response('Expected websocket', { status: 400 });
 			}
 
-			// If not client websocket connection, then expect POST request
-			if (request.method !== 'POST') {
-				return new Response('Method not allowed', { status: 405 });
+			const searchParams = new URL(request.url).searchParams;
+
+			const action = searchParams.get('action');
+			switch (action) {
+				case 'connect':
+					return this.connectHandler(searchParams);
+				default:
+					return new Response('Invalid action', { status: 404 });
 			}
-
-			const requestData = await request.json();
-
-			const webSocketPair = new WebSocketPair();
-			const [client, server] = Object.values(webSocketPair);
-
-			// Get the client's IP address for use with the rate limiter.
-			let ip = request.headers.get('CF-Connecting-IP') || 'localhost';
-
-      if (isValidConnectMessage(requestData)) {
-        this.state.acceptWebSocket(server, [requestData.type, requestData.from, ip]);
-        return new Response(null, { status: 101, webSocket: client });
-      } else if (isValidSubscribeMessage(requestData)) {
-        this.state.acceptWebSocket(server, [requestData.type, requestData.from, ip]);
-        return new Response(null, { status: 101, webSocket: client });
-      }
-
-      return new Response('Invalid data format', { status: 400 });
 		});
+	}
+
+	async connectHandler(searchParams: URLSearchParams): Promise<Response> {
+		const serverId = searchParams.get('serverId');
+		const communitySecret = searchParams.get('communitySecret');
+
+		if (!serverId) {
+			return new Response('Server ID not provided', { status: 404 });
+		}
+
+		const serverData = await prisma(this.env).server.findUnique({
+			where: {
+				id: serverId,
+			},
+			include: {
+				community: true,
+			},
+		});
+
+		if (!serverData) {
+			return new Response('Server for server not found', { status: 404 });
+		}
+
+		if (!serverData.community) {
+			return new Response('Community for server not found', { status: 404 });
+		}
+
+		if (serverData.community.secret !== communitySecret) {
+			return new Response('Unauthorized: Community secret does not match', { status: 401 });
+		}
+
+
+		const webSocketPair = new WebSocketPair();
+		const [client, server] = Object.values(webSocketPair);
+
+		const serverConnectedMessage: ConnectedMessage = {
+			from: {
+        type: 'server',
+        id: serverId,
+        stubId: this.state.id.toString(),
+      },
+			payload: {
+				action: 'connected',
+			},
+			version: '1.0.0',
+		};
+
+    // Close existing server since this is overtaking it.
+    this.server?.close(1000, 'New server connected');
+
+    this.state.acceptWebSocket(server, ['server', 'owner', serverId]);
+		this.server = server;
+
+    console.log('[Server] Sending connected message');
+		server.send(JSON.stringify(serverConnectedMessage));
+		console.log('[Server] returning websocket client');
+		return new Response(null, { status: 101, webSocket: client });
 	}
 
 	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {

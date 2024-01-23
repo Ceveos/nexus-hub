@@ -1,4 +1,4 @@
-import { ConnectionType, SubscribePayload, Message } from "~/shared/types/shared/websocketMessage";
+import { ConnectionType, SubscribePayload, Message, SubscribeMessage, isValidMessage, Connection } from "~/shared/types/shared/websocketMessage";
 import { Env } from "../env";
 
 
@@ -14,7 +14,18 @@ export interface UserClient extends Client {}
 export interface ServerClient extends Client {
 }
 
-function getDurableObject(type: ConnectionType, id: string,  env: Env) {
+export function getDurableObjectByName(type: ConnectionType, name: string, env: Env) {
+  switch (type) {
+    case 'client':
+      return env.CLIENT.get(env.CLIENT.idFromName(name));
+    case 'community':
+      return env.COMMUNITY.get(env.COMMUNITY.idFromName(name));
+    case 'server':
+      return env.SERVER.get(env.SERVER.idFromName(name));
+  }
+}
+
+export function getDurableObjectById(type: ConnectionType, id: string, env: Env) {
   switch (type) {
     case 'client':
       return env.CLIENT.get(env.CLIENT.idFromString(id));
@@ -25,49 +36,47 @@ function getDurableObject(type: ConnectionType, id: string,  env: Env) {
   }
 }
 
-export function fetch(req: Request, env: Env, message: Message): Promise<Response> {
-  if (!message.to) {
-    throw new Error('Missing message.to');
+export async function send(message: Message, env: Env): Promise<Response> {
+  if (!isValidMessage(message)) {
+    return new Response(null, {status: 400, statusText: 'Invalid message format'})
   }
 
-  const durableObject = getDurableObject(message.type, message.to, env);
-  return durableObject.fetch(req, {
-    method: 'POST',
-    body: JSON.stringify(message),
-  });
-}
-
-export function send(message: Message, env: Env): Promise<Response> {
   if (!message.to) {
-    throw new Error('Missing message.to');
+    return new Response(null, {status: 400, statusText: 'Missing destination'})
+  }
+  
+  if (!message.payload) {
+    return new Response(null, {status: 400, statusText: 'Missing payload'})
   }
 
-  const durableObject = getDurableObject(message.type, message.to, env);
-  return durableObject.fetch('https://fake-url.com', {
-    method: 'POST',
+  const action = message.payload.action;
+
+  const url = new URL('https://fake-url.com');
+  url.searchParams.append('action', action);
+  message.from && url.searchParams.append('from', message.from.id);
+  message.from?.stubId && url.searchParams.append('fromStub', message.from.stubId);
+  message.payload.data && url.searchParams.append('data', JSON.stringify(message.payload.data));
+
+  const durableObject = message.to.stubId ? getDurableObjectById(message.to.type, message.to.stubId, env) : getDurableObjectByName(message.to.type, message.to.id, env);
+  return durableObject.fetch(url.toString(), {
     headers: {
-      "Upgrade": "websocket"
-    },
-    body: JSON.stringify(message),
+      "Upgrade": "websocket",
+    }
   });
 }
 
-export function subscribe(type: ConnectionType, to: string, from: string, env: Env): Promise<Response> {
+export function subscribe(to: Connection, env: Env): Promise<Response> {
   return send({
-    type,
     to,
-    from,
     payload: {
       action: 'subscribe'
     } as SubscribePayload
   }, env);
 }
 
-export function unsubscribe(type: ConnectionType, to: string, from: string, env: Env): Promise<Response> {
+export function unsubscribe(to: Connection, env: Env): Promise<Response> {
   return send({
-    type,
     to,
-    from,
     payload: {
       action: 'unsubscribe'
     } as SubscribePayload

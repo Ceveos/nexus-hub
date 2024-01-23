@@ -5,16 +5,29 @@ export interface ChatMessage {
 }
 
 export type ConnectionType = 'client' | 'community' | 'server';
-export type ConnectionAction = 'connect';
+export type ConnectAction = 'connect';
+export type ConnectedAction = 'connected';
 export type SubscriptionAction = 'subscribe' | 'unsubscribe';
 export type MessageAction = 'message';
 
-export interface Payload {
-  action: string;
+export type MetadataAction = 'metadata/request' | 'metadata/response' | 'metadata/invalid';
+export type RegisteredAction = 'registered'
+
+export type Action = 
+  | ConnectAction
+  | ConnectedAction
+  | SubscriptionAction
+  | MessageAction
+  | MetadataAction
+  | RegisteredAction;
+
+
+
+interface PayloadBase {
+  action: Action;
   data?: any;
 }
-
-export interface MessagePayload extends Payload {
+export interface MessagePayload extends PayloadBase {
   action: MessageAction;
   data: {
     from: string;
@@ -23,53 +36,102 @@ export interface MessagePayload extends Payload {
   };
 }
 
-export interface ConnectPayload extends Payload {
-  action: ConnectionAction;
+export interface ConnectPayload extends PayloadBase {
+  action: ConnectAction;
+  data?: never;
 }
 
-export interface SubscribePayload extends Payload {
+export interface ConnectedPayload extends PayloadBase {
+  action: ConnectedAction;
+  data?: never;
+}
+
+export interface SubscribePayload extends PayloadBase {
   action: SubscriptionAction;
+  data?: never;
+}
+
+export interface MetadataRequestPayload extends PayloadBase {
+  action: 'metadata/request';
+  data?: never;
+}
+
+export interface MetadataInvalidPayload extends PayloadBase {
+  action: 'metadata/invalid';
+  data?: never;
+}
+
+export interface MetadataResponsePayload extends PayloadBase {
+  action: 'metadata/response';
+  data: {
+    game: string;
+    gameMode: string;
+    name: string;
+    port: number;
+  }
+}
+
+export interface ServerRegisteredPayload extends PayloadBase {
+  action: 'registered';
+  data: {
+    serverId: string;
+  }
+}
+
+export type Payload =
+  | MessagePayload
+  | ConnectPayload
+  | ConnectedPayload
+  | SubscribePayload
+  | MetadataRequestPayload
+  | MetadataInvalidPayload
+  | MetadataResponsePayload
+  | ServerRegisteredPayload;
+
+export type Connection = {
+  type: ConnectionType;
+  id: string;
+  stubId?: string;
 }
 
 export interface Message {
-  type: ConnectionType;
-  to?: string;
-  from?: string;
+  to?: Connection;
+  from?: Connection;
   payload?: Payload
 }
 
 export interface ServerMessage extends Message {
-  type: 'server';
-  to: string;
-  from: string;
+  to: {
+    type: 'server',
+    id: string;
+    stubId?: string;
+  }
   payload: MessagePayload | SubscribePayload;
 }
 
 export interface CommunityMessage extends Message {
-  type: 'community';
-  to: string;
-  from: string;
+  to: {
+    type: 'community',
+    id: string;
+    stubId?: string;
+  }
+  from: Connection;
   action: MessageAction | SubscriptionAction;
 }
 
 export interface ClientMessage extends Message {
-  type: 'client';
-  to: string;
-  from: string;
+  to: {
+    type: 'client',
+    id: string;
+    stubId?: string;
+  }
+  from: Connection;
   action: MessageAction | SubscriptionAction;
 }
 
-export interface ConnectMessage extends Message {
-  type: 'client' | 'server';
-  to: never;
-  from: string;
-  payload: ConnectPayload;
-}
-
 export interface SubscribeMessage extends Message {
-  type: 'community' | 'server';
-  to: string;
-  from: string;
+  to?: Connection;
+  from: Connection;
   payload: SubscribePayload;
 }
 
@@ -80,14 +142,22 @@ export function isValidPayload(data: any): data is Payload {
       && typeof data.action === 'string';
 }
 
-export function isValidMessage(data: any): data is Message {
+export function isValidConnection(data: any): data is Connection {
   return data
       && typeof data === 'object'
       && 'type' in data
-      && (!('to' in data) || typeof data.to === 'string')
-      && (!('from' in data) || typeof data.from === 'string')
+      && typeof data.type === 'string'
+      && 'id' in data
+      && typeof data.id === 'string'
+      && (!('stubId' in data) || typeof data.stubId === 'string');
+}
+
+export function isValidMessage(data: any): data is Message {
+  return data
+      && typeof data === 'object'
+      && (!('to' in data) || isValidConnection(data.to))
+      && (!('from' in data) || isValidConnection(data.from))
       && 'payload' in data
-      && (data.type === 'client' || data.type === 'community' || data.type === 'server')
       && isValidPayload(data.payload);
 }
 
@@ -104,18 +174,9 @@ export function isValidSubscriptionPayload(data: any): data is SubscribePayload 
     && (data.action === 'subscribe' || data.action === 'unsubscribe');
 }
 
-export function isValidConnectMessage(data: any): data is ConnectMessage {
-  return data
-    && isValidMessage(data)
-    && data.type === 'client' || data.type === 'server'
-    && isValidConnectPayload(data.payload);
-}
-
 export function isValidSubscribeMessage(data: any): data is SubscribeMessage {
   return data
     && isValidMessage(data)
-    && data.type === 'community' || data.type === 'server'
-    && isValidPayload(data.payload)
     && isValidSubscriptionPayload(data.payload);
 }
 

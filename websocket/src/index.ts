@@ -7,10 +7,8 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-import { isValidMessage } from '~/shared/types/shared/websocketMessage';
 import { Env } from './env';
 import { serverReq } from './server';
-import { fetch } from './helpers/objectInteraction';
 
 // Export durable objects
 export * from './durable_objects';
