@@ -5,6 +5,8 @@ import { Toaster } from "sonner";
 import { ModalProvider } from "@nextjs/components/modal/provider";
 import { ThemeProvider } from "next-themes";
 
+import "@nextjs/components/websocket/websocket";
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class">
