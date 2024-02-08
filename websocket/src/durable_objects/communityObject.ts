@@ -1,71 +1,100 @@
 import { Env } from '../env';
-import { ServerClient, ServerConnection, UserClient, validateConnectionType } from '../helpers/communityTypes';
+import { Action, SubscribeMessage } from '~/shared/types/shared/websocketMessage';
+import handleErrors from '../helpers/handleErrors';
 
 export class CommunityObject implements DurableObject {
 	state: DurableObjectState;
 	env: Env;
-	servers: Map<string, ServerClient> = new Map();
-	users: Map<string, UserClient> = new Map();
+	communityId?: string;
+	initialized: boolean = false;
 
 	constructor(state: DurableObjectState, env: Env) {
 		this.state = state;
 		this.env = env;
 	}
 
-	// Handle HTTP requests from clients.
-	async fetch(request: Request) {
-		if (request.method !== 'POST') {
-			return new Response('Method not allowed', { status: 405 });
+	async initialize(communityId: string) {
+		if (!this.communityId) {
+			const storedCommunityId = await this.state.storage.get('communityId');
+			if (!storedCommunityId) {
+				await this.state.storage.put('communityId', communityId);
+				this.communityId = communityId;
+			} else {
+				this.communityId = storedCommunityId as string;
+			}
 		}
 
-		const requestData = await request.json();
-
-		// Runtime type validation
-		if (!validateConnectionType(requestData)) {
-			return new Response('Invalid data format', { status: 400 });
-		}
-
-		switch (requestData.type) {
-			case 'server':
-				return await this.serverRequest(requestData);
-		}
-
-		// Durable Object storage is automatically cached in-memory, so reading the
-		// same key every request is fast. (That said, you could also store the
-		// value in a class member if you prefer.)
-		let value: number = (await this.state.storage?.get('value')) || 0;
-
-		// We don't have to worry about a concurrent request having modified the
-		// value in storage because "input gates" will automatically protect against
-		// unwanted concurrency. So, read-modify-write is safe. For more details,
-		// see: https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/
-		await this.state.storage?.put('value', value);
-
-		return new Response(value.toString());
+		this.initialized = true;
 	}
 
-	async serverRequest(connection: ServerConnection): Promise<any> {
+	async fetch(request: Request) {
+		return await handleErrors(request, async () => {
+			// Handle client websocket connection
+			if (request.headers.get('Upgrade') !== 'websocket') {
+				return new Response('Expected websocket', { status: 400 });
+			}
+
+			const searchParams = new URL(request.url).searchParams;
+
+			const communityId = searchParams.get('communityId');
+
+			if (!communityId) {
+				return new Response('Community ID not provided', { status: 404 });
+			}
+
+			if (this.env.COMMUNITY.idFromName(communityId) !== this.state.id) {
+				return new Response('Invalid Community ID for object', { status: 401 });
+			}
+
+			if (!this.initialized) await this.initialize(communityId);
+
+			if (this.communityId !== communityId) {
+				return new Response('Community ID does not match expected', { status: 401 });
+			}
+
+			const action = searchParams.get('action');
+			switch (action as Action) {
+				case 'subscribe':
+					return this.subscribeHandler();
+				default:
+					return new Response('Invalid action', { status: 404 });
+			}
+		});
+	}
+
+	async subscribeHandler(): Promise<Response> {
 		const webSocketPair = new WebSocketPair();
 		const [client, server] = Object.values(webSocketPair);
 
-		server.addEventListener('close', async (event) => {
-			console.log(`[server] Connection closed with code ${event.code}`);
-			server.close();
-		});
+		const communityConnectedMessage: SubscribeMessage = {
+			from: {
+        type: 'community',
+        id: this.communityId!,
+        stubId: this.state.id.toString(),
+      },
+			payload: {
+				action: 'subscribe',
+			},
+		};
 
-		server.accept();
-		// server.send(JSON.stringify(metadataReq));
+    this.state.acceptWebSocket(server);
 
-    this.servers.set(connection.id, {
-      server,
-      ip: connection.ip,
-      chatMessages: [],
-      lastSeen: Date.now(),
-    });
-
-		return new Response(null, {
-			status: 101,
-			webSocket: client,
-		});
+    console.log('[Community] Sending connected message');
+		server.send(JSON.stringify(communityConnectedMessage));
+		console.log('[Community] returning websocket client');
+		return new Response(null, { status: 101, webSocket: client });
 	}
+
+	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+    console.log('[community] message', message)
+  }
+
+	webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
+		console.log(`[community] Connection closed with code ${code}`);
+		ws.close();
+	}
+
+	webSocketError(ws: WebSocket, error: unknown) {
+    console.log('[community] error', error);
+  }
 }

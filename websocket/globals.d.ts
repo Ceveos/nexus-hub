@@ -3,6 +3,12 @@ export {}
 declare global {
   interface WebSocket {
     accept(): void;
+    deserializeAttachment(): any;
+    serializeAttachment(any): void;
+  }
+
+  interface Response {
+    webSocket?: WebSocket;
   }
 
   class WebSocketPair {

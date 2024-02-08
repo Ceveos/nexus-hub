@@ -1,36 +1,13 @@
 import { Env } from '../env';
-import { ConnectToCommunity, ServerConnection } from '../helpers/communityTypes';
-import prisma from '../lib/prisma';
+import { getDurableObjectByName } from '../helpers/objectInteraction';
 
-export async function serverConnectReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
-	const serverId = path.shift();
+export async function serverConnectReq(request: Request, env: Env, ctx: ExecutionContext, searchParams: URLSearchParams): Promise<Response> {
+	const serverId = searchParams.get('serverId') ?? request.headers.get('serverId');;
 
 	if (!serverId) {
 		return new Response('Server ID not provided', { status: 404 });
 	}
 
-	const serverData = await prisma(env).server.findUnique({
-		where: {
-			id: serverId,
-		},
-		include: {
-			community: true,
-		},
-	});
-
-	if (!serverData) {
-		return new Response('Server for server not found', { status: 404 });
-	}
-
-	if (!serverData.community) {
-		return new Response('Community for server not found', { status: 404 });
-	}
-  
-	const serverConnectMessage: ServerConnection = {
-		type: 'server',
-		id: serverId,
-    ip: request.headers.get('CF-Connecting-IP') || 'localhost',
-	};
-
-  return await ConnectToCommunity(request, env, serverData.community.id, serverConnectMessage);
+	const serverObject = getDurableObjectByName('server', serverId, env);
+	return serverObject.fetch(request);
 }

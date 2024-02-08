@@ -1,8 +1,12 @@
 import { isSemanticVersion, isVersionLessThan } from "~/shared/lib/utils";
-import { WebsocketMessage } from "../shared/websocketMessage";
+import { Connection, WebsocketMessage } from "../shared/websocketMessage";
 
 export interface ConnectedMessage extends WebsocketMessage {
-  type: "connect/connected";
+  to?: Connection
+  from: Connection
+  payload: {
+    action: 'connected'
+  }
   version: "1.0.0";
 }
 

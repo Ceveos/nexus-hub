@@ -1,24 +1,34 @@
 import { Env } from "../env";
-import { MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
+import { MetadataInvalidMessage, MetadataRequestMessage, ServerRegisteredMessage, isValidMetadataResponseMessage } from "~/shared/types/server/registerMessage";
 import { parseMessage } from "../helpers/parseMessage";
 import { Community, Game } from "@prisma/client";
 import prisma from "../lib/prisma";
 
-const metadataReq: MetadataRequestMessage = {
-  type: "metadata/request",
-  version: "1.0.0",
-};
+const requestMetadataMessage: MetadataRequestMessage = {
+  payload: {
+    action: 'metadata/request'
+  },
+  version: '1.0.0'
+}
 
-export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
-  const communitySecretId = path.shift();
+const invalidMetadataMessage: MetadataInvalidMessage = {
+  payload: {
+    action: 'metadata/invalid'
+  },
+  version: '1.0.0'
+}
 
-  if (!communitySecretId) {
+
+export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, searchParams: URLSearchParams): Promise<Response> {
+  const communitySecret = searchParams.get('communitySecret') ?? request.headers.get('communitySecret');
+
+  if (!communitySecret) {
     return new Response("Community Secret ID not provided", { status: 404 });
   }
 
   const community = await prisma(env).community.findUnique({
     where: {
-      secretId: communitySecretId,
+      secret: communitySecret,
     },
   });
   
@@ -36,31 +46,33 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
       console.log(JSON.stringify(message))
       return;
     }
-    switch (message.type) {
+    switch (message.payload?.action) {
       case "metadata/response": {
         if (!isValidMetadataResponseMessage(message) ||
-            !Object.values(Game).includes(message.payload.game as Game)) {
+            !Object.values(Game).includes(message.payload.data.game as Game)) {
           console.log(`[server] Received invalid metadata response`);
-          server.close(1002, "Invalid metadata response")
+          server.send(JSON.stringify(invalidMetadataMessage));
           return;
         }
 
-        const { payload } = message;
+        const { data } = message.payload;
         console.log(`[server] Received metadata response from ${community.name} (${community.id})`);
-        console.log(payload);
+        console.log(data);
         const serverId = await registerNewServer(community, {
-          name: payload.name,
+          name: data.name,
           ip: request.headers.get("CF-Connecting-IP") || "localhost",
-          port: payload.port,
-          game: payload.game as Game,
-          gameMode: payload.gameMode,
+          port: data.port,
+          game: data.game as Game,
+          gameMode: data.gameMode,
         }, env);
 
         const serverRegisteredMessage: ServerRegisteredMessage = {
-          type: "server/registered",
           version: "1.0.0",
           payload: {
-            serverId: serverId,
+            action: "registered",
+            data: {
+              serverId: serverId,
+            }
           }
         }
 
@@ -69,7 +81,7 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
         break;
       }
       default: {
-        console.log(`Unexpected message type: ${message.type}`);
+        console.log(`Unexpected message action: ${message.payload?.action}`);
       }
     }
   });
@@ -79,8 +91,10 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
     server.close();
   });
 
+  console.log(`[server] Sending metadata request`, JSON.stringify(requestMetadataMessage));
+
   server.accept();
-  server.send(JSON.stringify(metadataReq));
+  server.send(JSON.stringify(requestMetadataMessage));
 
   return new Response(null, {
     status: 101,

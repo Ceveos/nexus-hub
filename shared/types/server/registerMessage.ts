@@ -1,39 +1,45 @@
 import { isSemanticVersion, isVersionLessThan } from "~/shared/lib/utils";
-import { WebsocketMessage } from "../shared/websocketMessage";
+
+import { MetadataInvalidPayload, MetadataRequestPayload, MetadataResponsePayload, ServerRegisteredPayload, WebsocketMessage, isValidMessage, isValidPayload } from "../shared/websocketMessage";
 
 export interface MetadataRequestMessage extends WebsocketMessage {
-  type: "metadata/request";
+  to?: never;
+  from?: never;
   version: "1.0.0";
+  payload: MetadataRequestPayload
+}
+
+export interface MetadataInvalidMessage extends WebsocketMessage {
+  to?: never;
+  from?: never;
+  version: "1.0.0";
+  payload: MetadataInvalidPayload
 }
 
 export interface MetadataResponseMessage extends WebsocketMessage {
-  type: "metadata/response";
-  version: string;
-  payload: {
-    game: string;
-    gameMode: string;
-    name: string;
-    port: number;
-  }
+  to?: never;
+  from?: never;
+  version: "1.0.0";
+  payload: MetadataResponsePayload
 }
 
 export interface ServerRegisteredMessage extends WebsocketMessage {
-  type: "server/registered";
+  to?: never;
+  from?: never;
   version: "1.0.0";
-  payload: {
-    serverId: string;
-  }
+  payload: ServerRegisteredPayload
 }
 
 export function isValidMetadataResponseMessage(obj: any): obj is MetadataResponseMessage {
   return (
-    obj &&
-    typeof obj.type === 'string' && obj.type === "metadata/response" &&
-    typeof obj.version === 'string' && isSemanticVersion(obj.version) && isVersionLessThan(obj.version, "2.0.0") &&
-    obj.payload &&
-    typeof obj.payload.game === 'string' &&
-    typeof obj.payload.gameMode === 'string' &&
-    typeof obj.payload.name === 'string' &&
-    typeof obj.payload.port === 'number'
+    isValidMessage(obj) as any
+    && obj.version
+    && typeof obj.version === 'string' && isSemanticVersion(obj.version) && isVersionLessThan(obj.version, "2.0.0") &&
+    isValidPayload(obj.payload) &&
+    obj.payload.data &&
+    typeof obj.payload.data.game === 'string' &&
+    typeof obj.payload.data.gameMode === 'string' &&
+    typeof obj.payload.data.name === 'string' &&
+    typeof obj.payload.data.port === 'number'
   );
 }

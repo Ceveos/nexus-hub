@@ -4,9 +4,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "npm-run-all -p dev:*",
-		"dev:worker": "cloudflared-output-domain --url http://127.0.0.1:55555 -- echo DATABASE_URL=prisma://{host}/?api_key=dummy > .dev.vars && wrangler dev",
+		"dev:worker": "cloudflared-output-domain --url http://127.0.0.1:55567 -- echo DATABASE_URL=prisma://{host}/?api_key=dummy > .dev.vars && wrangler dev",
 		"dev:proxy": "prisma-accelerate-local postgresql://postgres:password@localhost:5432/postgres -p 8000 -t",
-		"dev:cloudflared": "cloudflared --metrics 127.0.0.1:55555 --url http://127.0.0.1:8000",
+		"dev:cloudflared": "cloudflared --metrics 127.0.0.1:55567 --url http://127.0.0.1:8000",
 		"prisma:generate": "prisma generate --schema ../prisma/schema.prisma",
 		"prisma:generate-prod": "prisma generate --no-engine --schema ../prisma/schema.prisma",
 		"deploy": "pnpm run prisma:generate-prod && wrangler deploy"
@@ -24,6 +24,6 @@
 		"prisma-accelerate-local": "^0.2.5",
 		"shared": "workspace:*",
 		"typescript": "^5.0.4",
-		"wrangler": "^3.0.0"
+		"wrangler": "^3.23.0"
 	}
 }
