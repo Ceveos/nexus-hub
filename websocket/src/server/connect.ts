@@ -2,7 +2,7 @@ import { Env } from '../env';
 import { getDurableObjectByName } from '../helpers/objectInteraction';
 
 export async function serverConnectReq(request: Request, env: Env, ctx: ExecutionContext, searchParams: URLSearchParams): Promise<Response> {
-	const serverId = searchParams.get('serverId');
+	const serverId = searchParams.get('serverId') ?? request.headers.get('serverId');;
 
 	if (!serverId) {
 		return new Response('Server ID not provided', { status: 404 });

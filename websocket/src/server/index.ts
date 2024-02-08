@@ -5,7 +5,7 @@ import { serverRegisterReq } from './register';
 export async function serverReq(request: Request, env: Env, ctx: ExecutionContext, path: string[]): Promise<Response> {
 	const searchParams = new URL(request.url).searchParams;
 
-	const action = searchParams.get('action');
+	const action = searchParams.get('action') ?? request.headers.get('action');
 
 	switch (action) {
 		case 'connect':

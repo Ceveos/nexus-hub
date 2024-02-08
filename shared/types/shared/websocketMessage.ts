@@ -1,14 +1,8 @@
-export interface ChatMessage {
-  from: string;
-  text: string;
-  timestamp: Date;
-}
-
 export type ConnectionType = 'client' | 'community' | 'server';
 export type ConnectAction = 'connect';
 export type ConnectedAction = 'connected';
 export type SubscriptionAction = 'subscribe' | 'unsubscribe';
-export type MessageAction = 'message';
+export type MessageAction = 'message' | 'messages/request' | 'messages/response';
 
 export type MetadataAction = 'metadata/request' | 'metadata/response' | 'metadata/invalid';
 export type RegisteredAction = 'registered'
@@ -21,19 +15,36 @@ export type Action =
   | MetadataAction
   | RegisteredAction;
 
-
-
 interface PayloadBase {
   action: Action;
   data?: any;
 }
+
+export interface ChatMessage {
+  from: string;
+  message: string;
+  timestamp: number;
+  origin: 'web' | 'server';
+}
+
 export interface MessagePayload extends PayloadBase {
   action: MessageAction;
-  data: {
-    from: string;
-    message: string;
-    timestamp?: number;
-  };
+  data?: any;
+}
+
+export interface AddMessagePayload extends MessagePayload {
+  action: 'message';
+  data: ChatMessage;
+}
+
+export interface MessagesRequestPayload extends MessagePayload {
+  action: 'messages/request';
+  data: never;
+}
+
+export interface MessagesResponsePayload extends MessagePayload {
+  action: 'messages/response';
+  data: ChatMessage[];
 }
 
 export interface ConnectPayload extends PayloadBase {
@@ -79,7 +90,9 @@ export interface ServerRegisteredPayload extends PayloadBase {
 }
 
 export type Payload =
-  | MessagePayload
+  | AddMessagePayload
+  | MessagesRequestPayload
+  | MessagesResponsePayload
   | ConnectPayload
   | ConnectedPayload
   | SubscribePayload
@@ -100,13 +113,19 @@ export interface Message {
   payload?: Payload
 }
 
+export type ServerPayload = 
+  | AddMessagePayload
+  | MessagesRequestPayload
+  | MessagesResponsePayload
+  | SubscribePayload;
+
 export interface ServerMessage extends Message {
   to: {
     type: 'server',
     id: string;
     stubId?: string;
   }
-  payload: MessagePayload | SubscribePayload;
+  payload: ServerPayload;
 }
 
 export interface CommunityMessage extends Message {

@@ -20,7 +20,7 @@ const invalidMetadataMessage: MetadataInvalidMessage = {
 
 
 export async function serverRegisterReq(request: Request, env: Env, ctx: ExecutionContext, searchParams: URLSearchParams): Promise<Response> {
-  const communitySecret = searchParams.get('communitySecret');
+  const communitySecret = searchParams.get('communitySecret') ?? request.headers.get('communitySecret');
 
   if (!communitySecret) {
     return new Response("Community Secret ID not provided", { status: 404 });
@@ -90,6 +90,8 @@ export async function serverRegisterReq(request: Request, env: Env, ctx: Executi
     console.log(`[server] Connection closed with code ${event.code}`);
     server.close();
   });
+
+  console.log(`[server] Sending metadata request`, JSON.stringify(requestMetadataMessage));
 
   server.accept();
   server.send(JSON.stringify(requestMetadataMessage));
