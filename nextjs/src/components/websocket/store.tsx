@@ -1,16 +1,22 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware'
 
-
-interface CommunityState {
+interface BaseState {
+  listeners: number;
+  websocket?: WebSocket;
+  state: 'connecting' | 'connected' | 'disconnected';
+}
+interface CommunityState extends BaseState {
   playerCount: number;
   maxPlayerCount: number;
 }
 
-interface ServerState {
+interface ServerState extends BaseState {
   playerCount: number;
   maxPlayerCount: number;
 }
+
+type SubscriptionType = 'community' | 'server';
 
 interface WebsocketState {
   websocket: WebSocket | null;
@@ -22,6 +28,8 @@ interface WebsocketState {
   servers: Map<string, ServerState>;
   addListener: () => void;
   removeListener: () => void;
+  subscribe: (type: SubscriptionType, id: string) => void;
+  unsubscribe: (type: SubscriptionType, id: string) => void;
   setAuthenticated: (authenticated: boolean) => void;
 }
 
@@ -35,7 +43,22 @@ const useWebsocketStore = create<WebsocketState>()(subscribeWithSelector((set) =
   servers: new Map(),
   addListener: () => set((state) => ({ listenerCount: state.listenerCount + 1 })),
   removeListener: () => set((state) => ({ listenerCount: state.listenerCount - 1 })),
-  setAuthenticated: (authenticated: boolean) => set({ authenticated }),
+  subscribe: (type, id) => set((state) => {
+    const map = type === 'community' ? state.communities : state.servers;
+    const current = map.get(id) || { listeners: 0, state: 'disconnected', playerCount: 0, maxPlayerCount: 0 };
+    map.set(id, { ...current, listeners: current.listeners + 1 });
+    return { [type === 'community' ? 'communities' : 'servers']: new Map(map) }; // ensure immutability
+  }),
+  unsubscribe: (type, id) => set((state) => {
+    const map = type === 'community' ? state.communities : state.servers;
+    const current = map.get(id);
+    if (current && current.listeners > 1) {
+      map.set(id, { ...current, listeners: current.listeners - 1 });
+    } else {
+      map.delete(id);
+    }
+    return { [type === 'community' ? 'communities' : 'servers']: new Map(map) }; // ensure immutability
+  }),  setAuthenticated: (authenticated: boolean) => set({ authenticated }),
 })));
 
 

@@ -1,5 +1,5 @@
 import { Env } from '../env';
-import { ConnectionType } from '~/shared/types/shared/websocketMessage';
+import { ConnectionType, WebsocketMessage, isValidWebsocketMessage } from '~/shared/types/shared/websocketMessage';
 import { WebsocketMetadata, subscribe, unsubscribe } from '../helpers/objectInteraction';
 import { ConnectedMessage } from '~/shared/types/server/connectMessage';
 
@@ -117,6 +117,50 @@ export class ClientObject implements DurableObject {
 
 	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
 		console.log('[client] message', message);
+		
+		try {
+			const parsedMessage = JSON.parse(message.toString());
+			if (!isValidWebsocketMessage(parsedMessage)) {
+				console.log('[community] invalid message', message);
+				return;
+			}
+
+			if (this.clientWs === ws) {
+				this.handleClientMessage(parsedMessage);
+			} else {
+				this.handleNonClientMessage(ws, parsedMessage);
+			}
+
+		} catch (e) {
+			console.log('[server] invalid message', message);
+			return;
+		}
+	}
+	
+	handleClientMessage(message: WebsocketMessage) {
+		const { payload } = message;
+		if (!payload) {
+			return;
+		}
+
+		switch (payload.action) {
+			default:
+				console.log(`Unexpected message action: ${message.payload?.action}`);
+				break;
+		}
+	}
+
+	handleNonClientMessage(ws: WebSocket, message: WebsocketMessage) {
+		const { payload } = message;
+		if (!payload) {
+			return;
+		}
+
+		switch (payload.action) {
+			default:
+				console.log(`Unexpected message action: ${message.payload?.action}`);
+				break;
+		}
 	}
 
 	async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
