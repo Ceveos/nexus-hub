@@ -145,7 +145,7 @@ export class ClientObject implements DurableObject {
 
 		switch (payload.action) {
 			default:
-				console.log(`Unexpected message action: ${message.payload?.action}`);
+				console.log(`Unexpected client message action: ${message.payload?.action}`);
 				break;
 		}
 	}

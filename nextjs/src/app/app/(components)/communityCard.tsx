@@ -6,7 +6,9 @@ import { Avatar } from "@nextjs/components/catalyst/avatar";
 import Link from "next/link";
 import { Badge } from "@nextjs/components/catalyst/badge";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import WebsocketListener from "~/nextjs/src/components/websocket/websocketListener";
+import useWebsocketStore from "~/nextjs/src/components/websocket/store";
+import { SubscriptionItem, useWebSocketSubscription } from "~/nextjs/src/components/websocket/useWebsocketSubscription";
+import { useMemo } from "react";
 
 const communityWith = Prisma.validator<Prisma.CommunityDefaultArgs>()({
   include: {
@@ -21,10 +23,14 @@ type Props = {
 export default function CommunityCard({ community }: Props) {
   const https = process.env.NODE_ENV === 'production' ? 'https' : 'http';
   const communityLink = community.customDomain ?? `${community.subdomain}.${process.env.NEXT_PUBLIC_HUB_DOMAIN}`;
+  const communities = useWebsocketStore(state => state.communities);
+  const communityState = communities.get(community.id);
 
+  const subscriptions: SubscriptionItem[] = useMemo(() => [{ type: 'community', id: community.id }], [community.id]);
+  useWebSocketSubscription(subscriptions);
+  
   return (
     <>
-      <WebsocketListener />
       <li key={community.id} className=" relative rounded-xl border border-primary-200 hover:border-primary-400 dark:border-primary-dark-700 dark:hover:border-primary-dark-500 text-primary-500 hover:text-primary-600 dark:text-primary-dark-400 dark:hover:text-primary-dark-200" >
         <Link
           className="absolute inset-0 z-10 focus:ring-primary-400 dark:focus:ring-primary-dark-600 focus:ring-2 focus:outline-none rounded-xl"

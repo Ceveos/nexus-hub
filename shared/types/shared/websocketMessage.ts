@@ -150,7 +150,7 @@ export interface ClientMessage extends Message {
 
 export interface SubscribeMessage extends Message {
   to?: Connection;
-  from: Connection;
+  from?: Connection;
   payload: SubscribePayload;
 }
 

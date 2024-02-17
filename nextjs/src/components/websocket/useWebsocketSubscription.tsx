@@ -3,17 +3,13 @@
 import { useEffect } from "react";
 import useWebsocketStore from "./store";
 
-interface SubscriptionItem {
+export interface SubscriptionItem {
   type: 'community' | 'server';
   id: string;
 }
 
-interface WebsocketListenerProps {
-  subscriptions: SubscriptionItem[];
-}
-
-const WebsocketListener: React.FC<WebsocketListenerProps> = ({ subscriptions }) => {
-  const { addListener, removeListener, subscribe, unsubscribe } = useWebsocketStore(state => ({
+export function useWebSocketSubscription(subscriptions: SubscriptionItem[]) {
+  const { addListener, removeListener, subscribe, unsubscribe } = useWebsocketStore((state) => ({
     addListener: state.addListener,
     removeListener: state.removeListener,
     subscribe: state.subscribe,
@@ -21,25 +17,20 @@ const WebsocketListener: React.FC<WebsocketListenerProps> = ({ subscriptions }) 
   }));
 
   useEffect(() => {
-    // Always add as a general listener
+    // Add as a general listener
     addListener();
-
-    // Subscribe to all specified items
+    // Subscribe to specified items
     subscriptions.forEach(({ type, id }) => {
       subscribe(type, id);
     });
 
-    // Cleanup function to remove listener and unsubscribe from all items
+    // Cleanup function to remove listener and unsubscribe
     return () => {
       removeListener();
       subscriptions.forEach(({ type, id }) => {
         unsubscribe(type, id);
       });
     };
-    // Ensure the effect re-runs only if the subscriptions array changes
+    // Depend on the subscriptions array so the effect is run again if it changes
   }, [subscriptions, addListener, removeListener, subscribe, unsubscribe]);
-
-  return null;
-};
-
-export default WebsocketListener;
+}

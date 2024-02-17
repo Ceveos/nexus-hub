@@ -1,7 +1,5 @@
-import { ConnectionType, SubscribePayload, Message, SubscribeMessage, isValidMessage, Connection } from "~/shared/types/shared/websocketMessage";
+import { ConnectionType, SubscribePayload, Message, isValidMessage, Connection } from "~/shared/types/shared/websocketMessage";
 import { Env } from "../env";
-
-
 
 export interface Client {
   server: WebSocket
