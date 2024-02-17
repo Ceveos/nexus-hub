@@ -83,14 +83,14 @@ useWebsocketStore.subscribe((state) => state.fullRefreshRequired, (fullRefreshRe
 });
 
 useWebsocketStore.subscribe((state) => state.pendingSubscriptionUpdate, (pendingSubscriptionUpdate) => {
-  const { communities, servers } = useWebsocketStore.getState();
+  const { connected, communities, servers } = useWebsocketStore.getState();
   for (const { type, id } of pendingSubscriptionUpdate) {
     const item = type === 'community' ? communities.get(id) : servers.get(id);
     if (!item) continue;
-    if (item.listeners <= 0 && item.state !== 'disconnected') {
+    if (!connected || (item.listeners <= 0 && item.state !== 'disconnected')) {
       console.log(`Disconnecting from ${type} ${id}`);
       disconnect(id, type);
-    } else if (item.listeners > 0 && item.state === 'disconnected') {
+    } else if (connected && item.listeners > 0 && item.state === 'disconnected') {
       console.log(`Connecting to ${type} ${id}`);
       connect(id, type);
     }
@@ -106,6 +106,7 @@ useWebsocketStore.subscribe((state) => state.connected, (connected) => {
     console.log("Sending pending messages");
     pendingMessages.forEach((message) => sendMessage(message));
   }
+
   if (pendingMessages.length > 0) {
     useWebsocketStore.setState({ pendingMessages: [] });
   }
@@ -144,6 +145,8 @@ function connect(id: string, type: SubscriptionType) {
 }
 
 function disconnect(id: string, type: SubscriptionType) {
+  const { connected } = useWebsocketStore.getState();
+  if (!connected) return;
   const message: SubscribeMessage & WebsocketMessage = {
     to: {
       id,
