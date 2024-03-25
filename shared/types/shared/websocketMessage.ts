@@ -1,7 +1,7 @@
 export type ConnectionType = 'client' | 'community' | 'server';
 export type ConnectAction = 'connect';
 export type ConnectedAction = 'connected';
-export type SubscriptionAction = 'subscribe' | 'unsubscribe';
+export type SubscriptionAction = 'subscribe' | 'subscribed' | 'unsubscribe' | 'unsubscribed';
 export type MessageAction = 'message' | 'messages/request' | 'messages/response';
 
 export type MetadataAction = 'metadata/request' | 'metadata/response' | 'metadata/invalid';

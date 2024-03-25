@@ -1,5 +1,5 @@
 import { Env } from '../env';
-import { ConnectionType, WebsocketMessage, isValidWebsocketMessage } from '~/shared/types/shared/websocketMessage';
+import { ConnectionType, SubscribeMessage, WebsocketMessage, isValidWebsocketMessage } from '~/shared/types/shared/websocketMessage';
 import { WebsocketMetadata, subscribe, unsubscribe } from '../helpers/objectInteraction';
 import { ConnectedMessage } from '~/shared/types/server/connectMessage';
 
@@ -55,7 +55,7 @@ export class ClientObject implements DurableObject {
 			return new Response('Expected websocket', { status: 400 });
 		}
 
-		if (this.clientWs && this.clientWs.readyState === WebSocket.OPEN) {
+		if (this.clientWs && this.clientWs.readyState === WebSocket.READY_STATE_OPEN) {
 			// This should never happen
 			return new Response('Another client already connected', { status: 400 });
 		}
@@ -90,7 +90,7 @@ export class ClientObject implements DurableObject {
 			const ws = websockets[i];
 			const metadata = ws.deserializeAttachment() as WebsocketMetadata;
 
-			if (ws.readyState === WebSocket.OPEN) {
+			if (ws.readyState === WebSocket.READY_STATE_OPEN) {
 				if (metadata.type === 'client') {
 					ws.send(JSON.stringify(message));
 				}
@@ -115,7 +115,7 @@ export class ClientObject implements DurableObject {
 		}
 	}
 
-	webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+	async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
 		console.log('[client] message', message);
 		
 		try {
@@ -126,24 +126,40 @@ export class ClientObject implements DurableObject {
 			}
 
 			if (this.clientWs === ws) {
-				this.handleClientMessage(parsedMessage);
+				await this.handleClientMessage(parsedMessage);
 			} else {
-				this.handleNonClientMessage(ws, parsedMessage);
+				await this.handleNonClientMessage(ws, parsedMessage);
 			}
 
 		} catch (e) {
+			console.log(e);
 			console.log('[server] invalid message', message);
 			return;
 		}
 	}
 	
-	handleClientMessage(message: WebsocketMessage) {
-		const { payload } = message;
+	async handleClientMessage(message: WebsocketMessage) {
+		const { to, payload } = message;
 		if (!payload) {
 			return;
 		}
 
 		switch (payload.action) {
+			case 'subscribe':
+				if (to) {
+					const subscribed = await this.subscribe(to.type, to.id);
+					if (subscribed) {
+						let subscribedMessage: SubscribeMessage = {
+							payload: {
+								action: 'subscribed'
+							},
+							to: to
+						};
+						console.log("Sending subscribed message")
+						this.clientWs?.send(JSON.stringify(subscribedMessage));
+					}
+				}
+				break;
 			default:
 				console.log(`Unexpected client message action: ${message.payload?.action}`);
 				break;
@@ -164,7 +180,7 @@ export class ClientObject implements DurableObject {
 	}
 
 	async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
-		console.log(`[client] Connection closed with code ${code}`);
+		console.log(`[client] Connection closed with code ${code}. ${reason} / ${wasClean}`);
 		ws.close();
     await this.state.storage.deleteAll(); 
 	}
@@ -178,8 +194,11 @@ export class ClientObject implements DurableObject {
 		const response = await subscribe({type, id: to}, this.env);
 
 		if (response.webSocket) {
-			response.webSocket.serializeAttachment({ type, id: to } as WebsocketMetadata);
+			// response.webSocket.serializeAttachment({ type, id: to } as WebsocketMetadata);
 			this.state.acceptWebSocket(response.webSocket, [type, to]);
+			const websockets = this.state.getWebSockets();
+
+			console.log(websockets.length);
 
 			switch (to) {
 				case 'server':

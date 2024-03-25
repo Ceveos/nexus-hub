@@ -87,7 +87,7 @@ useWebsocketStore.subscribe((state) => state.pendingSubscriptionUpdate, (pending
   for (const { type, id } of pendingSubscriptionUpdate) {
     const item = type === 'community' ? communities.get(id) : servers.get(id);
     if (!item) continue;
-    if (!connected || (item.listeners <= 0 && item.state !== 'disconnected')) {
+    if (item.state !== 'disconnected' && (!connected || item.listeners <= 0)) {
       console.log(`Disconnecting from ${type} ${id}`);
       disconnect(id, type);
     } else if (connected && item.listeners > 0 && item.state === 'disconnected') {
@@ -123,6 +123,8 @@ function sendMessage(message: WebsocketMessage) {
 }
 
 function connect(id: string, type: SubscriptionType) {
+  const { connected } = useWebsocketStore.getState();
+  if (!connected) return;
   const message: SubscribeMessage & WebsocketMessage = {
     to: {
       id,
@@ -145,6 +147,14 @@ function connect(id: string, type: SubscriptionType) {
 }
 
 function disconnect(id: string, type: SubscriptionType) {
+  useWebsocketStore.setState((state) => {
+    const map = type === 'community' ? state.communities : state.servers;
+    const current = map.get(id);
+    if (!current) return state;
+    map.set(id, { ...current, state: 'disconnected' });
+    return { [type === 'community' ? 'communities' : 'servers']: new Map(map) };
+  });
+
   const { connected } = useWebsocketStore.getState();
   if (!connected) return;
   const message: SubscribeMessage & WebsocketMessage = {
@@ -158,12 +168,4 @@ function disconnect(id: string, type: SubscriptionType) {
     version: '1.0.0'
   };
   sendMessage(message);
-
-  useWebsocketStore.setState((state) => {
-    const map = type === 'community' ? state.communities : state.servers;
-    const current = map.get(id);
-    if (!current) return state;
-    map.set(id, { ...current, state: 'disconnected' });
-    return { [type === 'community' ? 'communities' : 'servers']: new Map(map) };
-  });
 }

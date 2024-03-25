@@ -44,6 +44,7 @@ export default function CommunityCard({ community }: Props) {
               className={cn(community.avatarClass ?? getColorForName(community.name), "h-8 w-8 flex-none rounded-lg object-cover ring-1 ring-gray-900/10")}
             />
             <div className="text-sm font-medium leading-6 text-gray-900 dark:text-white">{community.name}</div>
+            {communityState?.state}
             <ArrowRightCircleIcon className="ml-auto h-6 w-6 " aria-hidden="true" />
           </div>
           <dl className="-my-3 divide-y divide-primary-200 dark:divide-primary-dark-700 px-6 py-4 text-sm leading-6">

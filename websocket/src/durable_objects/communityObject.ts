@@ -36,13 +36,13 @@ export class CommunityObject implements DurableObject {
 
 			const searchParams = new URL(request.url).searchParams;
 
-			const communityId = searchParams.get('communityId');
+			const communityId = searchParams.get('communityId') ?? searchParams.get('id');
 
 			if (!communityId) {
 				return new Response('Community ID not provided', { status: 404 });
 			}
 
-			if (this.env.COMMUNITY.idFromName(communityId) !== this.state.id) {
+			if (this.env.COMMUNITY.idFromName(communityId).toString() !== this.state.id.toString()) {
 				return new Response('Invalid Community ID for object', { status: 401 });
 			}
 
@@ -73,7 +73,7 @@ export class CommunityObject implements DurableObject {
         stubId: this.state.id.toString(),
       },
 			payload: {
-				action: 'subscribe',
+				action: 'subscribed',
 			},
 		};
 
@@ -81,7 +81,6 @@ export class CommunityObject implements DurableObject {
 
     console.log('[Community] Sending connected message');
 		server.send(JSON.stringify(communityConnectedMessage));
-		console.log('[Community] returning websocket client');
 		return new Response(null, { status: 101, webSocket: client });
 	}
 
@@ -90,7 +89,7 @@ export class CommunityObject implements DurableObject {
   }
 
 	webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
-		console.log(`[community] Connection closed with code ${code}`);
+		console.log(`[community] Connection closed with code ${code}. ${reason} / ${wasClean}`);
 		ws.close();
 	}
 
