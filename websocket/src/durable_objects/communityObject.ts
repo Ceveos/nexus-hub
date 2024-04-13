@@ -2,15 +2,44 @@ import { Env } from '../env';
 import { Action, SubscribeMessage } from '~/shared/types/shared/websocketMessage';
 import handleErrors from '../helpers/handleErrors';
 
+interface IMetadata {
+	id: string;
+}
+
+interface ServerMetadata extends IMetadata {
+
+}
+
+interface UserMetadata extends IMetadata {
+
+}
+
+
+type Metadata = UserMetadata | ServerMetadata;
+
 export class CommunityObject implements DurableObject {
 	state: DurableObjectState;
 	env: Env;
 	communityId?: string;
-	initialized: boolean = false;
+	userSessions: Map<WebSocket, UserMetadata> = new Map();
+	serverSessions: Map<string, WebSocket> = new Map();
+	// Key: ServerId, Value: userId[]
+	serverSubscriptions: Map<string, string[]> = new Map();
 
 	constructor(state: DurableObjectState, env: Env) {
 		this.state = state;
 		this.env = env;
+
+		this.state.getWebSockets().forEach((webSocket) => {
+			const meta = webSocket.deserializeAttachment();
+
+			// Set up limiter here
+			// let limiterId = this.env.limiters.idFromString(meta.limiterId);
+      // let limiter = new RateLimiterClient(
+      //   () => this.env.limiters.get(limiterId),
+      //   err => webSocket.close(1011, err.stack));
+
+		});
 	}
 
 	async initialize(communityId: string) {
@@ -23,8 +52,6 @@ export class CommunityObject implements DurableObject {
 				this.communityId = storedCommunityId as string;
 			}
 		}
-
-		this.initialized = true;
 	}
 
 	async fetch(request: Request) {
