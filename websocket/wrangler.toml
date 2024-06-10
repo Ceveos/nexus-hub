@@ -48,8 +48,7 @@ node_compat = true
 [durable_objects]
 bindings = [
   { name = "COMMUNITY", class_name = "CommunityObject" },
-  { name = "CLIENT", class_name = "ClientObject" },
-  { name = "SERVER", class_name = "ServerObject" },
+  { name = "LIMITER", class_name = "LimiterObject" },
 ]
 
 
@@ -60,4 +59,4 @@ bindings = [
 # new_classes = ["MyDurableObject"]
 [[migrations]]
 tag = "v1"
-new_classes = ["CommunityObject", "ClientObject", "ServerObject"]
+new_classes = ["CommunityObject", "LimiterObject"]
