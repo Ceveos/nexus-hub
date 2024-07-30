@@ -1,7 +1,5 @@
-import { ConnectionType, SubscribePayload, Message, SubscribeMessage, isValidMessage, Connection } from "~/shared/types/shared/websocketMessage";
+import { ConnectionType, SubscribePayload, Message, isValidMessage, Connection } from "~/shared/types/shared/websocketMessage";
 import { Env } from "../env";
-
-
 
 export interface Client {
   server: WebSocket
@@ -53,16 +51,19 @@ export async function send(message: Message, env: Env): Promise<Response> {
 
   const url = new URL('https://fake-url.com');
   url.searchParams.append('action', action);
+  url.searchParams.append('id', message.to.id);
   message.from && url.searchParams.append('from', message.from.id);
   message.from?.stubId && url.searchParams.append('fromStub', message.from.stubId);
   message.payload.data && url.searchParams.append('data', JSON.stringify(message.payload.data));
 
   const durableObject = message.to.stubId ? getDurableObjectById(message.to.type, message.to.stubId, env) : getDurableObjectByName(message.to.type, message.to.id, env);
-  return durableObject.fetch(url.toString(), {
+  const resp = await durableObject.fetch(url.toString(), {
     headers: {
       "Upgrade": "websocket",
     }
   });
+
+  return resp;
 }
 
 export function subscribe(to: Connection, env: Env): Promise<Response> {

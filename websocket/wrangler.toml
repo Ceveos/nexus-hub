@@ -1,6 +1,7 @@
 name = "nexushub-websocket"
 main = "src/index.ts"
 compatibility_date = "2023-12-18"
+node_compat = true
 
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
@@ -47,8 +48,7 @@ compatibility_date = "2023-12-18"
 [durable_objects]
 bindings = [
   { name = "COMMUNITY", class_name = "CommunityObject" },
-  { name = "CLIENT", class_name = "ClientObject" },
-  { name = "SERVER", class_name = "ServerObject" },
+  { name = "LIMITER", class_name = "LimiterObject" },
 ]
 
 
@@ -59,4 +59,4 @@ bindings = [
 # new_classes = ["MyDurableObject"]
 [[migrations]]
 tag = "v1"
-new_classes = ["CommunityObject", "ClientObject", "ServerObject"]
+new_classes = ["CommunityObject", "LimiterObject"]
